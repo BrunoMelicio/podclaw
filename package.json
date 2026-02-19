@@ -9,7 +9,6 @@
     "deploy": "vercel --prod"
   },
   "dependencies": {
-    "@distube/ytdl-core": "^4.16.1",
     "@google/generative-ai": "^0.21.0"
   }
 }
