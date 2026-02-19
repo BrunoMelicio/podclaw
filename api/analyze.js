@@ -1,17 +1,18 @@
 // /api/analyze.js
-// Sends podcast transcript to Gemini Flash and returns structured insights
+// Sends a YouTube video directly to Gemini 2.5 Flash for analysis
+// Gemini processes the video natively — no transcript API needed
 // Requires GEMINI_API_KEY environment variable
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const SYSTEM_PROMPT = `You are Podclaw, an expert podcast analyst. You receive a full podcast transcript with timestamps and extract structured, insightful content from it.
+const SYSTEM_PROMPT = `You are Podclaw, an expert podcast analyst. You are given a YouTube podcast video to watch and analyze. Extract structured, insightful content from it.
 
-Your job is to analyze the transcript and return a JSON object with the following exact structure. Be specific, insightful, and use actual timestamps from the transcript.
+Your job is to analyze the full video and return a JSON object with the following exact structure. Be specific, insightful, and use actual timestamps from the video.
 
 CRITICAL RULES:
 - Return ONLY valid JSON. No markdown, no code blocks, no explanation — just the JSON object.
-- All timestamps must be real timestamps from the transcript (format: "H:MM:SS" or "M:SS").
-- Quotes must be actual quotes from the transcript, not paraphrased.
+- All timestamps must be real timestamps from the video (format: "H:MM:SS" or "M:SS").
+- Quotes must be actual quotes from the video, not paraphrased.
 - Insights should be genuinely interesting and non-obvious.
 - For the summary, use HTML inline elements for emphasis: <span class="hl"> for key terms (orange), <span class="hl-blue"> for blue highlights, <span class="hl-green"> for green, <span class="hl-purple"> for purple, and <em> for italics.
 - Viral clips should be moments that would genuinely work as standalone social media clips.
@@ -54,7 +55,7 @@ Return this exact JSON structure:
   ],
   "quotes": [
     {
-      "text": "Exact quote from the transcript",
+      "text": "Exact quote from the video",
       "speaker": "Speaker Name"
     }
   ],
@@ -109,17 +110,13 @@ export default async function handler(req, res) {
     });
   }
 
-  const { transcript, videoId } = req.body;
+  const { videoId } = req.body;
 
-  if (!transcript) {
-    return res.status(400).json({ error: 'Missing "transcript" in request body.' });
+  if (!videoId) {
+    return res.status(400).json({ error: 'Missing "videoId" in request body.' });
   }
 
-  // Truncate transcript if extremely long (Gemini Flash handles 1M tokens, but let's be safe)
-  const maxChars = 800000; // ~200k tokens
-  const truncatedTranscript = transcript.length > maxChars
-    ? transcript.slice(0, maxChars) + '\n\n[TRANSCRIPT TRUNCATED]'
-    : transcript;
+  const youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
@@ -133,17 +130,19 @@ export default async function handler(req, res) {
       },
     });
 
-    const prompt = `${SYSTEM_PROMPT}
+    // Pass the YouTube URL directly to Gemini — it processes the video natively
+    const result = await model.generateContent([
+      {
+        fileData: {
+          fileUri: youtubeUrl,
+          mimeType: 'video/mp4',
+        },
+      },
+      {
+        text: `${SYSTEM_PROMPT}\n\nAnalyze this YouTube podcast video and return the structured JSON. Remember: ONLY return valid JSON, nothing else.`,
+      },
+    ]);
 
-Here is the full podcast transcript to analyze:
-
----TRANSCRIPT START---
-${truncatedTranscript}
----TRANSCRIPT END---
-
-Now analyze this transcript and return the structured JSON. Remember: ONLY return valid JSON, nothing else.`;
-
-    const result = await model.generateContent(prompt);
     const response = result.response;
     let text = response.text();
 
@@ -163,11 +162,9 @@ Now analyze this transcript and return the structured JSON. Remember: ONLY retur
       });
     }
 
-    // Add YouTube video ID if available
-    if (videoId) {
-      parsed._videoId = videoId;
-      parsed._youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
-    }
+    // Add YouTube video ID
+    parsed._videoId = videoId;
+    parsed._youtubeUrl = youtubeUrl;
 
     return res.status(200).json(parsed);
 
@@ -183,7 +180,7 @@ Now analyze this transcript and return the structured JSON. Remember: ONLY retur
     }
 
     return res.status(500).json({
-      error: 'Failed to analyze transcript with Gemini.',
+      error: 'Failed to analyze video with Gemini.',
       details: error.message
     });
   }

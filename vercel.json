@@ -4,10 +4,7 @@
   "framework": null,
   "functions": {
     "api/analyze.js": {
-      "maxDuration": 60
-    },
-    "api/transcript.js": {
-      "maxDuration": 30
+      "maxDuration": 120
     }
   },
   "rewrites": [

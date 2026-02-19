@@ -348,8 +348,8 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
     <h2 id="loadTitle">Clawing through your podcast...</h2>
     <p class="load-sub" id="loadSub">Extracting the good stuff</p>
     <div class="load-steps" id="loadSteps">
-      <div class="load-step" id="step-transcript"><span class="dot">&#10003;</span> Fetching transcript from YouTube</div>
-      <div class="load-step" id="step-send"><span class="dot">&#10003;</span> Sending to AI for analysis</div>
+      <div class="load-step" id="step-video"><span class="dot">&#10003;</span> Sending video to Gemini AI</div>
+      <div class="load-step" id="step-analyze"><span class="dot">&#10003;</span> Watching &amp; analyzing podcast</div>
       <div class="load-step" id="step-insights"><span class="dot">&#10003;</span> Generating insights &amp; clips</div>
       <div class="load-step" id="step-build"><span class="dot">&#10003;</span> Building your view</div>
     </div>
@@ -573,30 +573,30 @@ async function processYouTube(videoId) {
   loading.classList.add('active');
 
   try {
-    setStep('transcript', 'active');
-    const tRes = await fetch(`/api/transcript?url=${encodeURIComponent(videoId)}`);
-    const tData = await tRes.json();
-    if (!tRes.ok) throw new Error(tData.error || 'Failed to fetch transcript');
-    setStep('transcript', 'done');
-
+    // Step 1: Send video to Gemini
+    setStep('video', 'active');
     currentVideoId = videoId;
-    currentTranscript = tData.transcript;
+    await new Promise(r => setTimeout(r, 300));
+    setStep('video', 'done');
 
-    setStep('send', 'active');
+    // Step 2: Gemini analyzes the video directly (single API call)
+    setStep('analyze', 'active');
     const aRes = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ transcript: tData.transcript, videoId })
+      body: JSON.stringify({ videoId })
     });
     const aData = await aRes.json();
-    if (!aRes.ok) throw new Error(aData.error || 'Failed to analyze transcript');
-    setStep('send', 'done');
+    if (!aRes.ok) throw new Error(aData.error || 'Failed to analyze video');
+    setStep('analyze', 'done');
 
+    // Step 3: Process insights
     setStep('insights', 'active');
     currentData = aData;
     await new Promise(r => setTimeout(r, 400));
     setStep('insights', 'done');
 
+    // Step 4: Build view
     setStep('build', 'active');
     renderData(aData, videoId);
     await new Promise(r => setTimeout(r, 300));
@@ -611,8 +611,8 @@ async function processYouTube(videoId) {
 
   } catch (err) {
     console.error('Pipeline error:', err);
-    setStep('transcript', document.getElementById('step-transcript').classList.contains('done') ? 'done' : 'error');
-    setStep('send', document.getElementById('step-send').classList.contains('done') ? 'done' : 'error');
+    setStep('video', document.getElementById('step-video').classList.contains('done') ? 'done' : 'error');
+    setStep('analyze', document.getElementById('step-analyze').classList.contains('done') ? 'done' : 'error');
     showLoadError(err.message);
   }
 }

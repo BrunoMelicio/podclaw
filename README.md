@@ -5,10 +5,11 @@
 ## How it works
 
 1. You paste a YouTube link
-2. The backend fetches the transcript via Supadata API (YouTube blocks cloud IPs from direct access)
-3. The transcript is sent to Gemini 2.5 Flash for analysis
-4. You get: embedded YouTube player, summary, insights, quotes, viral clips, timeline, and Ask AI chat
-5. Click any timestamp to seek the video to that exact moment
+2. The video is sent directly to Gemini 2.5 Flash — it watches and analyzes the podcast
+3. You get: embedded YouTube player, summary, insights, quotes, viral clips, timeline, and Ask AI chat
+4. Click any timestamp to seek the video to that exact moment
+
+**Only one API key needed** — Gemini handles everything.
 
 ## Features
 
@@ -21,10 +22,11 @@
 
 ## Deploy to Vercel (Free)
 
-### Step 1: Get API Keys (both free)
+### Step 1: Get a Gemini API Key (free)
 
-1. **Gemini API Key**: Go to [Google AI Studio](https://aistudio.google.com/apikey), sign in, click "Create API Key"
-2. **Supadata API Key**: Go to [supadata.ai](https://supadata.ai), sign up, get your key (100 free requests/month)
+1. Go to [Google AI Studio](https://aistudio.google.com/apikey)
+2. Sign in with your Google account
+3. Click "Create API Key"
 
 ### Step 2: Push to GitHub
 
@@ -47,9 +49,8 @@ git push -u origin main
 1. Go to [vercel.com](https://vercel.com) and sign up (free) with your GitHub account
 2. Click "Add New Project"
 3. Import your `podclaw` GitHub repository
-4. In the settings, add your environment variables:
+4. In the settings, add your environment variable:
    - `GEMINI_API_KEY` — your Gemini API key
-   - `SUPADATA_API_KEY` — your Supadata API key
 5. Click "Deploy"
 
 Your site will be live at `your-project.vercel.app` in about 30 seconds.
@@ -60,8 +61,7 @@ Your site will be live at `your-project.vercel.app` in about 30 seconds.
 podclaw/
 ├── index.html          # Full frontend with embedded YouTube player & 3 demo episodes
 ├── api/
-│   ├── transcript.js   # Fetches YouTube transcript via Supadata API
-│   └── analyze.js      # Sends transcript to Gemini 2.5 Flash, returns structured insights
+│   └── analyze.js      # Sends YouTube video to Gemini 2.5 Flash, returns structured insights
 ├── package.json        # Dependencies (@google/generative-ai)
 ├── vercel.json         # Vercel deployment config
 ├── .env.example        # Template for environment variables
@@ -74,9 +74,9 @@ podclaw/
 npm install
 npm install -g vercel   # Install Vercel CLI if you don't have it
 
-# Create .env.local with your API keys
+# Create .env.local with your Gemini API key
 cp .env.example .env.local
-# Edit .env.local and add your keys
+# Edit .env.local and add your key
 
 vercel dev              # Runs locally at http://localhost:3000
 ```
@@ -85,14 +85,11 @@ vercel dev              # Runs locally at http://localhost:3000
 
 - **Vercel Hobby plan**: Free (100GB bandwidth, serverless functions)
 - **Gemini 2.5 Flash**: Free tier (~1500 requests/day)
-- **Supadata**: Free tier (100 requests/month)
 
 **Total cost to run: $0/month** for typical usage.
 
 ## Limitations
 
-- Works only with YouTube videos that have captions (auto-generated or manual) — covers ~95% of videos
+- Gemini processes YouTube videos directly, but very long podcasts (5+ hours) may take longer or hit token limits
 - Gemini has a rate limit on the free tier (~15 requests/minute)
-- Supadata free tier is limited to 100 transcript fetches/month
-- Very long podcasts (5+ hours) may need transcript truncation
 - The "Ask AI" chat currently uses keyword matching; can be upgraded to use Gemini for real-time Q&A
