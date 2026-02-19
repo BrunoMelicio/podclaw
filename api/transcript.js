@@ -1,6 +1,20 @@
 // api/transcript.js
-// Fetches YouTube auto-generated captions via YouTube's InnerTube API
-// No audio download, no third-party APIs, no extra API keys needed
+// Fetches YouTube captions via youtubei.js (handles bot detection with Android client)
+// No audio download, no third-party transcript APIs, no extra API keys
+
+import { Innertube } from 'youtubei.js';
+
+let yt = null;
+
+async function getClient() {
+  if (!yt) {
+    yt = await Innertube.create({
+      lang: 'en',
+      location: 'US',
+    });
+  }
+  return yt;
+}
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,89 +31,72 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Step 1: Call YouTube's InnerTube player endpoint to get caption tracks
     console.log(`[transcript] Fetching captions for: ${videoId}`);
 
-    const playerRes = await fetch(
-      'https://www.youtube.com/youtubei/v1/player?prettyPrint=false',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'User-Agent':
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
-          'Accept-Language': 'en-US,en;q=0.9',
-        },
-        body: JSON.stringify({
-          videoId,
-          context: {
-            client: {
-              clientName: 'WEB',
-              clientVersion: '2.20241126.01.00',
-              hl: 'en',
-              gl: 'US',
-            },
-          },
-        }),
-      }
-    );
+    const innertube = await getClient();
+    const info = await innertube.getInfo(videoId);
 
-    if (!playerRes.ok) {
-      throw new Error(`YouTube player API returned ${playerRes.status}`);
-    }
-
-    const playerData = await playerRes.json();
-
-    // Check for playability issues
-    const status = playerData?.playabilityStatus;
-    if (status?.status !== 'OK') {
-      const reason = status?.reason || status?.messages?.[0] || status?.status || 'Video unavailable';
-      throw new Error(reason);
-    }
-
-    // Extract caption tracks
+    // Extract caption tracks from the player response
     const captionTracks =
-      playerData?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
+      info.captions?.playerCaptionsTracklistRenderer?.captionTracks;
 
     if (!captionTracks || captionTracks.length === 0) {
       throw new Error(
-        'No captions available for this video. Try a different podcast — most popular ones have auto-generated captions.'
+        'No captions available for this video. Try a popular podcast — most have auto-generated captions.'
       );
     }
 
-    // Prefer manual English captions, then auto-generated English, then first available
+    // Prefer manual English, then auto-generated English, then first available
     const track =
       captionTracks.find((t) => t.languageCode === 'en' && t.kind !== 'asr') ||
-      captionTracks.find((t) => t.languageCode === 'en') ||
+      captionTracks.find((t) => t.languageCode.startsWith('en')) ||
       captionTracks[0];
 
-    console.log(`[transcript] Using caption track: ${track.name?.simpleText || track.languageCode} (kind: ${track.kind || 'manual'})`);
+    console.log(
+      `[transcript] Caption track: ${track.name?.simpleText || track.languageCode}`
+    );
 
-    // Step 2: Fetch the captions in JSON3 format
+    // Fetch the captions in JSON3 format
     const captionUrl = track.baseUrl + '&fmt=json3';
-    const captionRes = await fetch(captionUrl, {
-      headers: {
-        'User-Agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
-      },
-    });
+    const captionRes = await fetch(captionUrl);
 
     if (!captionRes.ok) {
       throw new Error(`Failed to fetch captions (HTTP ${captionRes.status})`);
     }
 
     const captionData = await captionRes.json();
+    const events = captionData?.events || [];
 
-    // Step 3: Parse into timestamped transcript
-    const transcript = parseCaptionJson3(captionData);
+    // Parse into timestamped transcript
+    const lines = [];
+    for (const event of events) {
+      if (!event.segs) continue;
 
-    if (!transcript || transcript.length < 50) {
+      const startMs = event.tStartMs || 0;
+      const startSec = Math.floor(startMs / 1000);
+      const mins = Math.floor(startSec / 60);
+      const secs = startSec % 60;
+      const timestamp = `${mins}:${secs.toString().padStart(2, '0')}`;
+
+      const text = event.segs
+        .map((s) => s.utf8 || '')
+        .join('')
+        .replace(/\n/g, ' ')
+        .trim();
+
+      if (text && text.length > 0) {
+        lines.push(`[${timestamp}] ${text}`);
+      }
+    }
+
+    const transcript = lines.join('\n');
+
+    if (transcript.length < 50) {
       throw new Error('Transcript is empty or too short.');
     }
 
-    // Video metadata
-    const title = playerData?.videoDetails?.title || 'Unknown';
-    const duration = parseInt(playerData?.videoDetails?.lengthSeconds || '0', 10);
+    const title = info.basic_info?.title || 'Unknown';
+    const duration = info.basic_info?.duration || 0;
 
     console.log(`[transcript] Done! ${transcript.split(/\s+/).length} words`);
 
@@ -113,6 +110,16 @@ export default async function handler(req, res) {
     });
   } catch (err) {
     console.error('[transcript] Error:', err.message);
+
+    // Reset client on auth/bot errors so next request gets a fresh session
+    if (
+      err.message?.includes('Sign in') ||
+      err.message?.includes('bot') ||
+      err.message?.includes('429')
+    ) {
+      yt = null;
+    }
+
     return res.status(500).json({
       error: err.message || 'Failed to fetch transcript.',
     });
@@ -122,7 +129,6 @@ export default async function handler(req, res) {
 function extractVideoId(input) {
   if (!input) return null;
   const trimmed = input.trim();
-  // Direct video ID (11 chars)
   if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) return trimmed;
   try {
     const url = new URL(trimmed);
@@ -133,35 +139,6 @@ function extractVideoId(input) {
   } catch {
     // not a URL
   }
-  // Try regex extraction
   const match = trimmed.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
   return match ? match[1] : null;
-}
-
-function parseCaptionJson3(data) {
-  const events = data?.events || [];
-  const segments = [];
-
-  for (const event of events) {
-    if (!event.segs) continue;
-
-    const startMs = event.tStartMs || 0;
-    const startSec = Math.floor(startMs / 1000);
-    const mins = Math.floor(startSec / 60);
-    const secs = startSec % 60;
-    const timestamp = `${mins}:${secs.toString().padStart(2, '0')}`;
-
-    // Combine all sub-segments within this event
-    const text = event.segs
-      .map((s) => s.utf8 || '')
-      .join('')
-      .replace(/\n/g, ' ')
-      .trim();
-
-    if (text && text !== '\n' && text.length > 0) {
-      segments.push(`[${timestamp}] ${text}`);
-    }
-  }
-
-  return segments.join('\n');
 }
