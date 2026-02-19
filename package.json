@@ -9,7 +9,6 @@
     "deploy": "vercel --prod"
   },
   "dependencies": {
-    "youtube-transcript": "^1.2.1",
     "@google/generative-ai": "^0.21.0"
   }
 }

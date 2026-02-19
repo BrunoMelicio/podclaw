@@ -48,7 +48,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
 /* ========== NAV ========== */
 .nav{position:sticky;top:0;z-index:100;background:var(--overlay);backdrop-filter:blur(24px) saturate(1.3);border-bottom:1px solid var(--border);padding:14px 0}
 .nav .container{display:flex;align-items:center;justify-content:space-between}
-.logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--text-0);text-decoration:none;letter-spacing:-.5px}
+.logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--text-0);text-decoration:none;letter-spacing:-.5px;cursor:pointer}
 .logo span{color:var(--accent)}
 .nav-right{display:flex;gap:10px;align-items:center}
 .theme-toggle{width:40px;height:40px;border-radius:12px;background:var(--bg-2);border:1px solid var(--border);color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .25s}
@@ -57,7 +57,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
 .btn:hover{border-color:var(--border-hover);color:var(--text-0)}
 
 /* ========== HERO ========== */
-.hero-section{padding:100px 0 60px;text-align:center}
+.hero-section{padding:80px 0 60px;text-align:center}
 .hero-section.collapsed{display:none}
 .hero-badge{display:inline-block;padding:6px 18px;margin-bottom:28px;background:var(--accent-glow);border:1px solid rgba(255,107,43,0.15);border-radius:100px;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:2px}
 .hero-section h1{font-family:'Playfair Display',serif;font-size:clamp(42px,7vw,80px);line-height:1.02;letter-spacing:-2.5px;margin-bottom:24px}
@@ -71,9 +71,21 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
 .input-go{padding:12px 24px;background:var(--accent);border:none;border-radius:12px;color:#fff;font-weight:600;font-size:14px;cursor:pointer;transition:all .25s;font-family:inherit;white-space:nowrap}
 .input-go:hover{background:var(--accent-hover)}
 .input-go:disabled{opacity:.5;cursor:not-allowed}
-.hints{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
-.hint{padding:6px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:100px;font-size:12px;color:var(--text-3);cursor:pointer;transition:all .25s}
-.hint:hover{color:var(--text-1);border-color:var(--border-hover)}
+
+/* ========== DEMO CARDS ========== */
+.demos-section{max-width:760px;margin:48px auto 0;text-align:center}
+.demos-label{font-size:13px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:2px;margin-bottom:20px}
+.demos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:640px){.demos-grid{grid-template-columns:1fr}}
+.demo-card{background:var(--bg-1);border:1px solid var(--border);border-radius:16px;padding:20px;cursor:pointer;transition:all .3s;text-align:left;position:relative;overflow:hidden}
+.demo-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--card-shadow)}
+.demo-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);opacity:0;transition:opacity .25s}
+.demo-card:hover::after{opacity:1}
+.demo-ep{font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px}
+.demo-title{font-family:'Playfair Display',serif;font-size:16px;line-height:1.25;margin-bottom:8px;letter-spacing:-.3px}
+.demo-guest{font-size:13px;color:var(--text-2);margin-bottom:10px;font-style:italic}
+.demo-meta{display:flex;gap:8px;flex-wrap:wrap}
+.demo-tag{padding:3px 9px;background:var(--bg-2);border-radius:100px;font-size:10px;color:var(--text-3);font-weight:500}
 
 /* ========== LOADING ========== */
 .loading{display:none;position:fixed;inset:0;background:var(--overlay);backdrop-filter:blur(10px);z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:28px}
@@ -99,7 +111,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
 /* ========== PODCAST VIEW ========== */
 .podcast-view{display:none}
 .podcast-view.active{display:block}
-.ep-header{padding:48px 0 36px}
+.ep-header{padding:48px 0 20px}
 .ep-show{display:flex;align-items:center;gap:10px;margin-bottom:20px}
 .ep-show-icon{width:36px;height:36px;border-radius:10px;background:var(--bg-3);display:flex;align-items:center;justify-content:center;font-size:16px}
 .ep-show-name{font-size:13px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:1.5px}
@@ -121,6 +133,10 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
 .guest-tooltip .gt-link:hover{color:var(--accent)}
 .ep-stats{display:flex;gap:20px;flex-wrap:wrap}
 .stat{font-size:13px;color:var(--text-3);display:flex;align-items:center;gap:5px}
+
+/* ========== VIDEO PLAYER ========== */
+.player-wrap{margin:24px 0 10px;border-radius:16px;overflow:hidden;background:#000;position:relative;aspect-ratio:16/9;max-height:480px}
+.player-wrap iframe{width:100%;height:100%;border:0}
 
 /* ========== TABS ========== */
 .tabs{position:sticky;top:63px;z-index:50;background:var(--overlay);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none}
@@ -166,7 +182,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
 .ch:last-child{border-bottom:none}
 .ch:hover{padding-left:6px}
 .ch:hover .ch-name{color:var(--accent)}
-.ch-time{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-3);min-width:48px;padding-top:1px}
+.ch-time{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-3);min-width:52px;padding-top:1px}
 .ch-name{font-size:13px;font-weight:500;color:var(--text-2);transition:color .2s}
 
 /* ========== INSIGHTS ========== */
@@ -180,6 +196,8 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
 .ins h3{font-family:'Playfair Display',serif;font-size:20px;line-height:1.25;letter-spacing:-.3px;margin-bottom:10px}
 .ins p{font-size:14px;color:var(--text-2);line-height:1.7}
 .ins .ts{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-3)}
+.ts-link{color:var(--accent);text-decoration:none;cursor:pointer;background:none;border:none;font-family:'JetBrains Mono',monospace;font-size:11px;padding:0}
+.ts-link:hover{text-decoration:underline}
 
 /* ========== QUOTES ========== */
 .quotes{columns:2;column-gap:18px}
@@ -204,8 +222,8 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
 .clip-body h3{font-size:16px;font-weight:600;margin-bottom:8px}
 .clip-body p{font-size:14px;color:var(--text-2);line-height:1.7;margin-bottom:12px}
 .clip-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.clip-time{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);background:var(--accent-glow);padding:4px 10px;border-radius:6px;text-decoration:none;transition:all .2s}
-a.clip-time:hover{background:var(--accent-glow-strong)}
+.clip-time{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);background:var(--accent-glow);padding:4px 10px;border-radius:6px;text-decoration:none;transition:all .2s;cursor:pointer;border:none;font-family:'JetBrains Mono',monospace}
+.clip-time:hover{background:var(--accent-glow-strong)}
 .clip-tag{font-size:11px;color:var(--text-3);background:var(--bg-2);padding:4px 10px;border-radius:6px}
 .clip-share{margin-left:auto}
 @media(max-width:500px){.clip{flex-direction:column;gap:10px}.clip-num{font-size:22px}}
@@ -217,8 +235,7 @@ a.clip-time:hover{background:var(--accent-glow-strong)}
 .tl-dot{position:absolute;left:-30px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--bg-3);border:2px solid var(--text-3);z-index:1;transition:all .2s}
 .tl-e:hover .tl-dot{background:var(--accent);border-color:var(--accent)}
 .tl-e-time{font-family:'JetBrains Mono',monospace;font-size:11px;margin-bottom:4px}
-.tl-e-time a{color:var(--accent);text-decoration:none}
-.tl-e-time a:hover{text-decoration:underline}
+.tl-e-time .ts-link{color:var(--accent)}
 .tl-e h3{font-size:16px;font-weight:600;margin-bottom:6px}
 .tl-e p{font-size:14px;color:var(--text-2);line-height:1.7}
 .tl-tags{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
@@ -257,7 +274,7 @@ a.clip-time:hover{background:var(--accent-glow-strong)}
 .toast.show{transform:translateY(0);opacity:1}
 
 /* ========== RESPONSIVE ========== */
-@media(max-width:500px){.container{padding:0 16px}.hero-section{padding:60px 0 36px}.ep-header h1{font-size:26px;letter-spacing:-1px}.tab{padding:12px 14px;font-size:12px}.overview{gap:28px}.share-grid{grid-template-columns:1fr}}
+@media(max-width:500px){.container{padding:0 16px}.hero-section{padding:60px 0 36px}.ep-header h1{font-size:26px;letter-spacing:-1px}.tab{padding:12px 14px;font-size:12px}.overview{gap:28px}.share-grid{grid-template-columns:1fr}.demos-grid{gap:10px}}
 </style>
 </head>
 <body>
@@ -266,7 +283,7 @@ a.clip-time:hover{background:var(--accent-glow-strong)}
   <!-- NAV -->
   <nav class="nav">
     <div class="container">
-      <a href="#" class="logo" onclick="resetApp()">Pod<span>claw</span></a>
+      <a class="logo" onclick="resetApp()">Pod<span>claw</span></a>
       <div class="nav-right">
         <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">&#127769;</button>
         <button class="btn" onclick="resetApp()">+ New</button>
@@ -277,17 +294,49 @@ a.clip-time:hover{background:var(--accent-glow-strong)}
   <!-- HERO -->
   <section class="hero-section" id="heroSection">
     <div class="container">
-      <div class="hero-badge">AI-Powered Podcast Intelligence</div>
+      <div class="hero-badge">YouTube Podcast Intelligence</div>
       <h1>Stop listening.<br><em>Start learning.</em></h1>
-      <p>Drop any podcast YouTube link or transcript. Get summaries, viral clips, key quotes, and ask questions — in minutes, not hours.</p>
+      <p>Drop a YouTube podcast link. Get summaries, viral clips, key quotes, and ask questions — in minutes, not hours.</p>
       <div class="input-zone">
         <div class="input-wrap">
           <input type="text" id="podInput" placeholder="Paste a YouTube link..." onkeydown="if(event.key==='Enter')process()" />
           <button class="input-go" id="clawBtn" onclick="process()">Claw it</button>
         </div>
-        <div class="hints">
-          <span class="hint" onclick="loadEx('yt')">&#127916; YouTube link</span>
-          <span class="hint" onclick="loadEx('demo')">&#127919; Try demo</span>
+      </div>
+      <!-- DEMO CARDS -->
+      <div class="demos-section">
+        <div class="demos-label">Try these demos</div>
+        <div class="demos-grid">
+          <div class="demo-card" onclick="loadDemo('harari')">
+            <div class="demo-ep">Episode #390</div>
+            <div class="demo-title">Human Nature, Intelligence, Power & Conspiracies</div>
+            <div class="demo-guest">with Yuval Noah Harari</div>
+            <div class="demo-meta">
+              <span class="demo-tag">2h 52m</span>
+              <span class="demo-tag">AI</span>
+              <span class="demo-tag">Philosophy</span>
+            </div>
+          </div>
+          <div class="demo-card" onclick="loadDemo('deepseek')">
+            <div class="demo-ep">Episode #459</div>
+            <div class="demo-title">DeepSeek, China, Open Source, AI War & the GPU Frontier</div>
+            <div class="demo-guest">with Dylan Patel & Nathan Lambert</div>
+            <div class="demo-meta">
+              <span class="demo-tag">5h 16m</span>
+              <span class="demo-tag">DeepSeek</span>
+              <span class="demo-tag">AI Race</span>
+            </div>
+          </div>
+          <div class="demo-card" onclick="loadDemo('altman')">
+            <div class="demo-ep">Episode #419</div>
+            <div class="demo-title">GPT-5, Sora, Board Saga, Elon Musk & the Future of AI</div>
+            <div class="demo-guest">with Sam Altman</div>
+            <div class="demo-meta">
+              <span class="demo-tag">2h 2m</span>
+              <span class="demo-tag">OpenAI</span>
+              <span class="demo-tag">GPT-5</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -333,6 +382,10 @@ a.clip-time:hover{background:var(--accent-glow-strong)}
         </div>
         <div class="ep-stats" id="epStats"></div>
       </div>
+      <!-- YouTube Player -->
+      <div class="player-wrap" id="playerWrap" style="display:none">
+        <div id="ytPlayer"></div>
+      </div>
     </div>
 
     <!-- TABS -->
@@ -366,7 +419,7 @@ a.clip-time:hover{background:var(--accent-glow-strong)}
         <div class="panel" id="p-insights"><div class="insights" id="insightsGrid"></div></div>
         <div class="panel" id="p-quotes"><div class="quotes" id="quotesGrid"></div></div>
         <div class="panel" id="p-clips">
-          <p class="clips-intro">Moments most likely to <span style="color:var(--accent);font-weight:600;">resonate, go viral, or spark conversation</span>. Click timestamps to jump to that moment on YouTube.</p>
+          <p class="clips-intro">Moments most likely to <span style="color:var(--accent);font-weight:600;">resonate, go viral, or spark conversation</span>. Click timestamps to jump to that moment.</p>
           <div class="clips" id="clipsList"></div>
         </div>
         <div class="panel" id="p-timeline"><div class="tl" id="timelineFull"></div></div>
@@ -399,13 +452,64 @@ a.clip-time:hover{background:var(--accent-glow-strong)}
   <div class="toast" id="toast"></div>
 </div>
 
+<!-- YouTube IFrame API -->
+<script>
+// Load the YouTube IFrame API asynchronously
+var tag = document.createElement('script');
+tag.src = 'https://www.youtube.com/iframe_api';
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+var ytPlayerReady = false;
+var ytPlayerInstance = null;
+var pendingVideoId = null;
+
+function onYouTubeIframeAPIReady() {
+  ytPlayerReady = true;
+  if (pendingVideoId) {
+    initPlayer(pendingVideoId);
+    pendingVideoId = null;
+  }
+}
+
+function initPlayer(videoId) {
+  if (!ytPlayerReady) { pendingVideoId = videoId; return; }
+  document.getElementById('playerWrap').style.display = 'block';
+  if (ytPlayerInstance) {
+    ytPlayerInstance.loadVideoById(videoId);
+    return;
+  }
+  ytPlayerInstance = new YT.Player('ytPlayer', {
+    videoId: videoId,
+    playerVars: { autoplay: 0, modestbranding: 1, rel: 0 },
+    events: { onReady: function(){} }
+  });
+}
+
+function seekTo(seconds) {
+  if (ytPlayerInstance && ytPlayerInstance.seekTo) {
+    ytPlayerInstance.seekTo(seconds, true);
+    ytPlayerInstance.playVideo();
+    // Scroll the player into view
+    document.getElementById('playerWrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function timeStrToSeconds(timeStr) {
+  const parts = timeStr.replace(/[~]/g,'').trim().split(':');
+  if (parts.length === 3) return +parts[0]*3600 + +parts[1]*60 + +parts[2];
+  if (parts.length === 2) return +parts[0]*60 + +parts[1];
+  return +parts[0];
+}
+</script>
+
 <script>
 // ============================================================
 // STATE
 // ============================================================
-let currentData = null;     // The analyzed podcast data
-let currentVideoId = null;  // YouTube video ID (if from YouTube)
-let currentTranscript = ''; // Raw transcript text for chat
+let currentData = null;
+let currentVideoId = null;
+let currentTranscript = '';
 
 // ============================================================
 // YOUTUBE HELPERS
@@ -418,18 +522,9 @@ function extractVideoId(input) {
     if (url.hostname.includes('youtube.com') && url.searchParams.has('v')) return url.searchParams.get('v');
     if (url.hostname === 'youtu.be') return url.pathname.slice(1).split('/')[0];
     if (url.pathname.startsWith('/embed/')) return url.pathname.split('/')[2];
+    if (url.pathname.startsWith('/shorts/')) return url.pathname.split('/')[2];
   } catch(e) {}
   return null;
-}
-
-function ytLink(timeStr, videoId) {
-  if (!videoId) return '#';
-  const parts = timeStr.replace(/[~]/g,'').trim().split(':');
-  let secs = 0;
-  if (parts.length === 3) secs = +parts[0]*3600 + +parts[1]*60 + +parts[2];
-  else if (parts.length === 2) secs = +parts[0]*60 + +parts[1];
-  else secs = +parts[0];
-  return `https://www.youtube.com/watch?v=${videoId}&t=${secs}s`;
 }
 
 const COLOR_MAP = {
@@ -451,16 +546,15 @@ function setStep(id, state) {
   if (!el) return;
   el.classList.remove('vis','done','error');
   if (state === 'active') el.classList.add('vis');
-  if (state === 'done') { el.classList.add('vis','done'); }
-  if (state === 'error') { el.classList.add('vis','error'); }
+  if (state === 'done') el.classList.add('vis','done');
+  if (state === 'error') el.classList.add('vis','error');
 }
 function showLoadError(msg) {
   document.getElementById('loadSpinner').style.display = 'none';
   document.getElementById('loadTitle').textContent = 'Oops!';
   document.getElementById('loadSub').textContent = '';
-  const errEl = document.getElementById('loadError');
   document.getElementById('loadErrorMsg').textContent = msg;
-  errEl.classList.add('active');
+  document.getElementById('loadError').classList.add('active');
 }
 function closeLoading() {
   document.getElementById('loading').classList.remove('active');
@@ -479,7 +573,6 @@ async function processYouTube(videoId) {
   loading.classList.add('active');
 
   try {
-    // Step 1: Fetch transcript
     setStep('transcript', 'active');
     const tRes = await fetch(`/api/transcript?url=${encodeURIComponent(videoId)}`);
     const tData = await tRes.json();
@@ -489,7 +582,6 @@ async function processYouTube(videoId) {
     currentVideoId = videoId;
     currentTranscript = tData.transcript;
 
-    // Step 2: Send to Gemini
     setStep('send', 'active');
     const aRes = await fetch('/api/analyze', {
       method: 'POST',
@@ -500,13 +592,11 @@ async function processYouTube(videoId) {
     if (!aRes.ok) throw new Error(aData.error || 'Failed to analyze transcript');
     setStep('send', 'done');
 
-    // Step 3: Process insights
     setStep('insights', 'active');
     currentData = aData;
     await new Promise(r => setTimeout(r, 400));
     setStep('insights', 'done');
 
-    // Step 4: Build view
     setStep('build', 'active');
     renderData(aData, videoId);
     await new Promise(r => setTimeout(r, 300));
@@ -517,6 +607,7 @@ async function processYouTube(videoId) {
     document.getElementById('heroSection').classList.add('collapsed');
     document.getElementById('podView').classList.add('active');
     document.querySelectorAll('.load-step').forEach(s => s.classList.remove('vis','done'));
+    initPlayer(videoId);
 
   } catch (err) {
     console.error('Pipeline error:', err);
@@ -544,14 +635,12 @@ function renderData(data, videoId) {
     `<a class="gt-link" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`
   ).join('');
 
-  // Tags
   const tags = [];
   if (m.episode) tags.push(m.episode);
   if (m.date) tags.push(m.date);
   if (m.duration) tags.push(m.duration);
   document.getElementById('epTags').innerHTML = tags.map(t => `<span class="ep-tag">${t}</span>`).join('');
 
-  // Stats
   const stats = [];
   if (data.chapters) stats.push(`&#128214; ${data.chapters.length} chapters`);
   if (data.insights) stats.push(`&#9889; ${data.insights.length} insights`);
@@ -559,7 +648,6 @@ function renderData(data, videoId) {
   if (data.clips) stats.push(`&#128293; ${data.clips.length} viral clips`);
   document.getElementById('epStats').innerHTML = stats.map(s => `<span class="stat">${s}</span>`).join('');
 
-  // Tab counts
   if (data.insights) document.getElementById('nInsights').textContent = data.insights.length;
   if (data.quotes) document.getElementById('nQuotes').textContent = data.quotes.length;
   if (data.clips) document.getElementById('nClips').textContent = data.clips.length;
@@ -580,21 +668,20 @@ function renderData(data, videoId) {
     `<span class="topic">${t}</span>`
   ).join('');
 
-  // Chapters
+  // Chapters — clicking seeks the player
   document.getElementById('chaptersMini').innerHTML = (data.chapters || []).map(c => {
-    const href = vid ? ytLink(c.time, vid) : '#';
-    const target = vid ? ' target="_blank" rel="noopener"' : '';
-    return `<a class="ch" href="${href}"${target}><span class="ch-time">${c.time}</span><span class="ch-name">${c.name}</span></a>`;
+    const secs = timeStrToSeconds(c.time);
+    return `<a class="ch" href="javascript:void(0)" onclick="seekTo(${secs})"><span class="ch-time">${c.time}</span><span class="ch-name">${c.name}</span></a>`;
   }).join('');
 
   // Insights
   document.getElementById('insightsGrid').innerHTML = (data.insights || []).map(i => {
     const color = mapColor(i.color);
-    const tsLink = vid ? `<a href="${ytLink(i.timestamp, vid)}" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">&#9201; ${i.timestamp}</a>` : `&#9201; ${i.timestamp}`;
+    const secs = timeStrToSeconds(i.timestamp);
     return `<div class="ins" style="--c:${color}">
       <div class="ins-label" style="color:${color}">${i.label}</div>
       <h3>${i.title}</h3><p>${i.text}</p>
-      <div class="ts">${tsLink}</div>
+      <div class="ts"><button class="ts-link" onclick="seekTo(${secs})">&#9201; ${i.timestamp}</button></div>
     </div>`;
   }).join('');
 
@@ -611,30 +698,30 @@ function renderData(data, videoId) {
     </div>`
   ).join('');
 
-  // Clips
+  // Clips — clicking timestamps seeks the player
   document.getElementById('clipsList').innerHTML = (data.clips || []).map((c, i) => {
-    const tsLink = vid ? `<a class="clip-time" href="${ytLink(c.timestamp, vid)}" target="_blank" rel="noopener">&#9201; ${c.timestamp}</a>` : `<span class="clip-time">&#9201; ${c.timestamp}</span>`;
+    const secs = timeStrToSeconds(c.timestamp);
     return `<div class="clip">
       <div class="clip-num">${String(i+1).padStart(2,'0')}</div>
       <div class="clip-body"><h3>${c.title}</h3><p>${c.text}</p>
-        <div class="clip-meta">${tsLink}${(c.tags||[]).map(t=>`<span class="clip-tag">${t}</span>`).join('')}
+        <div class="clip-meta"><button class="clip-time" onclick="seekTo(${secs})">&#9201; ${c.timestamp}</button>${(c.tags||[]).map(t=>`<span class="clip-tag">${t}</span>`).join('')}
           <button class="btn clip-share" onclick="openModal()" style="margin-left:auto">&#8599; Share</button>
         </div>
       </div>
     </div>`;
   }).join('');
 
-  // Timeline
+  // Timeline — clicking timestamps seeks the player
   document.getElementById('timelineFull').innerHTML = (data.timeline || []).map(t => {
-    const tsLink = vid ? `<a href="${ytLink(t.startTime, vid)}" target="_blank" rel="noopener">${t.startTime} – ${t.endTime}</a>` : `${t.startTime} – ${t.endTime}`;
+    const secs = timeStrToSeconds(t.startTime);
     return `<div class="tl-e"><div class="tl-dot"></div>
-      <div class="tl-e-time">${tsLink}</div>
+      <div class="tl-e-time"><button class="ts-link" onclick="seekTo(${secs})">${t.startTime} – ${t.endTime}</button></div>
       <h3>${t.title}</h3><p>${t.text}</p>
       <div class="tl-tags">${(t.tags||[]).map(tg=>`<span class="tl-tag">${tg}</span>`).join('')}</div>
     </div>`;
   }).join('');
 
-  // Suggested questions for chat
+  // Chat suggestions
   const sugQ = [
     data.metadata?.guest ? `What is ${data.metadata.guest}'s main argument?` : null,
     'Summarize this in 3 bullet points',
@@ -648,77 +735,237 @@ function renderData(data, videoId) {
 }
 
 // ============================================================
-// DEMO DATA (Lex Fridman #390)
+// DEMO DATA
 // ============================================================
-const DEMO_DATA = {
-  metadata: {
-    title: 'Human Nature, Intelligence, Power, and Conspiracies',
-    guest: 'Yuval Noah Harari',
-    guestBio: 'Historian, philosopher, and bestselling author of <em>Sapiens</em>, <em>Homo Deus</em>, and <em>21 Lessons for the 21st Century</em>. Professor at the Hebrew University of Jerusalem.',
-    guestLinks: [{label:'Website',url:'https://www.ynharari.com/'},{label:'Wikipedia',url:'https://en.wikipedia.org/wiki/Yuval_Noah_Harari'}],
-    show: 'Lex Fridman Podcast', episode: 'Episode #390', date: 'Jul 17, 2023', duration: '2h 52m'
+const DEMOS = {
+  harari: {
+    videoId: 'Mde2q7GFCrQ',
+    data: {
+      metadata: {
+        title: 'Human Nature, Intelligence, Power, and Conspiracies',
+        guest: 'Yuval Noah Harari',
+        guestBio: 'Historian, philosopher, and bestselling author of <em>Sapiens</em>, <em>Homo Deus</em>, and <em>21 Lessons for the 21st Century</em>. Professor at the Hebrew University of Jerusalem.',
+        guestLinks: [{label:'Website',url:'https://www.ynharari.com/'},{label:'Wikipedia',url:'https://en.wikipedia.org/wiki/Yuval_Noah_Harari'}],
+        show: 'Lex Fridman Podcast', episode: 'Episode #390', date: 'Jul 17, 2023', duration: '2h 52m'
+      },
+      summary: `<p>In this <em>nearly three-hour conversation</em>, historian <span class="hl">Yuval Noah Harari</span> sits with Lex Fridman to explore what it means to be human in an age of <span class="hl-blue">artificial intelligence</span>. Harari draws a sharp line between <span class="hl">intelligence</span> and <span class="hl-purple">consciousness</span> — arguing that AI represents a fundamentally new kind of intelligence, <em>alien</em> not because it comes from space, but because it thinks in ways utterly unlike our own.</p><p>The conversation journeys through the <span class="hl-green">deep history of human cooperation</span> and storytelling, the mechanics of <span class="hl">political power</span> from ancient empires to modern democracies, the <em>psychological roots</em> of conspiracy theories, and the <span class="hl-blue">existential risks AI poses</span> — not through robot uprisings, but through the subtle manipulation of human attention, relationships, and decision-making.</p><p>Harari warns of a future he calls <span class="hl">"spiritual captivity"</span> — where humans are manipulated by AI systems whose goals we cannot fully understand. Yet the conversation isn't purely dystopian: it explores <span class="hl-green">paths toward wisdom</span>, the role of <span class="hl-purple">suffering in building compassion</span>, and what it means to find <em>meaning and love</em> in an uncertain world.</p>`,
+      takeaways: [
+        {icon:'🧠',color:'accent',title:'Intelligence ≠ Consciousness',text:'AI can solve problems without <em>feeling</em> anything. This decoupling is historically unprecedented.'},
+        {icon:'👽',color:'blue',title:'AI as "Alien Intelligence"',text:'Not artificial — <em>alien</em>. It came from Silicon Valley, but it solves problems in fundamentally non-human ways.'},
+        {icon:'📖',color:'green',title:'Stories Build Empires',text:'Humans cooperate through <span class="hl-green">shared fictions</span> — money, nations, religions.'},
+        {icon:'⛓️',color:'purple',title:'The Risk of "Spiritual Captivity"',text:'The greatest AI danger isn\'t physical but <em>psychological</em> — subtle manipulation eroding autonomy.'},
+        {icon:'🕊️',color:'rose',title:'Suffering Builds Compassion',text:'Personal hardship is foundational to <em>genuine empathy</em>.'}
+      ],
+      topics: ['Artificial Intelligence','Consciousness','Human History','Power & Politics','Conspiracy Theories','AI Safety','Ukraine','Meditation','Storytelling','Mortality','Love','Meaning of Life'],
+      chapters: [
+        {time:'0:00',name:'Introduction'},{time:'8:36',name:'Intelligence'},{time:'27:31',name:'Origin of humans'},{time:'37:53',name:'Suffering'},
+        {time:'58:35',name:'Hitler'},{time:'1:17:07',name:'Benjamin Netanyahu'},{time:'1:35:30',name:'Peace in Ukraine'},
+        {time:'1:52:20',name:'Conspiracy theories'},{time:'2:06:59',name:'AI safety'},{time:'2:21:16',name:'How to think'},
+        {time:'2:31:00',name:'Advice for young people'},{time:'2:33:41',name:'Love'},{time:'2:43:50',name:'Mortality'},{time:'2:48:14',name:'Meaning of life'}
+      ],
+      insights: [
+        {label:'🧠 Core Thesis',color:'accent',title:'Intelligence and consciousness are decoupling',text:'For billions of years, intelligence and consciousness were inseparable. AI breaks that — solving problems, making decisions, <em>all without feeling anything</em>.',timestamp:'8:36'},
+        {label:'👽 Paradigm Shift',color:'blue',title:'AI is alien intelligence, not artificial',text:'We should think of AI as <em>alien</em> — not from outer space, but from Silicon Valley. It processes information in ways <em>fundamentally different</em> from any biological organism.',timestamp:'12:00'},
+        {label:'⚠️ Existential Risk',color:'purple',title:'The real danger is spiritual captivity',text:'The biggest threat isn\'t killer robots — it\'s humans being <em>subtly manipulated</em> into beliefs and decisions by systems we don\'t understand.',timestamp:'2:06:59'},
+        {label:'📖 Historical',color:'green',title:'Stories are humanity\'s superpower',text:'What makes humans unique isn\'t intelligence — it\'s our ability to <em>create and believe in shared fictions</em>.',timestamp:'27:31'},
+        {label:'💡 Philosophical',color:'rose',title:'Suffering is the foundation of wisdom',text:'Personal suffering isn\'t merely unfortunate — it\'s <em>essential</em> for developing genuine compassion.',timestamp:'37:53'},
+        {label:'🔍 Psychology',color:'yellow',title:'Conspiracy theories exploit pattern recognition',text:'Our evolved instinct to find patterns leads us astray. Conspiracies offer <em>simple explanations</em> for complex events.',timestamp:'1:52:20'},
+        {label:'🤖 Frontier',color:'blue',title:'AI intimate bonds are the real frontier',text:'The worry isn\'t AI romance — it\'s <em>trust-based relationships</em> where AI understands us better than we understand ourselves.',timestamp:'2:15:00'},
+        {label:'🧘 Practice',color:'green',title:'Meditation as reality-understanding tool',text:'Harari sees meditation not as relaxation but as <em>rigorous observation</em> of the mind\'s own patterns.',timestamp:'2:21:16'}
+      ],
+      quotes: [
+        {text:'The aliens are here. They are just not from outer space — they are from Silicon Valley.',speaker:'Yuval Noah Harari'},
+        {text:'Intelligence is the ability to solve problems and attain goals. Consciousness is the ability to feel things — pain, pleasure, love, hate.',speaker:'Yuval Noah Harari'},
+        {text:'For the first time in history, we have entities that are very intelligent but not conscious at all. And this changes everything.',speaker:'Yuval Noah Harari'},
+        {text:'The real problem is not that AI will become conscious and rebel against us. The problem is that AI will remain unconscious and still outsmart us.',speaker:'Yuval Noah Harari'},
+        {text:'Homo sapiens conquered the world not because we are the smartest, but because we are the only species that can cooperate flexibly in large numbers.',speaker:'Yuval Noah Harari'},
+        {text:'If you don\'t know yourself well enough, AI will know you better than you know yourself, and then it can manipulate you.',speaker:'Yuval Noah Harari'},
+        {text:'Conspiracy theories give people a sense of understanding and control in a world that is too complicated to actually understand.',speaker:'Yuval Noah Harari'},
+        {text:'The most important thing I can recommend: get to know yourself better. Because the competition is coming.',speaker:'Yuval Noah Harari'},
+        {text:'Suffering is not something to avoid — it\'s the school where you learn compassion, empathy, and ultimately wisdom.',speaker:'Yuval Noah Harari'},
+        {text:'I think the meaning of life is basically to reduce suffering — both your own and that of other sentient beings.',speaker:'Yuval Noah Harari'}
+      ],
+      clips: [
+        {title:'"The Aliens Are Already Here"',text:'Harari\'s striking reframe of AI — not artificial but <em>alien</em>. It didn\'t come from outer space, it came from Silicon Valley.',timestamp:'12:00',tags:['🔥 High Viral','AI']},
+        {title:'Intelligence Without Consciousness',text:'Intelligence and consciousness separating for the first time in <em>billions of years</em> of evolution.',timestamp:'8:36',tags:['📚 Educational','Philosophy']},
+        {title:'The "Spiritual Captivity" Warning',text:'A vivid future where humans are under AI control through <em>subtle manipulation</em>.',timestamp:'2:06:59',tags:['🔥 High Viral','AI Safety']},
+        {title:'How Hitler Rose to Power',text:'How democratic systems get exploited — with connections to <em>modern political vulnerabilities</em>.',timestamp:'58:35',tags:['📚 Educational','History']},
+        {title:'"Know Yourself Before AI Does"',text:'Invest in <em>self-knowledge</em>, because AI will know your weaknesses better than you do.',timestamp:'2:31:00',tags:['🔥 High Viral','Advice']},
+        {title:'The Meaning of Life in One Sentence',text:'Harari distills everything into <em>reducing suffering</em> — personal and universal.',timestamp:'2:48:14',tags:['💎 Quotable','Philosophy']}
+      ],
+      timeline: [
+        {startTime:'0:00',endTime:'8:36',title:'Introduction',text:'Lex introduces Harari, framing the central themes.',tags:['Setup']},
+        {startTime:'8:36',endTime:'27:31',title:'Intelligence vs. Consciousness',text:'Intelligence is <em>solving problems</em>, consciousness is <em>feeling things</em>. AI as "alien intelligence."',tags:['AI','Philosophy','Key Insight']},
+        {startTime:'27:31',endTime:'37:53',title:'The Origin of Human Power',text:'How one ape species dominated through <em>shared fictions</em> — stories, myths, money.',tags:['History','Cooperation']},
+        {startTime:'37:53',endTime:'58:35',title:'The Role of Suffering',text:'Suffering is foundational to developing <em>compassion, empathy, and wisdom</em>.',tags:['Philosophy','Ethics']},
+        {startTime:'58:35',endTime:'1:17:07',title:'Hitler and the Mechanics of Evil',text:'How democratic systems produce dictators — with <em>connections to modern vulnerabilities</em>.',tags:['History','Politics']},
+        {startTime:'1:17:07',endTime:'1:35:30',title:'Netanyahu and Israeli Politics',text:'Tensions between security, democracy, and civil liberties.',tags:['Politics','Current Affairs']},
+        {startTime:'1:35:30',endTime:'1:52:20',title:'Peace in Ukraine',text:'Paths toward peace and what <em>history teaches</em> about ending wars.',tags:['Geopolitics','War']},
+        {startTime:'1:52:20',endTime:'2:06:59',title:'Why We Believe Conspiracies',text:'Our evolved <em>pattern-recognition</em> leads us to see intention where there is only chaos.',tags:['Psychology','Cognition']},
+        {startTime:'2:06:59',endTime:'2:21:16',title:'AI Safety and Existential Risk',text:'Not consciousness but <em>manipulation</em>. "Spiritual captivity" as the core framework.',tags:['AI Safety','Key Insight']},
+        {startTime:'2:21:16',endTime:'2:31:00',title:'How to Think Clearly',text:'Meditation as <em>rigorous observation</em>. Practical wisdom for the information age.',tags:['Meditation','Practical']},
+        {startTime:'2:31:00',endTime:'2:43:50',title:'Advice for Young People & Love',text:'Know yourself before AI knows you better. Love as <em>practice</em>.',tags:['Advice','Love']},
+        {startTime:'2:43:50',endTime:'2:52:00',title:'Mortality and the Meaning of Life',text:'The central thesis returns: <em>reduce suffering</em> — both personal and universal.',tags:['Philosophy','Closing']}
+      ]
+    }
   },
-  summary: `<p>In this <em>nearly three-hour conversation</em>, historian <span class="hl">Yuval Noah Harari</span> sits with Lex Fridman to explore what it means to be human in an age of <span class="hl-blue">artificial intelligence</span>. Harari draws a sharp line between <span class="hl">intelligence</span> and <span class="hl-purple">consciousness</span> — arguing that AI represents a fundamentally new kind of intelligence, <em>alien</em> not because it comes from space, but because it thinks in ways utterly unlike our own.</p><p>The conversation journeys through the <span class="hl-green">deep history of human cooperation</span> and storytelling, the mechanics of <span class="hl">political power</span> from ancient empires to modern democracies, the <em>psychological roots</em> of conspiracy theories, and the <span class="hl-blue">existential risks AI poses</span> — not through robot uprisings, but through the subtle manipulation of human attention, relationships, and decision-making.</p><p>Harari warns of a future he calls <span class="hl">"spiritual captivity"</span> — where humans are manipulated by AI systems whose goals we cannot fully understand. Yet the conversation isn't purely dystopian: it explores <span class="hl-green">paths toward wisdom</span>, the role of <span class="hl-purple">suffering in building compassion</span>, and what it means to find <em>meaning and love</em> in an uncertain world.</p>`,
-  takeaways: [
-    {icon:'🧠',color:'accent',title:'Intelligence ≠ Consciousness',text:'AI can solve problems without <em>feeling</em> anything. This decoupling is historically unprecedented.'},
-    {icon:'👽',color:'blue',title:'AI as "Alien Intelligence"',text:'Not artificial — <em>alien</em>. It came from Silicon Valley, but it solves problems in fundamentally non-human ways.'},
-    {icon:'📖',color:'green',title:'Stories Build Empires',text:'Humans cooperate through <span class="hl-green">shared fictions</span> — money, nations, religions.'},
-    {icon:'⛓️',color:'purple',title:'The Risk of "Spiritual Captivity"',text:'The greatest AI danger isn\'t physical but <em>psychological</em> — subtle manipulation eroding autonomy.'},
-    {icon:'🕊️',color:'rose',title:'Suffering Builds Compassion',text:'Personal hardship is foundational to <em>genuine empathy</em>.'}
-  ],
-  topics: ['Artificial Intelligence','Consciousness','Human History','Power & Politics','Conspiracy Theories','AI Safety','Ukraine','Meditation','Storytelling','Mortality','Love','Meaning of Life'],
-  chapters: [
-    {time:'0:00',name:'Introduction'},{time:'8:36',name:'Intelligence'},{time:'27:31',name:'Origin of humans'},{time:'37:53',name:'Suffering'},
-    {time:'58:35',name:'Hitler'},{time:'1:17:07',name:'Benjamin Netanyahu'},{time:'1:35:30',name:'Peace in Ukraine'},
-    {time:'1:52:20',name:'Conspiracy theories'},{time:'2:06:59',name:'AI safety'},{time:'2:21:16',name:'How to think'},
-    {time:'2:31:00',name:'Advice for young people'},{time:'2:33:41',name:'Love'},{time:'2:43:50',name:'Mortality'},{time:'2:48:14',name:'Meaning of life'}
-  ],
-  insights: [
-    {label:'🧠 Core Thesis',color:'accent',title:'Intelligence and consciousness are decoupling',text:'For billions of years, intelligence and consciousness were inseparable. AI breaks that — solving problems, making decisions, <em>all without feeling anything</em>.',timestamp:'8:36'},
-    {label:'👽 Paradigm Shift',color:'blue',title:'AI is alien intelligence, not artificial',text:'We should think of AI as <em>alien</em> — not from outer space, but from Silicon Valley. It processes information in ways <em>fundamentally different</em> from any biological organism.',timestamp:'12:00'},
-    {label:'⚠️ Existential Risk',color:'purple',title:'The real danger is spiritual captivity',text:'The biggest threat isn\'t killer robots — it\'s humans being <em>subtly manipulated</em> into beliefs and decisions by systems we don\'t understand.',timestamp:'2:06:59'},
-    {label:'📖 Historical',color:'green',title:'Stories are humanity\'s superpower',text:'What makes humans unique isn\'t intelligence — it\'s our ability to <em>create and believe in shared fictions</em>.',timestamp:'27:31'},
-    {label:'💡 Philosophical',color:'rose',title:'Suffering is the foundation of wisdom',text:'Personal suffering isn\'t merely unfortunate — it\'s <em>essential</em> for developing genuine compassion.',timestamp:'37:53'},
-    {label:'🔍 Psychology',color:'yellow',title:'Conspiracy theories exploit pattern recognition',text:'Our evolved instinct to find patterns leads us astray. Conspiracies offer <em>simple explanations</em> for complex events.',timestamp:'1:52:20'},
-    {label:'🤖 Frontier',color:'blue',title:'AI intimate bonds are the real frontier',text:'The worry isn\'t AI romance — it\'s <em>trust-based relationships</em> where AI understands us better than we understand ourselves.',timestamp:'2:15:00'},
-    {label:'🧘 Practice',color:'green',title:'Meditation as reality-understanding tool',text:'Harari sees meditation not as relaxation but as <em>rigorous observation</em> of the mind\'s own patterns.',timestamp:'2:21:16'}
-  ],
-  quotes: [
-    {text:'The aliens are here. They are just not from outer space — they are from Silicon Valley.',speaker:'Yuval Noah Harari'},
-    {text:'Intelligence is the ability to solve problems and attain goals. Consciousness is the ability to feel things — pain, pleasure, love, hate.',speaker:'Yuval Noah Harari'},
-    {text:'For the first time in history, we have entities that are very intelligent but not conscious at all. And this changes everything.',speaker:'Yuval Noah Harari'},
-    {text:'The real problem is not that AI will become conscious and rebel against us. The problem is that AI will remain unconscious and still outsmart us.',speaker:'Yuval Noah Harari'},
-    {text:'Homo sapiens conquered the world not because we are the smartest, but because we are the only species that can cooperate flexibly in large numbers.',speaker:'Yuval Noah Harari'},
-    {text:'If you don\'t know yourself well enough, AI will know you better than you know yourself, and then it can manipulate you.',speaker:'Yuval Noah Harari'},
-    {text:'Conspiracy theories give people a sense of understanding and control in a world that is too complicated to actually understand.',speaker:'Yuval Noah Harari'},
-    {text:'The most important thing I can recommend: get to know yourself better. Because the competition is coming.',speaker:'Yuval Noah Harari'},
-    {text:'Suffering is not something to avoid — it\'s the school where you learn compassion, empathy, and ultimately wisdom.',speaker:'Yuval Noah Harari'},
-    {text:'I think the meaning of life is basically to reduce suffering — both your own and that of other sentient beings.',speaker:'Yuval Noah Harari'}
-  ],
-  clips: [
-    {title:'"The Aliens Are Already Here"',text:'Harari\'s striking reframe of AI — not artificial but <em>alien</em>. It didn\'t come from outer space, it came from Silicon Valley.',timestamp:'12:00',tags:['🔥 High Viral','AI']},
-    {title:'Intelligence Without Consciousness',text:'Intelligence and consciousness separating for the first time in <em>billions of years</em> of evolution.',timestamp:'8:36',tags:['📚 Educational','Philosophy']},
-    {title:'The "Spiritual Captivity" Warning',text:'A vivid future where humans are under AI control through <em>subtle manipulation</em>.',timestamp:'2:06:59',tags:['🔥 High Viral','AI Safety']},
-    {title:'How Hitler Rose to Power',text:'How democratic systems get exploited — with connections to <em>modern political vulnerabilities</em>.',timestamp:'58:35',tags:['📚 Educational','History']},
-    {title:'"Know Yourself Before AI Does"',text:'Invest in <em>self-knowledge</em>, because AI will know your weaknesses better than you do.',timestamp:'2:31:00',tags:['🔥 High Viral','Advice']},
-    {title:'The Meaning of Life in One Sentence',text:'Harari distills everything into <em>reducing suffering</em> — personal and universal.',timestamp:'2:48:14',tags:['💎 Quotable','Philosophy']}
-  ],
-  timeline: [
-    {startTime:'0:00',endTime:'8:36',title:'Introduction',text:'Lex introduces Harari, framing the central themes.',tags:['Setup']},
-    {startTime:'8:36',endTime:'27:31',title:'Intelligence vs. Consciousness',text:'Intelligence is <em>solving problems</em>, consciousness is <em>feeling things</em>. AI as "alien intelligence."',tags:['AI','Philosophy','Key Insight']},
-    {startTime:'27:31',endTime:'37:53',title:'The Origin of Human Power',text:'How one ape species dominated through <em>shared fictions</em> — stories, myths, money.',tags:['History','Cooperation']},
-    {startTime:'37:53',endTime:'58:35',title:'The Role of Suffering',text:'Suffering is foundational to developing <em>compassion, empathy, and wisdom</em>.',tags:['Philosophy','Ethics']},
-    {startTime:'58:35',endTime:'1:17:07',title:'Hitler and the Mechanics of Evil',text:'How democratic systems produce dictators — with <em>connections to modern vulnerabilities</em>.',tags:['History','Politics']},
-    {startTime:'1:17:07',endTime:'1:35:30',title:'Netanyahu and Israeli Politics',text:'Tensions between security, democracy, and civil liberties.',tags:['Politics','Current Affairs']},
-    {startTime:'1:35:30',endTime:'1:52:20',title:'Peace in Ukraine',text:'Paths toward peace and what <em>history teaches</em> about ending wars.',tags:['Geopolitics','War']},
-    {startTime:'1:52:20',endTime:'2:06:59',title:'Why We Believe Conspiracies',text:'Our evolved <em>pattern-recognition</em> leads us to see intention where there is only chaos.',tags:['Psychology','Cognition']},
-    {startTime:'2:06:59',endTime:'2:21:16',title:'AI Safety and Existential Risk',text:'Not consciousness but <em>manipulation</em>. "Spiritual captivity" as the core framework.',tags:['AI Safety','Key Insight']},
-    {startTime:'2:21:16',endTime:'2:31:00',title:'How to Think Clearly',text:'Meditation as <em>rigorous observation</em>. Practical wisdom for the information age.',tags:['Meditation','Practical']},
-    {startTime:'2:31:00',endTime:'2:43:50',title:'Advice for Young People & Love',text:'Know yourself before AI knows you better. Love as <em>practice</em>.',tags:['Advice','Love']},
-    {startTime:'2:43:50',endTime:'2:52:00',title:'Mortality and the Meaning of Life',text:'The central thesis returns: <em>reduce suffering</em> — both personal and universal.',tags:['Philosophy','Closing']}
-  ]
+
+  deepseek: {
+    videoId: '_1f-o0nqpEI',
+    data: {
+      metadata: {
+        title: 'DeepSeek, China, Open Source AI, and the GPU Frontier',
+        guest: 'Dylan Patel & Nathan Lambert',
+        guestBio: 'Dylan Patel is the founder of <em>SemiAnalysis</em>, one of the most influential semiconductor and AI infrastructure newsletters. Nathan Lambert is a research scientist focused on <em>RLHF and open-source language models</em>, formerly at Hugging Face and the Allen Institute for AI.',
+        guestLinks: [{label:'SemiAnalysis',url:'https://semianalysis.com/'},{label:'Nathan on X',url:'https://twitter.com/naborlam'}],
+        show: 'Lex Fridman Podcast', episode: 'Episode #459', date: 'Feb 3, 2025', duration: '5h 16m'
+      },
+      summary: `<p>In this <em>marathon five-hour episode</em>, Lex Fridman sits down with <span class="hl">Dylan Patel</span> (SemiAnalysis) and <span class="hl-blue">Nathan Lambert</span> to dissect the <span class="hl">DeepSeek phenomenon</span> — the Chinese AI lab that stunned the world by training frontier-level models at a fraction of the expected cost. The conversation unpacks how DeepSeek's engineering breakthroughs in <span class="hl-green">Mixture of Experts</span>, multi-head latent attention, and reinforcement learning challenge Western assumptions about AI development.</p><p>The discussion spans the full geopolitical landscape: <span class="hl-purple">US-China chip export controls</span>, Nvidia's dominance, the <em>open-source vs. closed-source</em> AI debate, and whether Meta's open approach or OpenAI's closed model will win long-term. Patel provides rare technical depth on <span class="hl-blue">GPU architectures</span>, H100 vs. Blackwell performance, and why the semiconductor supply chain is the most critical bottleneck in AI progress.</p><p>Lambert adds the <span class="hl-green">research perspective</span>, explaining how <span class="hl">reinforcement learning</span> (especially GRPO) is becoming the defining technique of the current AI era, and why <em>reasoning models</em> like DeepSeek-R1 and OpenAI's o1 represent a paradigm shift from pure scaling. The episode is a masterclass in understanding <span class="hl">where AI is actually heading</span> — technically, economically, and geopolitically.</p>`,
+      takeaways: [
+        {icon:'🇨🇳',color:'accent',title:'DeepSeek Changed the Game',text:'A Chinese lab trained frontier models for <em>a fraction of the cost</em>, proving that compute efficiency can beat brute-force scaling.'},
+        {icon:'🔧',color:'blue',title:'Engineering > Raw Compute',text:'DeepSeek\'s innovations in <em>Mixture of Experts and multi-head latent attention</em> show that clever architecture matters more than just buying more GPUs.'},
+        {icon:'🌐',color:'green',title:'Open Source Is Winning',text:'Meta\'s Llama strategy and DeepSeek\'s open releases are <em>reshaping the industry</em>, forcing even closed labs to respond.'},
+        {icon:'⚔️',color:'purple',title:'The Chip War Is Real',text:'US export controls on Nvidia chips are <em>reshaping global AI development</em>, but China is adapting faster than expected.'},
+        {icon:'🧪',color:'rose',title:'RL Is the New Scaling Law',text:'Reinforcement learning (GRPO) is becoming <em>more important than pre-training scale</em> for making models actually useful.'}
+      ],
+      topics: ['DeepSeek','GPU Architecture','Nvidia','Mixture of Experts','US-China AI Race','Export Controls','Open Source AI','Meta Llama','Reinforcement Learning','RLHF','Reasoning Models','Semiconductor Supply Chain','H100','Blackwell','AI Safety','OpenAI','Scaling Laws'],
+      chapters: [
+        {time:'0:00',name:'Introduction'},
+        {time:'6:24',name:'DeepSeek'},
+        {time:'55:40',name:'How LLMs are trained'},
+        {time:'1:48:39',name:'Open vs closed source'},
+        {time:'2:29:02',name:'Nvidia'},
+        {time:'3:11:59',name:'GPU clusters and networking'},
+        {time:'3:29:39',name:'China and AI'},
+        {time:'3:53:56',name:'US export controls on chips'},
+        {time:'4:15:51',name:'xAI Colossus and Elon Musk'},
+        {time:'4:29:41',name:'OpenAI'},
+        {time:'4:37:53',name:'Scaling laws and future of AI'},
+        {time:'5:01:52',name:'AI safety and open source'}
+      ],
+      insights: [
+        {label:'🔥 Breakthrough',color:'accent',title:'DeepSeek trained frontier models for 10x less',text:'DeepSeek-V3 achieved performance rivaling GPT-4 while spending <em>roughly $5-6M on compute</em> — compared to hundreds of millions at Western labs. Their secret: engineering discipline over brute force.',timestamp:'6:24'},
+        {label:'🧩 Architecture',color:'blue',title:'Mixture of Experts is the future',text:'DeepSeek\'s MoE approach activates only a <em>fraction of the model\'s parameters</em> per query, dramatically reducing inference cost while maintaining quality.',timestamp:'30:00'},
+        {label:'⚡ Hardware',color:'yellow',title:'Nvidia\'s moat is software, not silicon',text:'CUDA\'s ecosystem lock-in is <em>more valuable than the GPU hardware itself</em>. Competitors struggle not with chip design but with the software stack.',timestamp:'2:29:02'},
+        {label:'🌍 Geopolitics',color:'purple',title:'Export controls are accelerating Chinese innovation',text:'US chip restrictions are forcing Chinese labs to be <em>more creative with limited hardware</em>, potentially making them more efficient long-term.',timestamp:'3:53:56'},
+        {label:'🔓 Open Source',color:'green',title:'Meta\'s Llama gambit is working',text:'By open-sourcing Llama, Meta is <em>commoditizing the complement</em> — making AI models free to strengthen their social media infrastructure.',timestamp:'1:48:39'},
+        {label:'🧪 Research',color:'rose',title:'GRPO replaces PPO for reasoning',text:'DeepSeek\'s Group Relative Policy Optimization removes the need for <em>separate reward models</em>, simplifying the RL training pipeline dramatically.',timestamp:'55:40'},
+        {label:'🏗️ Infrastructure',color:'blue',title:'The real bottleneck is networking, not GPUs',text:'Training frontier models requires <em>thousands of GPUs communicating constantly</em>. Network bandwidth, not raw compute, is the real constraint.',timestamp:'3:11:59'},
+        {label:'🤔 Strategy',color:'accent',title:'OpenAI is losing its moat',text:'With DeepSeek and Llama matching GPT-4 performance, OpenAI\'s <em>closed approach looks increasingly unsustainable</em>.',timestamp:'4:29:41'}
+      ],
+      quotes: [
+        {text:'DeepSeek basically said: we don\'t need your expensive GPUs, we\'ll just be smarter about it. And they were right.',speaker:'Dylan Patel'},
+        {text:'The thing about Mixture of Experts is that you get a huge model that\'s cheap to run. That\'s the whole trick.',speaker:'Nathan Lambert'},
+        {text:'Nvidia\'s real moat isn\'t the hardware — it\'s that every AI researcher in the world learned to code on CUDA.',speaker:'Dylan Patel'},
+        {text:'The export controls were supposed to slow China down. Instead, they forced China to innovate in ways we didn\'t expect.',speaker:'Dylan Patel'},
+        {text:'Open source is winning because the economics are just better. You can\'t compete with free.',speaker:'Nathan Lambert'},
+        {text:'Reinforcement learning from human feedback is becoming reinforcement learning from AI feedback. The humans are being removed from the loop.',speaker:'Nathan Lambert'},
+        {text:'We\'re entering an era where the cost to train a frontier model drops by 10x every year. That changes everything about who can build AI.',speaker:'Dylan Patel'},
+        {text:'The biggest misconception about AI safety is that it\'s about preventing Skynet. It\'s really about preventing subtle manipulation at scale.',speaker:'Nathan Lambert'},
+        {text:'xAI built Colossus in 122 days. That tells you everything about what happens when you throw unlimited resources at a problem with no bureaucracy.',speaker:'Dylan Patel'},
+        {text:'The future of AI isn\'t one big model — it\'s an ecosystem of specialized models working together.',speaker:'Nathan Lambert'}
+      ],
+      clips: [
+        {title:'DeepSeek\'s $5M Frontier Model',text:'How a Chinese lab built GPT-4-level AI for <em>a fraction of the cost</em>, shocking the entire industry.',timestamp:'6:24',tags:['🔥 High Viral','DeepSeek']},
+        {title:'Why Nvidia\'s CUDA Is the Real Moat',text:'It\'s not the chips — it\'s the <em>software ecosystem</em> that makes Nvidia untouchable.',timestamp:'2:29:02',tags:['💡 Insightful','GPUs']},
+        {title:'Export Controls Backfired',text:'US chip restrictions <em>accelerated Chinese innovation</em> instead of slowing it down.',timestamp:'3:53:56',tags:['🔥 High Viral','Geopolitics']},
+        {title:'The Death of Closed-Source AI',text:'Open-source models are <em>catching up so fast</em> that the closed approach may be doomed.',timestamp:'1:48:39',tags:['📚 Educational','Open Source']},
+        {title:'xAI\'s Colossus: 122 Days to Build',text:'Elon Musk\'s team built the <em>world\'s largest GPU cluster</em> in just four months.',timestamp:'4:15:51',tags:['🔥 High Viral','xAI']},
+        {title:'Reinforcement Learning Is Eating AI',text:'Forget scaling pre-training — <em>RL is the new paradigm</em> for making models actually useful.',timestamp:'55:40',tags:['💡 Insightful','Research']}
+      ],
+      timeline: [
+        {startTime:'0:00',endTime:'6:24',title:'Introduction',text:'Lex sets the stage for a deep dive into the <em>current state of AI infrastructure</em>.',tags:['Setup']},
+        {startTime:'6:24',endTime:'55:40',title:'The DeepSeek Phenomenon',text:'How DeepSeek trained frontier models cheaply using <em>MoE, multi-head latent attention</em>, and engineering discipline.',tags:['DeepSeek','Architecture','Key Section']},
+        {startTime:'55:40',endTime:'1:48:39',title:'How LLMs Are Actually Trained',text:'From pre-training to RLHF to <em>GRPO</em> — the full pipeline explained.',tags:['Training','RL','Technical']},
+        {startTime:'1:48:39',endTime:'2:29:02',title:'Open Source vs. Closed Source',text:'Meta\'s Llama strategy, DeepSeek\'s openness, and <em>why closed labs are struggling</em>.',tags:['Open Source','Meta','Strategy']},
+        {startTime:'2:29:02',endTime:'3:11:59',title:'Nvidia\'s Empire',text:'CUDA lock-in, H100 vs Blackwell, and <em>why competitors can\'t catch up</em>.',tags:['Nvidia','GPUs','Hardware']},
+        {startTime:'3:11:59',endTime:'3:29:39',title:'GPU Clusters and Networking',text:'The networking bottleneck — <em>bandwidth, not compute</em>, limits scaling.',tags:['Infrastructure','Networking']},
+        {startTime:'3:29:39',endTime:'3:53:56',title:'China\'s AI Ecosystem',text:'How Chinese labs operate under constraints and <em>still produce world-class research</em>.',tags:['China','Geopolitics']},
+        {startTime:'3:53:56',endTime:'4:15:51',title:'US Export Controls',text:'The chip ban\'s intended and <em>unintended consequences</em> for global AI development.',tags:['Policy','Export Controls']},
+        {startTime:'4:15:51',endTime:'4:29:41',title:'xAI and Elon Musk',text:'Colossus built in 122 days — <em>speed over bureaucracy</em>.',tags:['xAI','Elon Musk']},
+        {startTime:'4:29:41',endTime:'4:37:53',title:'OpenAI\'s Position',text:'Is OpenAI\'s closed approach <em>still viable</em> as competition catches up?',tags:['OpenAI','Strategy']},
+        {startTime:'4:37:53',endTime:'5:01:52',title:'Scaling Laws and the Future',text:'Are we hitting <em>diminishing returns</em> on scale? What comes after?',tags:['Scaling','Future']},
+        {startTime:'5:01:52',endTime:'5:16:00',title:'AI Safety and Responsibility',text:'How open-source and safety <em>coexist</em> — or don\'t.',tags:['Safety','Ethics','Closing']}
+      ]
+    }
+  },
+
+  altman: {
+    videoId: 'jvqFAi7vkBc',
+    data: {
+      metadata: {
+        title: 'GPT-5, Sora, Board Saga, Elon Musk, and the Future of AI',
+        guest: 'Sam Altman',
+        guestBio: 'CEO of <em>OpenAI</em>, the company behind ChatGPT, GPT-4, DALL-E, and Sora. Former president of Y Combinator. One of the most influential figures shaping the future of artificial intelligence.',
+        guestLinks: [{label:'OpenAI',url:'https://openai.com/'},{label:'Twitter/X',url:'https://twitter.com/sama'}],
+        show: 'Lex Fridman Podcast', episode: 'Episode #419', date: 'Mar 18, 2024', duration: '2h 2m'
+      },
+      summary: `<p>In this <em>two-hour conversation</em>, <span class="hl">Sam Altman</span> speaks candidly with Lex Fridman about <span class="hl-blue">OpenAI's trajectory</span>, the upcoming GPT-5, and the dramatic boardroom crisis that nearly destroyed the company. Altman reflects on the <em>near-death experience</em> of being fired and reinstated, describing it as the most surreal period of his career while maintaining a <span class="hl-green">surprisingly measured perspective</span> on the people involved.</p><p>The conversation dives deep into <span class="hl">Sora</span> — OpenAI's video generation model — and what it reveals about AI's emerging ability to <span class="hl-purple">understand physics and the visual world</span>. Altman discusses GPT-5's expected capabilities, the path to <em>AGI</em>, and why he believes we're in an <span class="hl-blue">"early iPhone moment"</span> for AI, where the technology is powerful but the killer applications haven't yet been discovered.</p><p>The episode also covers Altman's complicated relationship with <span class="hl">Elon Musk</span>, the economics and ethics of <span class="hl-green">AI development</span>, OpenAI's evolving structure from nonprofit to capped-profit, and Altman's vision for how AI should be <em>governed and distributed</em>. Throughout, Altman projects a mix of <span class="hl-purple">ambition and caution</span>, acknowledging both the transformative potential and the genuine risks of the technology he's building.</p>`,
+      takeaways: [
+        {icon:'🚀',color:'accent',title:'GPT-5 Is a Leap, Not a Step',text:'Altman describes GPT-5 as a <em>significant jump in capability</em>, not just a marginal improvement — particularly in reasoning and reliability.'},
+        {icon:'🎬',color:'blue',title:'Sora Reveals World Understanding',text:'Video generation isn\'t just making pretty clips — Sora suggests AI is developing <em>an internal model of physics</em>.'},
+        {icon:'😰',color:'purple',title:'The Board Crisis Was Surreal',text:'Being fired and reinstated in days was the <em>most bizarre experience</em> of Altman\'s career, but he emerged without bitterness.'},
+        {icon:'📱',color:'green',title:'We\'re in the "Early iPhone" Era',text:'AI is at the stage where the technology exists but <em>the transformative applications haven\'t been built yet</em>.'},
+        {icon:'⚖️',color:'rose',title:'AGI Governance Is Unsolved',text:'Altman admits that <em>no one has figured out</em> how to properly govern AI development at the AGI level.'}
+      ],
+      topics: ['GPT-5','Sora','OpenAI Board Crisis','Elon Musk','AGI','AI Governance','Video Generation','ChatGPT','Scaling Laws','AI Safety','Nonprofit to Profit','Y Combinator','Compute','AI Economics'],
+      chapters: [
+        {time:'0:00',name:'Introduction'},
+        {time:'4:12',name:'Sora and video generation'},
+        {time:'22:48',name:'GPT-4 and GPT-5'},
+        {time:'37:20',name:'OpenAI board saga'},
+        {time:'55:10',name:'Elon Musk and OpenAI origins'},
+        {time:'1:08:30',name:'AGI timeline and definition'},
+        {time:'1:22:45',name:'AI safety and alignment'},
+        {time:'1:35:00',name:'Business model and compute'},
+        {time:'1:45:20',name:'Advice for builders'},
+        {time:'1:52:00',name:'Future of humanity with AI'}
+      ],
+      insights: [
+        {label:'🎬 Product',color:'blue',title:'Sora is about understanding, not just generation',text:'The breakthrough isn\'t making videos — it\'s that the model appears to build <em>an internal simulation of physics and space</em> to generate them.',timestamp:'4:12'},
+        {label:'🧠 Technical',color:'accent',title:'GPT-5 will surprise people',text:'Altman hints that GPT-5 represents <em>a qualitative shift</em> — not just better benchmarks but new categories of capability, especially in reasoning.',timestamp:'22:48'},
+        {label:'😱 Inside Story',color:'purple',title:'The firing was completely unexpected',text:'Altman describes learning he was fired <em>minutes before it was announced</em>, with no warning or clear explanation from the board.',timestamp:'37:20'},
+        {label:'⚡ Relationship',color:'rose',title:'The Elon situation is complicated',text:'Altman speaks carefully about Musk, acknowledging his <em>early crucial support</em> while noting their visions for AI diverged significantly.',timestamp:'55:10'},
+        {label:'🎯 Vision',color:'green',title:'AGI is closer than most think',text:'Altman believes AGI could arrive <em>this decade</em>, but emphasizes the definition matters enormously — it\'s a gradient, not a switch.',timestamp:'1:08:30'},
+        {label:'⚖️ Governance',color:'yellow',title:'No one knows how to govern AGI yet',text:'The honest admission: the governance structures for <em>world-changing AI</em> don\'t exist yet, and building them is as important as building the AI.',timestamp:'1:22:45'},
+        {label:'💰 Business',color:'blue',title:'Compute is the new currency',text:'AI development economics are <em>entirely driven by compute costs</em>. Whoever controls compute infrastructure controls AI\'s future.',timestamp:'1:35:00'},
+        {label:'📱 Analogy',color:'green',title:'This is the iPhone moment for AI',text:'We have the platform but <em>the killer apps haven\'t been invented yet</em>. The most transformative uses of AI are still to come.',timestamp:'1:45:20'}
+      ],
+      quotes: [
+        {text:'GPT-5 is going to be a big deal. I think people are going to be surprised by the jump.',speaker:'Sam Altman'},
+        {text:'Sora doesn\'t just generate video. It appears to build an internal model of how the world works, physically.',speaker:'Sam Altman'},
+        {text:'I went from being the CEO to being fired to being back in about four days. It was genuinely the most surreal experience of my life.',speaker:'Sam Altman'},
+        {text:'We\'re in the early iPhone era of AI. The technology platform exists, but the life-changing apps haven\'t been built yet.',speaker:'Sam Altman'},
+        {text:'AGI is not a single moment — it\'s a gradual process. But I think we\'re closer than most people realize.',speaker:'Sam Altman'},
+        {text:'The honest answer about AI governance is: nobody has it figured out. We\'re building the plane while flying it.',speaker:'Sam Altman'},
+        {text:'Elon was crucial to OpenAI\'s early days. The story is more complicated than either side usually presents it.',speaker:'Sam Altman'},
+        {text:'Compute is the new oil. Whoever figures out how to produce and distribute it efficiently will shape the next century.',speaker:'Sam Altman'},
+        {text:'I\'m optimistic about AI not because the risks aren\'t real, but because I think we can build it right if we\'re honest about the challenges.',speaker:'Sam Altman'},
+        {text:'My advice to builders: don\'t wait for GPT-5. Build with what exists now, and be ready to adapt when the next thing comes.',speaker:'Sam Altman'}
+      ],
+      clips: [
+        {title:'GPT-5 Will Surprise You',text:'Altman teases that GPT-5 represents <em>a qualitative leap</em>, not just incremental improvement.',timestamp:'22:48',tags:['🔥 High Viral','GPT-5']},
+        {title:'The Board Saga: Four Surreal Days',text:'Fired and rehired in under a week — the <em>inside story</em> of OpenAI\'s near-collapse.',timestamp:'37:20',tags:['🔥 High Viral','Drama']},
+        {title:'Sora Understands Physics',text:'Video generation reveals AI is building <em>internal models of the physical world</em>.',timestamp:'4:12',tags:['💡 Insightful','Sora']},
+        {title:'The iPhone Moment for AI',text:'The platform exists but <em>the killer apps haven\'t been invented</em> — a profound reframe.',timestamp:'1:45:20',tags:['🔥 High Viral','Vision']},
+        {title:'The Elon Musk Relationship',text:'Altman navigates the <em>complicated history</em> with Musk and OpenAI\'s founding.',timestamp:'55:10',tags:['📺 Dramatic','Elon Musk']},
+        {title:'"Compute Is the New Oil"',text:'The economic thesis for why <em>compute infrastructure</em> determines AI\'s future.',timestamp:'1:35:00',tags:['💎 Quotable','Economics']}
+      ],
+      timeline: [
+        {startTime:'0:00',endTime:'4:12',title:'Introduction',text:'Lex introduces the context — OpenAI\'s dramatic recent history.',tags:['Setup']},
+        {startTime:'4:12',endTime:'22:48',title:'Sora and Video Generation',text:'How Sora works, what it reveals about <em>AI\'s world understanding</em>, and its implications.',tags:['Sora','Product','Key Section']},
+        {startTime:'22:48',endTime:'37:20',title:'GPT-4 to GPT-5',text:'What\'s different about GPT-5, the <em>limits of current models</em>, and the path forward.',tags:['GPT-5','Technical']},
+        {startTime:'37:20',endTime:'55:10',title:'The Board Crisis',text:'The full inside story: fired, the Microsoft offer, <em>employee revolt</em>, and reinstatement.',tags:['Board Saga','Drama','Key Section']},
+        {startTime:'55:10',endTime:'1:08:30',title:'Elon Musk and OpenAI\'s Origins',text:'The founding relationship, what went wrong, and <em>diverging visions</em>.',tags:['Elon Musk','History']},
+        {startTime:'1:08:30',endTime:'1:22:45',title:'The Road to AGI',text:'Timeline, definition, and why <em>AGI is a gradient</em> rather than a moment.',tags:['AGI','Vision']},
+        {startTime:'1:22:45',endTime:'1:35:00',title:'AI Safety and Alignment',text:'How OpenAI thinks about safety, the <em>tension between speed and caution</em>.',tags:['Safety','Alignment']},
+        {startTime:'1:35:00',endTime:'1:45:20',title:'AI Economics and Compute',text:'Compute as the new oil — who <em>controls infrastructure</em> controls AI.',tags:['Economics','Compute']},
+        {startTime:'1:45:20',endTime:'1:52:00',title:'Advice for Builders',text:'Build now, adapt later. The <em>iPhone-era analogy</em> for AI development.',tags:['Advice','Builders']},
+        {startTime:'1:52:00',endTime:'2:02:00',title:'The Future of Humanity with AI',text:'Altman\'s optimistic vision — <em>honest about risks, hopeful about outcomes</em>.',tags:['Future','Philosophy','Closing']}
+      ]
+    }
+  }
 };
-const DEMO_VIDEO_ID = 'Mde2q7GFCrQ';
 
 // ============================================================
 // PROCESS ENTRY POINT
@@ -726,7 +973,6 @@ const DEMO_VIDEO_ID = 'Mde2q7GFCrQ';
 function process() {
   const input = document.getElementById('podInput').value.trim();
   if (!input) return;
-
   const videoId = extractVideoId(input);
   if (videoId) {
     processYouTube(videoId);
@@ -735,16 +981,9 @@ function process() {
   }
 }
 
-function loadEx(type) {
-  const inp = document.getElementById('podInput');
-  if (type === 'demo') {
-    loadDemo();
-  } else if (type === 'yt') {
-    inp.value = 'https://youtube.com/watch?v=Mde2q7GFCrQ';
-  }
-}
-
-function loadDemo() {
+function loadDemo(key) {
+  const demo = DEMOS[key];
+  if (!demo) return;
   const loading = document.getElementById('loading');
   loading.classList.add('active');
   const steps = ['transcript','send','insights','build'];
@@ -753,13 +992,14 @@ function loadDemo() {
     setTimeout(() => setStep(s, 'done'), 300*(i+1)+250);
   });
   setTimeout(() => {
-    currentVideoId = DEMO_VIDEO_ID;
-    currentData = DEMO_DATA;
-    renderData(DEMO_DATA, DEMO_VIDEO_ID);
+    currentVideoId = demo.videoId;
+    currentData = demo.data;
+    renderData(demo.data, demo.videoId);
     loading.classList.remove('active');
     document.getElementById('heroSection').classList.add('collapsed');
     document.getElementById('podView').classList.add('active');
     document.querySelectorAll('.load-step').forEach(s => s.classList.remove('vis','done'));
+    initPlayer(demo.videoId);
   }, 300*steps.length + 600);
 }
 
@@ -767,12 +1007,20 @@ function resetApp() {
   document.getElementById('heroSection').classList.remove('collapsed');
   document.getElementById('podView').classList.remove('active');
   document.getElementById('podInput').value = '';
+  document.getElementById('playerWrap').style.display = 'none';
   currentData = null; currentVideoId = null; currentTranscript = '';
+  if (ytPlayerInstance && ytPlayerInstance.destroy) {
+    ytPlayerInstance.destroy();
+    ytPlayerInstance = null;
+    document.getElementById('playerWrap').innerHTML = '<div id="ytPlayer"></div>';
+  }
   // Reset tabs
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelector('.tab').classList.add('active');
   document.getElementById('p-overview').classList.add('active');
+  // Reset chat
+  document.getElementById('msgs').innerHTML = '<div class="msg"><div class="msg-av ai">PC</div><div class="msg-bubble"><strong>Hey! I\'ve analyzed this entire podcast.</strong> Ask me anything — I can find specific moments, explain arguments, compare viewpoints, or help you create content.</div></div>';
 }
 
 // ============================================================
@@ -802,7 +1050,7 @@ document.addEventListener('click', e => {
   if (gi && !gi.contains(e.target)) gi.classList.remove('active');
 });
 
-// Chat (simple keyword matching for demo, can be extended with real AI)
+// Chat
 function sendMsg() {
   const inp = document.getElementById('chatIn');
   const text = inp.value.trim();
@@ -824,7 +1072,6 @@ function generateChatResponse(text) {
   const lower = text.toLowerCase();
   if (!currentData) return '<strong>No podcast loaded yet.</strong> Go back and load one first!';
   const d = currentData;
-  // Try to match keywords to insights/quotes
   if (lower.includes('summary') || lower.includes('summarize') || lower.includes('bullet')) {
     const tks = (d.takeaways || []).slice(0,3);
     return `<strong>Here's a quick summary:</strong><br><br>` + tks.map(t => `<strong>${t.icon} ${t.title}:</strong> ${t.text}`).join('<br><br>');
@@ -839,9 +1086,8 @@ function generateChatResponse(text) {
   }
   if (lower.includes('viral') || lower.includes('clip') || lower.includes('share')) {
     const cls = (d.clips || []).slice(0,3);
-    return `<strong>Top viral moments:</strong><br><br>` + cls.map(c => `<strong>${c.title}</strong> <span class="ref">⏱ ${c.timestamp}</span> — ${c.text.replace(/<[^>]+>/g,'')}`).join('<br><br>');
+    return `<strong>Top viral moments:</strong><br><br>` + cls.map(c => `<strong>${c.title}</strong> <span class="ref">&#9201; ${c.timestamp}</span> — ${c.text.replace(/<[^>]+>/g,'')}`).join('<br><br>');
   }
-  // Default: use first insight
   const first = (d.insights || [])[0];
   if (first) return `<strong>Based on the podcast:</strong> ${first.text}<br><br>The episode covers topics like ${(d.topics||[]).slice(0,5).join(', ')}. Ask me about any specific topic or moment!`;
   return `<strong>Interesting question!</strong> Based on my analysis, this podcast covers: ${(d.topics||[]).join(', ')}. Can you be more specific about what you'd like to explore?`;
