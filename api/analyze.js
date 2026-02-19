@@ -1,5 +1,6 @@
 // /api/analyze.js
-// Receives a transcript and sends it to Gemini 2.5 Flash for structured analysis
+// Sends YouTube video directly to Gemini 2.5 Flash for analysis
+// Gemini can natively process YouTube videos — no transcript step needed
 // Requires GEMINI_API_KEY environment variable
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -111,8 +112,8 @@ export default async function handler(req, res) {
 
   const { videoId, transcript } = req.body;
 
-  if (!videoId || !transcript) {
-    return res.status(400).json({ error: 'Missing "videoId" or "transcript" in request body.' });
+  if (!videoId) {
+    return res.status(400).json({ error: 'Missing "videoId" in request body.' });
   }
 
   const youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
@@ -129,12 +130,31 @@ export default async function handler(req, res) {
       },
     });
 
-    // Send the transcript text to Gemini for analysis
-    const result = await model.generateContent([
-      {
-        text: `${SYSTEM_PROMPT}\n\nHere is the timestamped transcript of the YouTube podcast (video: ${youtubeUrl}):\n\n${transcript}\n\nAnalyze this podcast transcript and return the structured JSON. Remember: ONLY return valid JSON, nothing else.`,
-      },
-    ]);
+    let result;
+
+    if (transcript) {
+      // Path A: We have a transcript — send text to Gemini
+      console.log(`[analyze] Using provided transcript (${transcript.length} chars)`);
+      result = await model.generateContent([
+        {
+          text: `${SYSTEM_PROMPT}\n\nHere is the timestamped transcript of the YouTube podcast (video: ${youtubeUrl}):\n\n${transcript}\n\nAnalyze this podcast transcript and return the structured JSON. Remember: ONLY return valid JSON, nothing else.`,
+        },
+      ]);
+    } else {
+      // Path B: No transcript — send YouTube URL directly to Gemini
+      console.log(`[analyze] Sending YouTube URL directly to Gemini: ${youtubeUrl}`);
+      result = await model.generateContent([
+        {
+          fileData: {
+            fileUri: youtubeUrl,
+            mimeType: 'video/mp4',
+          },
+        },
+        {
+          text: `${SYSTEM_PROMPT}\n\nWatch and analyze this YouTube podcast video. Return the structured JSON. Remember: ONLY return valid JSON, nothing else.`,
+        },
+      ]);
+    }
 
     const response = result.response;
     let text = response.text();
@@ -162,19 +182,22 @@ export default async function handler(req, res) {
     return res.status(200).json(parsed);
 
   } catch (error) {
-    console.error('Gemini API error:', error);
+    // DETAILED error logging — we need to see exactly what Gemini says
+    console.error('=== GEMINI ERROR DETAILS ===');
+    console.error('Error name:', error.name);
+    console.error('Error message:', error.message);
+    console.error('Error status:', error.status);
+    console.error('Error statusText:', error.statusText);
+    console.error('Error details:', JSON.stringify(error.errorDetails || error.details || 'none'));
+    console.error('Full error:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
+    console.error('=== END ERROR DETAILS ===');
 
-    if (error.message?.includes('API_KEY')) {
-      return res.status(401).json({ error: 'Invalid Gemini API key.' });
-    }
-
-    if (error.message?.includes('quota') || error.message?.includes('rate')) {
-      return res.status(429).json({ error: 'Gemini API rate limit reached. Wait a moment and try again.' });
-    }
-
+    // Return the FULL error to the frontend so we can see it
     return res.status(500).json({
-      error: 'Failed to analyze video with Gemini.',
-      details: error.message
+      error: `Gemini error: ${error.message}`,
+      errorName: error.name,
+      errorStatus: error.status,
+      errorDetails: error.errorDetails || error.details || null,
     });
   }
 }
