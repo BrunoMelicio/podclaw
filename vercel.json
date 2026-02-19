@@ -3,8 +3,8 @@
   "outputDirectory": ".",
   "framework": null,
   "functions": {
-    "api/transcript.js": {
-      "maxDuration": 120
+    "api/resolve.js": {
+      "maxDuration": 30
     },
     "api/analyze.js": {
       "maxDuration": 300

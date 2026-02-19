@@ -134,9 +134,12 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
 .ep-stats{display:flex;gap:20px;flex-wrap:wrap}
 .stat{font-size:13px;color:var(--text-3);display:flex;align-items:center;gap:5px}
 
-/* ========== VIDEO PLAYER ========== */
-.player-wrap{margin:24px 0 10px;border-radius:16px;overflow:hidden;background:#000;position:relative;aspect-ratio:16/9;max-height:480px}
-.player-wrap iframe{width:100%;height:100%;border:0}
+/* ========== AUDIO PLAYER ========== */
+.player-wrap{margin:24px 0 10px;border-radius:16px;overflow:hidden;background:var(--bg-1);position:relative;border:1px solid var(--border);padding:0}
+.audio-player-box{display:flex;gap:14px;align-items:center;padding:14px}
+.pod-art{width:48px;height:48px;border-radius:8px;object-fit:cover}
+.audio-show{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:1px}
+.audio-ep-title{font-size:14px;font-weight:500;color:var(--text-1)}
 
 /* ========== TABS ========== */
 .tabs{position:sticky;top:63px;z-index:50;background:var(--overlay);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none}
@@ -294,18 +297,18 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
   <!-- HERO -->
   <section class="hero-section" id="heroSection">
     <div class="container">
-      <div class="hero-badge">YouTube Podcast Intelligence</div>
-      <h1>Stop listening.<br><em>Start learning.</em></h1>
-      <p>Drop a YouTube podcast link. Get summaries, viral clips, key quotes, and ask questions — in minutes, not hours.</p>
+      <div class="hero-badge">PODCAST INTELLIGENCE</div>
+      <h1>Grab the <em>Best</em> From Any Podcast</h1>
+      <p>Paste a link from Spotify, Apple Podcasts, or any RSS feed — get instant summaries, viral clips, key quotes, and interactive Q&A.</p>
       <div class="input-zone">
         <div class="input-wrap">
-          <input type="text" id="podInput" placeholder="Paste a YouTube link..." onkeydown="if(event.key==='Enter')process()" />
+          <input type="text" id="podInput" placeholder="Paste a Spotify, Apple Podcasts, or RSS link..." onkeydown="if(event.key==='Enter')process()" />
           <button class="input-go" id="clawBtn" onclick="process()">Claw it</button>
         </div>
       </div>
       <!-- DEMO CARDS -->
       <div class="demos-section">
-        <div class="demos-label">Try these demos</div>
+        <div class="demos-label">Try a demo — powered by Spotify</div>
         <div class="demos-grid">
           <div class="demo-card" onclick="loadDemo('harari')">
             <div class="demo-ep">Episode #390</div>
@@ -348,8 +351,8 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
     <h2 id="loadTitle">Clawing through your podcast...</h2>
     <p class="load-sub" id="loadSub">Extracting the good stuff</p>
     <div class="load-steps" id="loadSteps">
-      <div class="load-step" id="step-analyze"><span class="dot">&#10003;</span> Sending video to Gemini AI</div>
-      <div class="load-step" id="step-process"><span class="dot">&#10003;</span> Watching &amp; analyzing podcast</div>
+      <div class="load-step" id="step-resolve"><span class="dot">&#10003;</span> Resolving podcast link</div>
+      <div class="load-step" id="step-analyze"><span class="dot">&#10003;</span> Sending audio to Gemini AI</div>
       <div class="load-step" id="step-insights"><span class="dot">&#10003;</span> Generating insights &amp; clips</div>
       <div class="load-step" id="step-build"><span class="dot">&#10003;</span> Building your view</div>
     </div>
@@ -382,9 +385,16 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
         </div>
         <div class="ep-stats" id="epStats"></div>
       </div>
-      <!-- YouTube Player -->
+      <!-- Audio Player -->
       <div class="player-wrap" id="playerWrap" style="display:none">
-        <div id="ytPlayer"></div>
+        <div class="audio-player-box">
+          <img id="podArt" class="pod-art" src="" alt="">
+          <div class="audio-meta">
+            <div id="audioShowName" class="audio-show"></div>
+            <div id="audioEpTitle" class="audio-ep-title"></div>
+          </div>
+        </div>
+        <audio id="podAudio" controls style="width:100%;margin-top:10px;border-radius:8px;"></audio>
       </div>
     </div>
 
@@ -452,46 +462,25 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
   <div class="toast" id="toast"></div>
 </div>
 
-<!-- YouTube IFrame API -->
 <script>
-// Load the YouTube IFrame API asynchronously
-var tag = document.createElement('script');
-tag.src = 'https://www.youtube.com/iframe_api';
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-var ytPlayerReady = false;
-var ytPlayerInstance = null;
-var pendingVideoId = null;
-
-function onYouTubeIframeAPIReady() {
-  ytPlayerReady = true;
-  if (pendingVideoId) {
-    initPlayer(pendingVideoId);
-    pendingVideoId = null;
-  }
+function loadAudio(mp3Url, artwork, showName, epTitle) {
+  const audio = document.getElementById('podAudio');
+  const wrap = document.getElementById('playerWrap');
+  audio.src = mp3Url;
+  wrap.style.display = '';
+  document.getElementById('podArt').src = artwork || '';
+  document.getElementById('podArt').style.display = artwork ? '' : 'none';
+  document.getElementById('audioShowName').textContent = showName || '';
+  document.getElementById('audioEpTitle').textContent = epTitle || '';
 }
 
-function initPlayer(videoId) {
-  if (!ytPlayerReady) { pendingVideoId = videoId; return; }
-  document.getElementById('playerWrap').style.display = 'block';
-  if (ytPlayerInstance) {
-    ytPlayerInstance.loadVideoById(videoId);
-    return;
-  }
-  ytPlayerInstance = new YT.Player('ytPlayer', {
-    videoId: videoId,
-    playerVars: { autoplay: 0, modestbranding: 1, rel: 0 },
-    events: { onReady: function(){} }
-  });
-}
-
-function seekTo(seconds) {
-  if (ytPlayerInstance && ytPlayerInstance.seekTo) {
-    ytPlayerInstance.seekTo(seconds, true);
-    ytPlayerInstance.playVideo();
-    // Scroll the player into view
-    document.getElementById('playerWrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+function seekTo(input) {
+  const seconds = typeof input === 'number' ? input : timeStrToSeconds(String(input));
+  const audio = document.getElementById('podAudio');
+  if (audio && audio.src) {
+    audio.currentTime = seconds;
+    if (audio.paused) audio.play();
+    audio.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }
 
@@ -508,24 +497,8 @@ function timeStrToSeconds(timeStr) {
 // STATE
 // ============================================================
 let currentData = null;
-let currentVideoId = null;
-let currentTranscript = '';
+let currentMp3Url = null;
 
-// ============================================================
-// YOUTUBE HELPERS
-// ============================================================
-function extractVideoId(input) {
-  if (!input) return null;
-  if (/^[a-zA-Z0-9_-]{11}$/.test(input.trim())) return input.trim();
-  try {
-    const url = new URL(input);
-    if (url.hostname.includes('youtube.com') && url.searchParams.has('v')) return url.searchParams.get('v');
-    if (url.hostname === 'youtu.be') return url.pathname.slice(1).split('/')[0];
-    if (url.pathname.startsWith('/embed/')) return url.pathname.split('/')[2];
-    if (url.pathname.startsWith('/shorts/')) return url.pathname.split('/')[2];
-  } catch(e) {}
-  return null;
-}
 
 const COLOR_MAP = {
   accent:'var(--accent)', blue:'var(--blue)', green:'var(--green)',
@@ -566,43 +539,48 @@ function closeLoading() {
 }
 
 // ============================================================
-// MAIN PROCESS — REAL YOUTUBE PIPELINE
+// MAIN PROCESS — PODCAST PIPELINE
 // ============================================================
-async function processYouTube(videoId) {
+async function processPodcast(podcastUrl) {
   const loading = document.getElementById('loading');
   loading.classList.add('active');
 
   try {
-    // Step 1: Send video URL directly to Gemini
-    setStep('analyze', 'active');
-    currentVideoId = videoId;
-    await new Promise(r => setTimeout(r, 300));
-    setStep('analyze', 'done');
+    // Step 1: Resolve podcast link
+    setStep('resolve', 'active');
+    const rRes = await fetch('/api/resolve', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: podcastUrl })
+    });
+    const rData = await rRes.json();
+    if (!rRes.ok) throw new Error(rData.error || 'Failed to resolve podcast link');
+    setStep('resolve', 'done');
 
-    // Step 2: Gemini watches and analyzes the full video
-    setStep('process', 'active');
+    // Step 2: Send audio to Gemini
+    setStep('analyze', 'active');
     const aRes = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ videoId })
+      body: JSON.stringify({ mp3Url: rData.mp3Url, title: rData.title, show: rData.show })
     });
     const aData = await aRes.json();
     if (!aRes.ok) {
-      // Show full error details for debugging
-      const details = aData.errorDetails ? ` | Details: ${JSON.stringify(aData.errorDetails)}` : '';
-      throw new Error((aData.error || 'Failed to analyze video') + details);
+      const details = aData.errorDetails ? ` | ${JSON.stringify(aData.errorDetails)}` : '';
+      throw new Error((aData.error || 'Failed to analyze podcast') + details);
     }
-    setStep('process', 'done');
+    setStep('analyze', 'done');
 
     // Step 3: Process insights
     setStep('insights', 'active');
     currentData = aData;
+    currentMp3Url = rData.mp3Url;
     await new Promise(r => setTimeout(r, 400));
     setStep('insights', 'done');
 
     // Step 4: Build view
     setStep('build', 'active');
-    renderData(aData, videoId);
+    renderData(aData);
     await new Promise(r => setTimeout(r, 300));
     setStep('build', 'done');
 
@@ -611,12 +589,12 @@ async function processYouTube(videoId) {
     document.getElementById('heroSection').classList.add('collapsed');
     document.getElementById('podView').classList.add('active');
     document.querySelectorAll('.load-step').forEach(s => s.classList.remove('vis','done'));
-    initPlayer(videoId);
+    loadAudio(rData.mp3Url, rData.artwork, rData.show, rData.title);
 
   } catch (err) {
     console.error('Pipeline error:', err);
-    setStep('analyze', document.getElementById('step-analyze').classList.contains('done') ? 'done' : 'error');
-    setStep('process', document.getElementById('step-process')?.classList.contains('done') ? 'done' : 'error');
+    setStep('resolve', document.getElementById('step-resolve')?.classList.contains('done') ? 'done' : 'error');
+    setStep('analyze', document.getElementById('step-analyze')?.classList.contains('done') ? 'done' : 'error');
     showLoadError(err.message);
   }
 }
@@ -624,8 +602,7 @@ async function processYouTube(videoId) {
 // ============================================================
 // RENDER DATA (works for both demo & real data)
 // ============================================================
-function renderData(data, videoId) {
-  const vid = videoId || null;
+function renderData(data) {
   const m = data.metadata || {};
 
   // Header
@@ -743,7 +720,7 @@ function renderData(data, videoId) {
 // ============================================================
 const DEMOS = {
   harari: {
-    videoId: 'Mde2q7GFCrQ',
+    spotifyUrl: 'https://open.spotify.com/episode/4cDwZmBR7pbGsEM4dVmCl2',
     data: {
       metadata: {
         title: 'Human Nature, Intelligence, Power, and Conspiracies',
@@ -815,7 +792,7 @@ const DEMOS = {
   },
 
   deepseek: {
-    videoId: '_1f-o0nqpEI',
+    spotifyUrl: 'https://open.spotify.com/episode/5JKVOvxQ0c9xJmVK3O1asA',
     data: {
       metadata: {
         title: 'DeepSeek, China, Open Source AI, and the GPU Frontier',
@@ -895,7 +872,7 @@ const DEMOS = {
   },
 
   altman: {
-    videoId: 'jvqFAi7vkBc',
+    spotifyUrl: 'https://open.spotify.com/episode/0Bx6gWK755bUoM238X2Ma1',
     data: {
       metadata: {
         title: 'GPT-5, Sora, Board Saga, Elon Musk, and the Future of AI',
@@ -976,48 +953,73 @@ const DEMOS = {
 // ============================================================
 function process() {
   const input = document.getElementById('podInput').value.trim();
-  if (!input) return;
-  const videoId = extractVideoId(input);
-  if (videoId) {
-    processYouTube(videoId);
-  } else {
-    toast('Please paste a valid YouTube link.');
+  if (!input) return showToast('Paste a podcast link to get started');
+  processPodcast(input);
+}
+
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+async function loadDemo(key) {
+  const demo = DEMOS[key];
+  if (!demo) return;
+  resetUI();
+  const loading = document.getElementById('loading');
+  loading.classList.add('active');
+
+  // Animate loading steps quickly for demo
+  const steps = ['resolve', 'analyze', 'insights', 'build'];
+  for (let i = 0; i < steps.length; i++) {
+    setStep(steps[i], 'active');
+    await new Promise(r => setTimeout(r, 200));
+    setStep(steps[i], 'done');
+  }
+
+  currentData = demo.data;
+  renderData(demo.data);
+
+  await new Promise(r => setTimeout(r, 300));
+  loading.classList.remove('active');
+  document.getElementById('heroSection').classList.add('collapsed');
+  document.getElementById('podView').classList.add('active');
+  document.querySelectorAll('.load-step').forEach(s => s.classList.remove('vis','done'));
+
+  // Try to resolve audio for playback (non-blocking)
+  try {
+    const rRes = await fetch('/api/resolve', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: demo.spotifyUrl })
+    });
+    const rData = await rRes.json();
+    if (rRes.ok && rData.mp3Url) {
+      loadAudio(rData.mp3Url, rData.artwork, demo.data.metadata?.show, demo.data.metadata?.title);
+    }
+  } catch (e) {
+    console.log('Could not resolve demo audio:', e.message);
   }
 }
 
-function loadDemo(key) {
-  const demo = DEMOS[key];
-  if (!demo) return;
-  const loading = document.getElementById('loading');
-  loading.classList.add('active');
-  const steps = ['transcript','send','insights','build'];
-  steps.forEach((s,i) => {
-    setTimeout(() => setStep(s, 'active'), 300*(i+1));
-    setTimeout(() => setStep(s, 'done'), 300*(i+1)+250);
-  });
-  setTimeout(() => {
-    currentVideoId = demo.videoId;
-    currentData = demo.data;
-    renderData(demo.data, demo.videoId);
-    loading.classList.remove('active');
-    document.getElementById('heroSection').classList.add('collapsed');
-    document.getElementById('podView').classList.add('active');
-    document.querySelectorAll('.load-step').forEach(s => s.classList.remove('vis','done'));
-    initPlayer(demo.videoId);
-  }, 300*steps.length + 600);
+function resetUI() {
+  document.getElementById('heroSection').classList.remove('collapsed');
+  document.getElementById('podView').classList.remove('active');
+  const audio = document.getElementById('podAudio');
+  if (audio) audio.pause();
+  document.getElementById('playerWrap').style.display = 'none';
 }
 
 function resetApp() {
   document.getElementById('heroSection').classList.remove('collapsed');
   document.getElementById('podView').classList.remove('active');
   document.getElementById('podInput').value = '';
+  const audio = document.getElementById('podAudio');
+  if (audio) audio.pause();
   document.getElementById('playerWrap').style.display = 'none';
-  currentData = null; currentVideoId = null; currentTranscript = '';
-  if (ytPlayerInstance && ytPlayerInstance.destroy) {
-    ytPlayerInstance.destroy();
-    ytPlayerInstance = null;
-    document.getElementById('playerWrap').innerHTML = '<div id="ytPlayer"></div>';
-  }
+  currentData = null; currentMp3Url = null;
   // Reset tabs
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -1103,12 +1105,11 @@ function copyQ(btn) {
   const text = card.querySelector('.q-text').textContent;
   const who = card.querySelector('.q-who').textContent;
   navigator.clipboard.writeText(`"${text}" — ${who}`);
-  toast('Quote copied!');
+  showToast('Quote copied!');
 }
 function openModal() { document.getElementById('shareModal').classList.add('active'); }
 function closeModal() { document.getElementById('shareModal').classList.remove('active'); }
-function shareAction(t) { closeModal(); toast({twitter:'Opening Twitter/X...',linkedin:'Opening LinkedIn...',copy:'Link copied!',embed:'Embed code copied!'}[t]); }
-function toast(msg) { const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 2400); }
+function shareAction(t) { closeModal(); showToast({twitter:'Opening Twitter/X...',linkedin:'Opening LinkedIn...',copy:'Link copied!',embed:'Embed code copied!'}[t]); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeLoading(); } });
 </script>
 </body>

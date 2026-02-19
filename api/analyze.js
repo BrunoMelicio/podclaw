@@ -1,18 +1,18 @@
 // /api/analyze.js
-// Sends YouTube video directly to Gemini 2.5 Flash for analysis
-// Gemini can natively process YouTube videos — no transcript step needed
+// Sends podcast audio to Gemini 2.5 Flash for structured analysis
+// Accepts MP3 URL (from /api/resolve) or transcript text
 // Requires GEMINI_API_KEY environment variable
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const SYSTEM_PROMPT = `You are Podclaw, an expert podcast analyst. You are given a YouTube podcast video to watch and analyze. Extract structured, insightful content from it.
+const SYSTEM_PROMPT = `You are Podclaw, an expert podcast analyst. You are given a podcast episode audio to listen to and analyze. Extract structured, insightful content from it.
 
-Your job is to analyze the full video and return a JSON object with the following exact structure. Be specific, insightful, and use actual timestamps from the video.
+Your job is to analyze the full podcast episode and return a JSON object with the following exact structure. Be specific, insightful, and use actual timestamps from the episode.
 
 CRITICAL RULES:
 - Return ONLY valid JSON. No markdown, no code blocks, no explanation — just the JSON object.
-- All timestamps must be real timestamps from the video (format: "H:MM:SS" or "M:SS").
-- Quotes must be actual quotes from the video, not paraphrased.
+- All timestamps must be real timestamps from the audio (format: "H:MM:SS" or "M:SS").
+- Quotes must be actual quotes from the episode, not paraphrased.
 - Insights should be genuinely interesting and non-obvious.
 - For the summary, use HTML inline elements for emphasis: <span class="hl"> for key terms (orange), <span class="hl-blue"> for blue highlights, <span class="hl-green"> for green, <span class="hl-purple"> for purple, and <em> for italics.
 - Viral clips should be moments that would genuinely work as standalone social media clips.
@@ -55,7 +55,7 @@ Return this exact JSON structure:
   ],
   "quotes": [
     {
-      "text": "Exact quote from the video",
+      "text": "Exact quote from the episode",
       "speaker": "Speaker Name"
     }
   ],
@@ -90,33 +90,25 @@ Guidelines for quality:
 - Use varied colors across insights and takeaways (don't repeat the same color)`;
 
 export default async function handler(req, res) {
-  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed. Use POST.' });
-  }
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Use POST.' });
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return res.status(500).json({
-      error: 'GEMINI_API_KEY not configured. Add it to your Vercel environment variables.'
+      error: 'GEMINI_API_KEY not configured. Add it to your Vercel environment variables.',
     });
   }
 
-  const { videoId, transcript } = req.body;
+  const { mp3Url, transcript, title, show } = req.body;
 
-  if (!videoId) {
-    return res.status(400).json({ error: 'Missing "videoId" in request body.' });
+  if (!mp3Url && !transcript) {
+    return res.status(400).json({ error: 'Missing "mp3Url" or "transcript" in request body.' });
   }
-
-  const youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
@@ -131,27 +123,28 @@ export default async function handler(req, res) {
     });
 
     let result;
+    const context = title && show ? `\nPodcast: "${show}" — Episode: "${title}"` : '';
 
     if (transcript) {
-      // Path A: We have a transcript — send text to Gemini
-      console.log(`[analyze] Using provided transcript (${transcript.length} chars)`);
+      // Path A: Transcript text provided
+      console.log(`[analyze] Using transcript (${transcript.length} chars)`);
       result = await model.generateContent([
         {
-          text: `${SYSTEM_PROMPT}\n\nHere is the timestamped transcript of the YouTube podcast (video: ${youtubeUrl}):\n\n${transcript}\n\nAnalyze this podcast transcript and return the structured JSON. Remember: ONLY return valid JSON, nothing else.`,
+          text: `${SYSTEM_PROMPT}${context}\n\nHere is the timestamped transcript of the podcast episode:\n\n${transcript}\n\nAnalyze this podcast and return the structured JSON.`,
         },
       ]);
     } else {
-      // Path B: No transcript — send YouTube URL directly to Gemini
-      console.log(`[analyze] Sending YouTube URL directly to Gemini: ${youtubeUrl}`);
+      // Path B: Send MP3 URL directly to Gemini
+      console.log(`[analyze] Sending audio to Gemini: ${mp3Url}`);
       result = await model.generateContent([
         {
           fileData: {
-            fileUri: youtubeUrl,
+            fileUri: mp3Url,
             mimeType: 'audio/mpeg',
           },
         },
         {
-          text: `${SYSTEM_PROMPT}\n\nWatch and analyze this YouTube podcast video. Return the structured JSON. Remember: ONLY return valid JSON, nothing else.`,
+          text: `${SYSTEM_PROMPT}${context}\n\nListen to and analyze this podcast episode. Return the structured JSON.`,
         },
       ]);
     }
@@ -162,40 +155,31 @@ export default async function handler(req, res) {
     // Clean up potential markdown wrapping
     text = text.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
 
-    // Parse and validate the JSON
     let parsed;
     try {
       parsed = JSON.parse(text);
     } catch (parseError) {
       console.error('JSON parse error:', parseError.message);
-      console.error('Raw response (first 500 chars):', text.slice(0, 500));
+      console.error('Raw (first 500):', text.slice(0, 500));
       return res.status(500).json({
         error: 'Gemini returned invalid JSON. Try again.',
-        rawPreview: text.slice(0, 300)
+        rawPreview: text.slice(0, 300),
       });
     }
 
-    // Add YouTube video ID
-    parsed._videoId = videoId;
-    parsed._youtubeUrl = youtubeUrl;
+    // Add source info
+    if (mp3Url) parsed._mp3Url = mp3Url;
 
     return res.status(200).json(parsed);
-
   } catch (error) {
-    // DETAILED error logging — we need to see exactly what Gemini says
-    console.error('=== GEMINI ERROR DETAILS ===');
-    console.error('Error name:', error.name);
-    console.error('Error message:', error.message);
-    console.error('Error status:', error.status);
-    console.error('Error statusText:', error.statusText);
-    console.error('Error details:', JSON.stringify(error.errorDetails || error.details || 'none'));
-    console.error('Full error:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
-    console.error('=== END ERROR DETAILS ===');
+    console.error('=== GEMINI ERROR ===');
+    console.error('Message:', error.message);
+    console.error('Status:', error.status);
+    console.error('Details:', JSON.stringify(error.errorDetails || error.details || 'none'));
+    console.error('=== END ===');
 
-    // Return the FULL error to the frontend so we can see it
     return res.status(500).json({
       error: `Gemini error: ${error.message}`,
-      errorName: error.name,
       errorStatus: error.status,
       errorDetails: error.errorDetails || error.details || null,
     });
