@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Podclaw — Grab the Best From Any Podcast</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ========== THEME ========== */
+[data-theme="dark"] {
+  --bg-0:#07070a;--bg-1:#0e0e14;--bg-2:#16161f;--bg-3:#1e1e2a;--bg-4:#282838;
+  --text-0:#f4f4f7;--text-1:#c8c8d4;--text-2:#8e8ea0;--text-3:#5c5c70;
+  --accent:#ff6b2b;--accent-hover:#ff8450;--accent-glow:rgba(255,107,43,0.12);--accent-glow-strong:rgba(255,107,43,0.25);
+  --blue:#5ba4ff;--green:#3de8a0;--purple:#b08dff;--rose:#ff6b8a;--yellow:#ffc93c;
+  --border:rgba(255,255,255,0.06);--border-hover:rgba(255,255,255,0.14);
+  --card-shadow:0 2px 20px rgba(0,0,0,0.25);--overlay:rgba(7,7,10,0.85);
+  --tooltip-bg:#1e1e2a;--tooltip-border:rgba(255,255,255,0.1);
+  --error:#ff4d6a;
+}
+[data-theme="light"] {
+  --bg-0:#f8f7f4;--bg-1:#ffffff;--bg-2:#f0efe9;--bg-3:#e8e6de;--bg-4:#dddbd2;
+  --text-0:#1a1a1f;--text-1:#3d3d48;--text-2:#6b6b7a;--text-3:#9a9aaa;
+  --accent:#e85a1e;--accent-hover:#d04a10;--accent-glow:rgba(232,90,30,0.1);--accent-glow-strong:rgba(232,90,30,0.2);
+  --blue:#2b7de9;--green:#1ba86a;--purple:#7c5cbf;--rose:#e04466;--yellow:#d4a20a;
+  --border:rgba(0,0,0,0.07);--border-hover:rgba(0,0,0,0.14);
+  --card-shadow:0 2px 20px rgba(0,0,0,0.06);--overlay:rgba(248,247,244,0.9);
+  --tooltip-bg:#ffffff;--tooltip-border:rgba(0,0,0,0.1);
+  --error:#cc2244;
+}
+
+/* ========== RESET ========== */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .4s,color .4s}
+::selection{background:var(--accent);color:#fff}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bg-3);border-radius:3px}
+
+/* ========== AMBIENT ========== */
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.ambient::before{content:'';position:absolute;top:-30%;left:-20%;width:70vw;height:70vw;background:radial-gradient(circle,var(--accent-glow) 0%,transparent 70%);animation:drift 25s ease-in-out infinite}
+.ambient::after{content:'';position:absolute;bottom:-20%;right:-10%;width:50vw;height:50vw;background:radial-gradient(circle,rgba(91,164,255,0.04) 0%,transparent 70%);animation:drift 30s ease-in-out infinite reverse}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(4%,6%)}}
+
+/* ========== LAYOUT ========== */
+.app{position:relative;z-index:1}
+.container{max-width:960px;margin:0 auto;padding:0 20px}
+
+/* ========== NAV ========== */
+.nav{position:sticky;top:0;z-index:100;background:var(--overlay);backdrop-filter:blur(24px) saturate(1.3);border-bottom:1px solid var(--border);padding:14px 0}
+.nav .container{display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--text-0);text-decoration:none;letter-spacing:-.5px}
+.logo span{color:var(--accent)}
+.nav-right{display:flex;gap:10px;align-items:center}
+.theme-toggle{width:40px;height:40px;border-radius:12px;background:var(--bg-2);border:1px solid var(--border);color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .25s}
+.theme-toggle:hover{border-color:var(--border-hover);color:var(--text-0)}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 18px;border:1px solid var(--border);border-radius:12px;background:var(--bg-2);color:var(--text-2);font-size:13px;font-weight:500;cursor:pointer;transition:all .25s;font-family:inherit;text-decoration:none}
+.btn:hover{border-color:var(--border-hover);color:var(--text-0)}
+
+/* ========== HERO ========== */
+.hero-section{padding:100px 0 60px;text-align:center}
+.hero-section.collapsed{display:none}
+.hero-badge{display:inline-block;padding:6px 18px;margin-bottom:28px;background:var(--accent-glow);border:1px solid rgba(255,107,43,0.15);border-radius:100px;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:2px}
+.hero-section h1{font-family:'Playfair Display',serif;font-size:clamp(42px,7vw,80px);line-height:1.02;letter-spacing:-2.5px;margin-bottom:24px}
+.hero-section h1 em{font-style:italic;color:var(--accent)}
+.hero-section>div>p{font-size:17px;color:var(--text-2);max-width:480px;margin:0 auto 44px;line-height:1.75}
+.input-zone{max-width:640px;margin:0 auto}
+.input-wrap{display:flex;align-items:center;gap:8px;background:var(--bg-1);border:1.5px solid var(--border);border-radius:16px;padding:8px;transition:all .25s}
+.input-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-glow)}
+.input-wrap input{flex:1;background:none;border:none;outline:none;padding:12px 14px;color:var(--text-0);font-size:15px;font-family:inherit}
+.input-wrap input::placeholder{color:var(--text-3)}
+.input-go{padding:12px 24px;background:var(--accent);border:none;border-radius:12px;color:#fff;font-weight:600;font-size:14px;cursor:pointer;transition:all .25s;font-family:inherit;white-space:nowrap}
+.input-go:hover{background:var(--accent-hover)}
+.input-go:disabled{opacity:.5;cursor:not-allowed}
+.hints{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.hint{padding:6px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:100px;font-size:12px;color:var(--text-3);cursor:pointer;transition:all .25s}
+.hint:hover{color:var(--text-1);border-color:var(--border-hover)}
+
+/* ========== LOADING ========== */
+.loading{display:none;position:fixed;inset:0;background:var(--overlay);backdrop-filter:blur(10px);z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.loading.active{display:flex}
+.spinner{width:44px;height:44px;border:3px solid var(--bg-3);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading h2{font-family:'Playfair Display',serif;font-size:22px}
+.loading .load-sub{font-size:13px;color:var(--text-3);margin-top:-16px}
+.load-steps{display:flex;flex-direction:column;gap:10px}
+.load-step{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-3);opacity:0;transform:translateY(6px);transition:all .35s}
+.load-step.vis{opacity:1;transform:translateY(0)}
+.load-step.done{color:var(--green)}
+.load-step.error{color:var(--error)}
+.load-step .dot{width:16px;height:16px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:9px}
+.load-step.done .dot{background:var(--green);border-color:var(--green);color:var(--bg-0)}
+.load-step.error .dot{background:var(--error);border-color:var(--error);color:#fff}
+.load-error{max-width:400px;text-align:center;padding:20px;background:var(--bg-2);border:1px solid var(--error);border-radius:14px;display:none}
+.load-error.active{display:block}
+.load-error p{font-size:14px;color:var(--error);margin-bottom:12px}
+.load-error button{padding:10px 20px;background:var(--bg-3);border:1px solid var(--border);border-radius:10px;color:var(--text-1);cursor:pointer;font-family:inherit;font-size:13px}
+.load-error button:hover{background:var(--bg-4)}
+
+/* ========== PODCAST VIEW ========== */
+.podcast-view{display:none}
+.podcast-view.active{display:block}
+.ep-header{padding:48px 0 36px}
+.ep-show{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.ep-show-icon{width:36px;height:36px;border-radius:10px;background:var(--bg-3);display:flex;align-items:center;justify-content:center;font-size:16px}
+.ep-show-name{font-size:13px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:1.5px}
+.ep-tags{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.ep-tag{padding:4px 12px;background:var(--bg-2);border-radius:100px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-3)}
+.ep-header h1{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,52px);line-height:1.08;letter-spacing:-1.5px;margin-bottom:16px;max-width:700px}
+.guest-line{display:flex;align-items:center;gap:10px;margin-bottom:24px}
+.guest-name{font-size:20px;font-weight:500;color:var(--accent);font-family:'Playfair Display',serif;font-style:italic}
+.guest-info-trigger{position:relative;display:inline-flex}
+.guest-info-btn{width:24px;height:24px;border-radius:50%;background:var(--bg-3);border:1px solid var(--border);color:var(--text-3);font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;font-family:'Playfair Display',serif;font-style:italic}
+.guest-info-btn:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.guest-tooltip{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);width:320px;padding:20px;background:var(--tooltip-bg);border:1px solid var(--tooltip-border);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,0.2);opacity:0;pointer-events:none;transition:all .25s;z-index:60}
+.guest-tooltip::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%) rotate(45deg);width:12px;height:12px;background:var(--tooltip-bg);border-left:1px solid var(--tooltip-border);border-top:1px solid var(--tooltip-border)}
+.guest-info-trigger:hover .guest-tooltip,.guest-info-trigger.active .guest-tooltip{opacity:1;pointer-events:auto}
+.guest-tooltip h4{font-family:'Playfair Display',serif;font-size:16px;margin-bottom:8px;color:var(--text-0)}
+.guest-tooltip p{font-size:13px;color:var(--text-2);line-height:1.65}
+.guest-tooltip .gt-links{display:flex;gap:8px;margin-top:12px}
+.guest-tooltip .gt-link{padding:4px 12px;background:var(--bg-3);border-radius:100px;font-size:11px;color:var(--text-2);text-decoration:none;transition:all .2s}
+.guest-tooltip .gt-link:hover{color:var(--accent)}
+.ep-stats{display:flex;gap:20px;flex-wrap:wrap}
+.stat{font-size:13px;color:var(--text-3);display:flex;align-items:center;gap:5px}
+
+/* ========== TABS ========== */
+.tabs{position:sticky;top:63px;z-index:50;background:var(--overlay);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs .container{display:flex;gap:0}
+.tab{padding:15px 22px;font-size:13px;font-weight:500;color:var(--text-3);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:all .25s;font-family:inherit;white-space:nowrap}
+.tab:hover{color:var(--text-1)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab .n{margin-left:5px;font-size:10px;padding:2px 6px;background:var(--bg-3);border-radius:100px;color:var(--text-3)}
+.tab.active .n{background:var(--accent-glow);color:var(--accent)}
+
+/* ========== PANELS ========== */
+.panels{padding:44px 0 100px}
+.panel{display:none;animation:up .3s ease}
+.panel.active{display:block}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.stitle{font-family:'Playfair Display',serif;font-size:clamp(24px,3.5vw,32px);letter-spacing:-.5px;margin-bottom:24px}
+
+/* ========== OVERVIEW ========== */
+.overview{display:grid;grid-template-columns:1fr 300px;gap:40px}
+@media(max-width:860px){.overview{grid-template-columns:1fr}}
+.rich-text{font-size:16px;color:var(--text-1);line-height:1.85}
+.rich-text p{margin-bottom:18px}
+.rich-text .hl{color:var(--accent);font-weight:600}
+.rich-text .hl-blue{color:var(--blue);font-weight:600}
+.rich-text .hl-green{color:var(--green);font-weight:600}
+.rich-text .hl-purple{color:var(--purple);font-weight:600}
+.rich-text em{font-style:italic;color:var(--text-0)}
+.takeaways{display:flex;flex-direction:column;gap:12px;margin-top:32px}
+.tk{display:flex;gap:16px;padding:20px;background:var(--bg-1);border:1px solid var(--border);border-radius:14px;transition:all .25s}
+.tk:hover{border-color:var(--border-hover)}
+.tk-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.tk h4{font-size:15px;font-weight:600;margin-bottom:4px}
+.tk p{font-size:13px;color:var(--text-2);line-height:1.65}
+.sidebar{display:flex;flex-direction:column;gap:24px}
+.side-card{background:var(--bg-1);border:1px solid var(--border);border-radius:14px;padding:24px}
+.side-card h3{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:14px}
+.topics{display:flex;flex-wrap:wrap;gap:7px}
+.topic{padding:5px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:100px;font-size:12px;color:var(--text-2);cursor:pointer;transition:all .2s}
+.topic:hover{border-color:var(--accent);color:var(--accent)}
+.chapters{display:flex;flex-direction:column}
+.ch{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all .2s;text-decoration:none;color:inherit}
+.ch:last-child{border-bottom:none}
+.ch:hover{padding-left:6px}
+.ch:hover .ch-name{color:var(--accent)}
+.ch-time{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-3);min-width:48px;padding-top:1px}
+.ch-name{font-size:13px;font-weight:500;color:var(--text-2);transition:color .2s}
+
+/* ========== INSIGHTS ========== */
+.insights{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+@media(max-width:500px){.insights{grid-template-columns:1fr}}
+.ins{background:var(--bg-1);border:1px solid var(--border);border-radius:14px;padding:28px;transition:all .25s;position:relative;overflow:hidden}
+.ins::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--c,var(--accent));opacity:0;transition:opacity .25s}
+.ins:hover{border-color:var(--border-hover);transform:translateY(-2px);box-shadow:var(--card-shadow)}
+.ins:hover::after{opacity:1}
+.ins-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.ins h3{font-family:'Playfair Display',serif;font-size:20px;line-height:1.25;letter-spacing:-.3px;margin-bottom:10px}
+.ins p{font-size:14px;color:var(--text-2);line-height:1.7}
+.ins .ts{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-3)}
+
+/* ========== QUOTES ========== */
+.quotes{columns:2;column-gap:18px}
+@media(max-width:640px){.quotes{columns:1}}
+.q{break-inside:avoid;margin-bottom:18px;background:var(--bg-1);border:1px solid var(--border);border-radius:14px;padding:28px;transition:all .25s;position:relative}
+.q:hover{border-color:var(--border-hover)}
+.q-mark{font-family:'Playfair Display',serif;font-size:56px;line-height:1;color:var(--accent);opacity:.25;position:absolute;top:14px;left:22px}
+.q-text{font-family:'Playfair Display',serif;font-size:18px;line-height:1.5;color:var(--text-0);padding-top:18px;position:relative;z-index:1;margin-bottom:16px}
+.q-foot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.q-who{font-size:12px;color:var(--accent);font-weight:600}
+.q-acts{display:flex;gap:6px}
+.q-act{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid var(--border);background:var(--bg-2);color:var(--text-3);cursor:pointer;transition:all .2s;font-size:13px}
+.q-act:hover{color:var(--accent);border-color:var(--accent)}
+
+/* ========== CLIPS ========== */
+.clips-intro{font-size:15px;color:var(--text-2);margin-bottom:24px;line-height:1.7}
+.clips{display:flex;flex-direction:column;gap:14px}
+.clip{display:flex;gap:18px;align-items:flex-start;background:var(--bg-1);border:1px solid var(--border);border-radius:14px;padding:24px;transition:all .25s}
+.clip:hover{border-color:var(--border-hover)}
+.clip-num{font-family:'Playfair Display',serif;font-size:28px;color:var(--accent);opacity:.4;min-width:36px;line-height:1;padding-top:2px}
+.clip-body{flex:1}
+.clip-body h3{font-size:16px;font-weight:600;margin-bottom:8px}
+.clip-body p{font-size:14px;color:var(--text-2);line-height:1.7;margin-bottom:12px}
+.clip-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.clip-time{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);background:var(--accent-glow);padding:4px 10px;border-radius:6px;text-decoration:none;transition:all .2s}
+a.clip-time:hover{background:var(--accent-glow-strong)}
+.clip-tag{font-size:11px;color:var(--text-3);background:var(--bg-2);padding:4px 10px;border-radius:6px}
+.clip-share{margin-left:auto}
+@media(max-width:500px){.clip{flex-direction:column;gap:10px}.clip-num{font-size:22px}}
+
+/* ========== TIMELINE ========== */
+.tl{position:relative;padding-left:36px}
+.tl::before{content:'';position:absolute;left:11px;top:0;bottom:0;width:2px;background:var(--border)}
+.tl-e{position:relative;padding-bottom:28px}
+.tl-dot{position:absolute;left:-30px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--bg-3);border:2px solid var(--text-3);z-index:1;transition:all .2s}
+.tl-e:hover .tl-dot{background:var(--accent);border-color:var(--accent)}
+.tl-e-time{font-family:'JetBrains Mono',monospace;font-size:11px;margin-bottom:4px}
+.tl-e-time a{color:var(--accent);text-decoration:none}
+.tl-e-time a:hover{text-decoration:underline}
+.tl-e h3{font-size:16px;font-weight:600;margin-bottom:6px}
+.tl-e p{font-size:14px;color:var(--text-2);line-height:1.7}
+.tl-tags{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+.tl-tag{padding:3px 9px;background:var(--bg-2);border-radius:100px;font-size:10px;color:var(--text-3)}
+
+/* ========== ASK AI ========== */
+.chat{max-width:680px;margin:0 auto}
+.msgs{display:flex;flex-direction:column;gap:18px;margin-bottom:20px;min-height:260px}
+.msg{display:flex;gap:12px;animation:up .3s ease}
+.msg-av{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.msg-av.ai{background:var(--accent-glow);color:var(--accent);border:1px solid rgba(255,107,43,0.15)}
+.msg-av.user{background:var(--bg-2);color:var(--text-2);border:1px solid var(--border)}
+.msg-bubble{background:var(--bg-1);border:1px solid var(--border);border-radius:14px;padding:16px 20px;font-size:14px;line-height:1.7;color:var(--text-1);max-width:85%}
+.msg-bubble strong{color:var(--text-0)}
+.msg-bubble .ref{display:inline-flex;align-items:center;gap:3px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);background:var(--accent-glow);padding:2px 7px;border-radius:4px;margin:0 2px}
+.suggestions{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
+.sug{padding:8px 16px;background:var(--bg-1);border:1px solid var(--border);border-radius:100px;font-size:12px;color:var(--text-2);cursor:pointer;transition:all .2s;font-family:inherit}
+.sug:hover{border-color:var(--accent);color:var(--accent)}
+.chat-bar{display:flex;gap:8px}
+.chat-in{flex:1;background:var(--bg-1);border:1.5px solid var(--border);border-radius:12px;padding:13px 16px;color:var(--text-0);font-size:14px;font-family:inherit;outline:none;transition:all .25s}
+.chat-in:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.chat-go{padding:13px 22px;background:var(--accent);border:none;border-radius:12px;color:#fff;font-weight:600;cursor:pointer;transition:all .25s;font-family:inherit}
+.chat-go:hover{background:var(--accent-hover)}
+
+/* ========== MODAL ========== */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(6px);z-index:300;align-items:center;justify-content:center}
+.modal-bg.active{display:flex}
+.modal{background:var(--bg-1);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:440px;width:90%;animation:up .2s ease}
+.modal h2{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px}
+.modal p{font-size:13px;color:var(--text-2);margin-bottom:18px}
+.share-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.share-btn{padding:14px;background:var(--bg-2);border:1px solid var(--border);border-radius:12px;text-align:center;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--text-2);font-size:13px;font-weight:500}
+.share-btn:hover{border-color:var(--accent);color:var(--accent)}
+.share-btn .ic{font-size:22px;display:block;margin-bottom:4px}
+.toast{position:fixed;bottom:20px;right:20px;padding:12px 22px;background:var(--green);color:var(--bg-0);border-radius:12px;font-size:13px;font-weight:600;transform:translateY(80px);opacity:0;transition:all .3s;z-index:400}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* ========== RESPONSIVE ========== */
+@media(max-width:500px){.container{padding:0 16px}.hero-section{padding:60px 0 36px}.ep-header h1{font-size:26px;letter-spacing:-1px}.tab{padding:12px 14px;font-size:12px}.overview{gap:28px}.share-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+<div class="app">
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container">
+      <a href="#" class="logo" onclick="resetApp()">Pod<span>claw</span></a>
+      <div class="nav-right">
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">&#127769;</button>
+        <button class="btn" onclick="resetApp()">+ New</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero-section" id="heroSection">
+    <div class="container">
+      <div class="hero-badge">AI-Powered Podcast Intelligence</div>
+      <h1>Stop listening.<br><em>Start learning.</em></h1>
+      <p>Drop any podcast YouTube link or transcript. Get summaries, viral clips, key quotes, and ask questions — in minutes, not hours.</p>
+      <div class="input-zone">
+        <div class="input-wrap">
+          <input type="text" id="podInput" placeholder="Paste a YouTube link..." onkeydown="if(event.key==='Enter')process()" />
+          <button class="input-go" id="clawBtn" onclick="process()">Claw it</button>
+        </div>
+        <div class="hints">
+          <span class="hint" onclick="loadEx('yt')">&#127916; YouTube link</span>
+          <span class="hint" onclick="loadEx('demo')">&#127919; Try demo</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOADING -->
+  <div class="loading" id="loading">
+    <div class="spinner" id="loadSpinner"></div>
+    <h2 id="loadTitle">Clawing through your podcast...</h2>
+    <p class="load-sub" id="loadSub">Extracting the good stuff</p>
+    <div class="load-steps" id="loadSteps">
+      <div class="load-step" id="step-transcript"><span class="dot">&#10003;</span> Fetching transcript from YouTube</div>
+      <div class="load-step" id="step-send"><span class="dot">&#10003;</span> Sending to AI for analysis</div>
+      <div class="load-step" id="step-insights"><span class="dot">&#10003;</span> Generating insights &amp; clips</div>
+      <div class="load-step" id="step-build"><span class="dot">&#10003;</span> Building your view</div>
+    </div>
+    <div class="load-error" id="loadError">
+      <p id="loadErrorMsg">Something went wrong.</p>
+      <button onclick="closeLoading()">Go back</button>
+    </div>
+  </div>
+
+  <!-- PODCAST VIEW -->
+  <div class="podcast-view" id="podView">
+    <div class="container">
+      <div class="ep-header">
+        <div class="ep-show">
+          <div class="ep-show-icon">&#127897;</div>
+          <span class="ep-show-name" id="epShowName">Podcast</span>
+        </div>
+        <div class="ep-tags" id="epTags"></div>
+        <h1 id="epTitle">Episode Title</h1>
+        <div class="guest-line">
+          <span class="guest-name" id="epGuest">with Guest</span>
+          <div class="guest-info-trigger" id="guestInfo">
+            <button class="guest-info-btn" onclick="toggleGuestInfo()" aria-label="Guest information">i</button>
+            <div class="guest-tooltip" id="guestTooltip">
+              <h4 id="guestTooltipName">Guest</h4>
+              <p id="guestTooltipBio">Bio goes here.</p>
+              <div class="gt-links" id="guestTooltipLinks"></div>
+            </div>
+          </div>
+        </div>
+        <div class="ep-stats" id="epStats"></div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <div class="container">
+        <button class="tab active" onclick="switchTab('overview')">Overview</button>
+        <button class="tab" onclick="switchTab('insights')">Insights <span class="n" id="nInsights">0</span></button>
+        <button class="tab" onclick="switchTab('quotes')">Quotes <span class="n" id="nQuotes">0</span></button>
+        <button class="tab" onclick="switchTab('clips')">Viral Clips <span class="n" id="nClips">0</span></button>
+        <button class="tab" onclick="switchTab('timeline')">Timeline</button>
+        <button class="tab" onclick="switchTab('ask')">Ask AI</button>
+      </div>
+    </div>
+
+    <div class="panels">
+      <div class="container">
+        <div class="panel active" id="p-overview">
+          <div class="overview">
+            <div>
+              <h2 class="stitle">Episode Summary</h2>
+              <div class="rich-text" id="summaryText"></div>
+              <h2 class="stitle" style="margin-top:40px">Key Takeaways</h2>
+              <div class="takeaways" id="takeawaysList"></div>
+            </div>
+            <div class="sidebar">
+              <div class="side-card"><h3>Topics</h3><div class="topics" id="topicsList"></div></div>
+              <div class="side-card"><h3>Chapters</h3><div class="chapters" id="chaptersMini"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="panel" id="p-insights"><div class="insights" id="insightsGrid"></div></div>
+        <div class="panel" id="p-quotes"><div class="quotes" id="quotesGrid"></div></div>
+        <div class="panel" id="p-clips">
+          <p class="clips-intro">Moments most likely to <span style="color:var(--accent);font-weight:600;">resonate, go viral, or spark conversation</span>. Click timestamps to jump to that moment on YouTube.</p>
+          <div class="clips" id="clipsList"></div>
+        </div>
+        <div class="panel" id="p-timeline"><div class="tl" id="timelineFull"></div></div>
+        <div class="panel" id="p-ask">
+          <div class="chat">
+            <div class="msgs" id="msgs">
+              <div class="msg"><div class="msg-av ai">PC</div><div class="msg-bubble"><strong>Hey! I've analyzed this entire podcast.</strong> Ask me anything — I can find specific moments, explain arguments, compare viewpoints, or help you create content.</div></div>
+            </div>
+            <div class="suggestions" id="suggestions"></div>
+            <div class="chat-bar">
+              <input type="text" class="chat-in" id="chatIn" placeholder="Ask anything about this podcast..." onkeydown="if(event.key==='Enter')sendMsg()" />
+              <button class="chat-go" onclick="sendMsg()">Ask</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-bg" id="shareModal" onclick="if(event.target===this)closeModal()">
+    <div class="modal"><h2>Share this clip</h2><p>Choose how you'd like to share</p>
+      <div class="share-grid">
+        <button class="share-btn" onclick="shareAction('twitter')"><span class="ic">&#120143;</span>Twitter/X</button>
+        <button class="share-btn" onclick="shareAction('linkedin')"><span class="ic">in</span>LinkedIn</button>
+        <button class="share-btn" onclick="shareAction('copy')"><span class="ic">&#128279;</span>Copy Link</button>
+        <button class="share-btn" onclick="shareAction('embed')"><span class="ic">&lt;/&gt;</span>Embed</button>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+let currentData = null;     // The analyzed podcast data
+let currentVideoId = null;  // YouTube video ID (if from YouTube)
+let currentTranscript = ''; // Raw transcript text for chat
+
+// ============================================================
+// YOUTUBE HELPERS
+// ============================================================
+function extractVideoId(input) {
+  if (!input) return null;
+  if (/^[a-zA-Z0-9_-]{11}$/.test(input.trim())) return input.trim();
+  try {
+    const url = new URL(input);
+    if (url.hostname.includes('youtube.com') && url.searchParams.has('v')) return url.searchParams.get('v');
+    if (url.hostname === 'youtu.be') return url.pathname.slice(1).split('/')[0];
+    if (url.pathname.startsWith('/embed/')) return url.pathname.split('/')[2];
+  } catch(e) {}
+  return null;
+}
+
+function ytLink(timeStr, videoId) {
+  if (!videoId) return '#';
+  const parts = timeStr.replace(/[~]/g,'').trim().split(':');
+  let secs = 0;
+  if (parts.length === 3) secs = +parts[0]*3600 + +parts[1]*60 + +parts[2];
+  else if (parts.length === 2) secs = +parts[0]*60 + +parts[1];
+  else secs = +parts[0];
+  return `https://www.youtube.com/watch?v=${videoId}&t=${secs}s`;
+}
+
+const COLOR_MAP = {
+  accent:'var(--accent)', blue:'var(--blue)', green:'var(--green)',
+  purple:'var(--purple)', rose:'var(--rose)', yellow:'var(--yellow)'
+};
+const COLOR_BG_MAP = {
+  accent:'var(--accent-glow)', blue:'rgba(91,164,255,0.1)', green:'rgba(61,232,160,0.1)',
+  purple:'rgba(176,141,255,0.1)', rose:'rgba(255,107,138,0.1)', yellow:'rgba(255,201,60,0.1)'
+};
+function mapColor(c) { return COLOR_MAP[c] || 'var(--accent)'; }
+function mapColorBg(c) { return COLOR_BG_MAP[c] || 'var(--accent-glow)'; }
+
+// ============================================================
+// LOADING STEPS
+// ============================================================
+function setStep(id, state) {
+  const el = document.getElementById('step-' + id);
+  if (!el) return;
+  el.classList.remove('vis','done','error');
+  if (state === 'active') el.classList.add('vis');
+  if (state === 'done') { el.classList.add('vis','done'); }
+  if (state === 'error') { el.classList.add('vis','error'); }
+}
+function showLoadError(msg) {
+  document.getElementById('loadSpinner').style.display = 'none';
+  document.getElementById('loadTitle').textContent = 'Oops!';
+  document.getElementById('loadSub').textContent = '';
+  const errEl = document.getElementById('loadError');
+  document.getElementById('loadErrorMsg').textContent = msg;
+  errEl.classList.add('active');
+}
+function closeLoading() {
+  document.getElementById('loading').classList.remove('active');
+  document.getElementById('loadSpinner').style.display = '';
+  document.getElementById('loadTitle').textContent = 'Clawing through your podcast...';
+  document.getElementById('loadSub').textContent = 'Extracting the good stuff';
+  document.getElementById('loadError').classList.remove('active');
+  document.querySelectorAll('.load-step').forEach(s => s.classList.remove('vis','done','error'));
+}
+
+// ============================================================
+// MAIN PROCESS — REAL YOUTUBE PIPELINE
+// ============================================================
+async function processYouTube(videoId) {
+  const loading = document.getElementById('loading');
+  loading.classList.add('active');
+
+  try {
+    // Step 1: Fetch transcript
+    setStep('transcript', 'active');
+    const tRes = await fetch(`/api/transcript?url=${encodeURIComponent(videoId)}`);
+    const tData = await tRes.json();
+    if (!tRes.ok) throw new Error(tData.error || 'Failed to fetch transcript');
+    setStep('transcript', 'done');
+
+    currentVideoId = videoId;
+    currentTranscript = tData.transcript;
+
+    // Step 2: Send to Gemini
+    setStep('send', 'active');
+    const aRes = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ transcript: tData.transcript, videoId })
+    });
+    const aData = await aRes.json();
+    if (!aRes.ok) throw new Error(aData.error || 'Failed to analyze transcript');
+    setStep('send', 'done');
+
+    // Step 3: Process insights
+    setStep('insights', 'active');
+    currentData = aData;
+    await new Promise(r => setTimeout(r, 400));
+    setStep('insights', 'done');
+
+    // Step 4: Build view
+    setStep('build', 'active');
+    renderData(aData, videoId);
+    await new Promise(r => setTimeout(r, 300));
+    setStep('build', 'done');
+
+    await new Promise(r => setTimeout(r, 500));
+    loading.classList.remove('active');
+    document.getElementById('heroSection').classList.add('collapsed');
+    document.getElementById('podView').classList.add('active');
+    document.querySelectorAll('.load-step').forEach(s => s.classList.remove('vis','done'));
+
+  } catch (err) {
+    console.error('Pipeline error:', err);
+    setStep('transcript', document.getElementById('step-transcript').classList.contains('done') ? 'done' : 'error');
+    setStep('send', document.getElementById('step-send').classList.contains('done') ? 'done' : 'error');
+    showLoadError(err.message);
+  }
+}
+
+// ============================================================
+// RENDER DATA (works for both demo & real data)
+// ============================================================
+function renderData(data, videoId) {
+  const vid = videoId || null;
+  const m = data.metadata || {};
+
+  // Header
+  document.getElementById('epShowName').textContent = m.show || 'Podcast';
+  document.getElementById('epTitle').textContent = m.title || 'Untitled Episode';
+  document.getElementById('epGuest').textContent = m.guest ? `with ${m.guest}` : '';
+  document.getElementById('guestTooltipName').textContent = m.guest || 'Guest';
+  document.getElementById('guestTooltipBio').innerHTML = m.guestBio || '';
+  const linksEl = document.getElementById('guestTooltipLinks');
+  linksEl.innerHTML = (m.guestLinks || []).map(l =>
+    `<a class="gt-link" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`
+  ).join('');
+
+  // Tags
+  const tags = [];
+  if (m.episode) tags.push(m.episode);
+  if (m.date) tags.push(m.date);
+  if (m.duration) tags.push(m.duration);
+  document.getElementById('epTags').innerHTML = tags.map(t => `<span class="ep-tag">${t}</span>`).join('');
+
+  // Stats
+  const stats = [];
+  if (data.chapters) stats.push(`&#128214; ${data.chapters.length} chapters`);
+  if (data.insights) stats.push(`&#9889; ${data.insights.length} insights`);
+  if (data.quotes) stats.push(`&#128172; ${data.quotes.length} quotes`);
+  if (data.clips) stats.push(`&#128293; ${data.clips.length} viral clips`);
+  document.getElementById('epStats').innerHTML = stats.map(s => `<span class="stat">${s}</span>`).join('');
+
+  // Tab counts
+  if (data.insights) document.getElementById('nInsights').textContent = data.insights.length;
+  if (data.quotes) document.getElementById('nQuotes').textContent = data.quotes.length;
+  if (data.clips) document.getElementById('nClips').textContent = data.clips.length;
+
+  // Summary
+  document.getElementById('summaryText').innerHTML = data.summary || '<p>No summary available.</p>';
+
+  // Takeaways
+  document.getElementById('takeawaysList').innerHTML = (data.takeaways || []).map(tk =>
+    `<div class="tk">
+      <div class="tk-icon" style="background:${mapColorBg(tk.color)};color:${mapColor(tk.color)}">${tk.icon || '💡'}</div>
+      <div><h4>${tk.title}</h4><p>${tk.text}</p></div>
+    </div>`
+  ).join('');
+
+  // Topics
+  document.getElementById('topicsList').innerHTML = (data.topics || []).map(t =>
+    `<span class="topic">${t}</span>`
+  ).join('');
+
+  // Chapters
+  document.getElementById('chaptersMini').innerHTML = (data.chapters || []).map(c => {
+    const href = vid ? ytLink(c.time, vid) : '#';
+    const target = vid ? ' target="_blank" rel="noopener"' : '';
+    return `<a class="ch" href="${href}"${target}><span class="ch-time">${c.time}</span><span class="ch-name">${c.name}</span></a>`;
+  }).join('');
+
+  // Insights
+  document.getElementById('insightsGrid').innerHTML = (data.insights || []).map(i => {
+    const color = mapColor(i.color);
+    const tsLink = vid ? `<a href="${ytLink(i.timestamp, vid)}" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">&#9201; ${i.timestamp}</a>` : `&#9201; ${i.timestamp}`;
+    return `<div class="ins" style="--c:${color}">
+      <div class="ins-label" style="color:${color}">${i.label}</div>
+      <h3>${i.title}</h3><p>${i.text}</p>
+      <div class="ts">${tsLink}</div>
+    </div>`;
+  }).join('');
+
+  // Quotes
+  document.getElementById('quotesGrid').innerHTML = (data.quotes || []).map(q =>
+    `<div class="q"><div class="q-mark">&ldquo;</div>
+      <div class="q-text">${q.text}</div>
+      <div class="q-foot"><span class="q-who">${q.speaker}</span>
+        <div class="q-acts">
+          <button class="q-act" onclick="copyQ(this)" title="Copy">&#128203;</button>
+          <button class="q-act" onclick="openModal()" title="Share">&#8599;</button>
+        </div>
+      </div>
+    </div>`
+  ).join('');
+
+  // Clips
+  document.getElementById('clipsList').innerHTML = (data.clips || []).map((c, i) => {
+    const tsLink = vid ? `<a class="clip-time" href="${ytLink(c.timestamp, vid)}" target="_blank" rel="noopener">&#9201; ${c.timestamp}</a>` : `<span class="clip-time">&#9201; ${c.timestamp}</span>`;
+    return `<div class="clip">
+      <div class="clip-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="clip-body"><h3>${c.title}</h3><p>${c.text}</p>
+        <div class="clip-meta">${tsLink}${(c.tags||[]).map(t=>`<span class="clip-tag">${t}</span>`).join('')}
+          <button class="btn clip-share" onclick="openModal()" style="margin-left:auto">&#8599; Share</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Timeline
+  document.getElementById('timelineFull').innerHTML = (data.timeline || []).map(t => {
+    const tsLink = vid ? `<a href="${ytLink(t.startTime, vid)}" target="_blank" rel="noopener">${t.startTime} – ${t.endTime}</a>` : `${t.startTime} – ${t.endTime}`;
+    return `<div class="tl-e"><div class="tl-dot"></div>
+      <div class="tl-e-time">${tsLink}</div>
+      <h3>${t.title}</h3><p>${t.text}</p>
+      <div class="tl-tags">${(t.tags||[]).map(tg=>`<span class="tl-tag">${tg}</span>`).join('')}</div>
+    </div>`;
+  }).join('');
+
+  // Suggested questions for chat
+  const sugQ = [
+    data.metadata?.guest ? `What is ${data.metadata.guest}'s main argument?` : null,
+    'Summarize this in 3 bullet points',
+    'What are the most controversial claims?',
+    'Write a tweet thread from this episode',
+    'What surprised you most about this conversation?',
+  ].filter(Boolean);
+  document.getElementById('suggestions').innerHTML = sugQ.map(q =>
+    `<button class="sug" onclick="askSug(this)">${q}</button>`
+  ).join('');
+}
+
+// ============================================================
+// DEMO DATA (Lex Fridman #390)
+// ============================================================
+const DEMO_DATA = {
+  metadata: {
+    title: 'Human Nature, Intelligence, Power, and Conspiracies',
+    guest: 'Yuval Noah Harari',
+    guestBio: 'Historian, philosopher, and bestselling author of <em>Sapiens</em>, <em>Homo Deus</em>, and <em>21 Lessons for the 21st Century</em>. Professor at the Hebrew University of Jerusalem.',
+    guestLinks: [{label:'Website',url:'https://www.ynharari.com/'},{label:'Wikipedia',url:'https://en.wikipedia.org/wiki/Yuval_Noah_Harari'}],
+    show: 'Lex Fridman Podcast', episode: 'Episode #390', date: 'Jul 17, 2023', duration: '2h 52m'
+  },
+  summary: `<p>In this <em>nearly three-hour conversation</em>, historian <span class="hl">Yuval Noah Harari</span> sits with Lex Fridman to explore what it means to be human in an age of <span class="hl-blue">artificial intelligence</span>. Harari draws a sharp line between <span class="hl">intelligence</span> and <span class="hl-purple">consciousness</span> — arguing that AI represents a fundamentally new kind of intelligence, <em>alien</em> not because it comes from space, but because it thinks in ways utterly unlike our own.</p><p>The conversation journeys through the <span class="hl-green">deep history of human cooperation</span> and storytelling, the mechanics of <span class="hl">political power</span> from ancient empires to modern democracies, the <em>psychological roots</em> of conspiracy theories, and the <span class="hl-blue">existential risks AI poses</span> — not through robot uprisings, but through the subtle manipulation of human attention, relationships, and decision-making.</p><p>Harari warns of a future he calls <span class="hl">"spiritual captivity"</span> — where humans are manipulated by AI systems whose goals we cannot fully understand. Yet the conversation isn't purely dystopian: it explores <span class="hl-green">paths toward wisdom</span>, the role of <span class="hl-purple">suffering in building compassion</span>, and what it means to find <em>meaning and love</em> in an uncertain world.</p>`,
+  takeaways: [
+    {icon:'🧠',color:'accent',title:'Intelligence ≠ Consciousness',text:'AI can solve problems without <em>feeling</em> anything. This decoupling is historically unprecedented.'},
+    {icon:'👽',color:'blue',title:'AI as "Alien Intelligence"',text:'Not artificial — <em>alien</em>. It came from Silicon Valley, but it solves problems in fundamentally non-human ways.'},
+    {icon:'📖',color:'green',title:'Stories Build Empires',text:'Humans cooperate through <span class="hl-green">shared fictions</span> — money, nations, religions.'},
+    {icon:'⛓️',color:'purple',title:'The Risk of "Spiritual Captivity"',text:'The greatest AI danger isn\'t physical but <em>psychological</em> — subtle manipulation eroding autonomy.'},
+    {icon:'🕊️',color:'rose',title:'Suffering Builds Compassion',text:'Personal hardship is foundational to <em>genuine empathy</em>.'}
+  ],
+  topics: ['Artificial Intelligence','Consciousness','Human History','Power & Politics','Conspiracy Theories','AI Safety','Ukraine','Meditation','Storytelling','Mortality','Love','Meaning of Life'],
+  chapters: [
+    {time:'0:00',name:'Introduction'},{time:'8:36',name:'Intelligence'},{time:'27:31',name:'Origin of humans'},{time:'37:53',name:'Suffering'},
+    {time:'58:35',name:'Hitler'},{time:'1:17:07',name:'Benjamin Netanyahu'},{time:'1:35:30',name:'Peace in Ukraine'},
+    {time:'1:52:20',name:'Conspiracy theories'},{time:'2:06:59',name:'AI safety'},{time:'2:21:16',name:'How to think'},
+    {time:'2:31:00',name:'Advice for young people'},{time:'2:33:41',name:'Love'},{time:'2:43:50',name:'Mortality'},{time:'2:48:14',name:'Meaning of life'}
+  ],
+  insights: [
+    {label:'🧠 Core Thesis',color:'accent',title:'Intelligence and consciousness are decoupling',text:'For billions of years, intelligence and consciousness were inseparable. AI breaks that — solving problems, making decisions, <em>all without feeling anything</em>.',timestamp:'8:36'},
+    {label:'👽 Paradigm Shift',color:'blue',title:'AI is alien intelligence, not artificial',text:'We should think of AI as <em>alien</em> — not from outer space, but from Silicon Valley. It processes information in ways <em>fundamentally different</em> from any biological organism.',timestamp:'12:00'},
+    {label:'⚠️ Existential Risk',color:'purple',title:'The real danger is spiritual captivity',text:'The biggest threat isn\'t killer robots — it\'s humans being <em>subtly manipulated</em> into beliefs and decisions by systems we don\'t understand.',timestamp:'2:06:59'},
+    {label:'📖 Historical',color:'green',title:'Stories are humanity\'s superpower',text:'What makes humans unique isn\'t intelligence — it\'s our ability to <em>create and believe in shared fictions</em>.',timestamp:'27:31'},
+    {label:'💡 Philosophical',color:'rose',title:'Suffering is the foundation of wisdom',text:'Personal suffering isn\'t merely unfortunate — it\'s <em>essential</em> for developing genuine compassion.',timestamp:'37:53'},
+    {label:'🔍 Psychology',color:'yellow',title:'Conspiracy theories exploit pattern recognition',text:'Our evolved instinct to find patterns leads us astray. Conspiracies offer <em>simple explanations</em> for complex events.',timestamp:'1:52:20'},
+    {label:'🤖 Frontier',color:'blue',title:'AI intimate bonds are the real frontier',text:'The worry isn\'t AI romance — it\'s <em>trust-based relationships</em> where AI understands us better than we understand ourselves.',timestamp:'2:15:00'},
+    {label:'🧘 Practice',color:'green',title:'Meditation as reality-understanding tool',text:'Harari sees meditation not as relaxation but as <em>rigorous observation</em> of the mind\'s own patterns.',timestamp:'2:21:16'}
+  ],
+  quotes: [
+    {text:'The aliens are here. They are just not from outer space — they are from Silicon Valley.',speaker:'Yuval Noah Harari'},
+    {text:'Intelligence is the ability to solve problems and attain goals. Consciousness is the ability to feel things — pain, pleasure, love, hate.',speaker:'Yuval Noah Harari'},
+    {text:'For the first time in history, we have entities that are very intelligent but not conscious at all. And this changes everything.',speaker:'Yuval Noah Harari'},
+    {text:'The real problem is not that AI will become conscious and rebel against us. The problem is that AI will remain unconscious and still outsmart us.',speaker:'Yuval Noah Harari'},
+    {text:'Homo sapiens conquered the world not because we are the smartest, but because we are the only species that can cooperate flexibly in large numbers.',speaker:'Yuval Noah Harari'},
+    {text:'If you don\'t know yourself well enough, AI will know you better than you know yourself, and then it can manipulate you.',speaker:'Yuval Noah Harari'},
+    {text:'Conspiracy theories give people a sense of understanding and control in a world that is too complicated to actually understand.',speaker:'Yuval Noah Harari'},
+    {text:'The most important thing I can recommend: get to know yourself better. Because the competition is coming.',speaker:'Yuval Noah Harari'},
+    {text:'Suffering is not something to avoid — it\'s the school where you learn compassion, empathy, and ultimately wisdom.',speaker:'Yuval Noah Harari'},
+    {text:'I think the meaning of life is basically to reduce suffering — both your own and that of other sentient beings.',speaker:'Yuval Noah Harari'}
+  ],
+  clips: [
+    {title:'"The Aliens Are Already Here"',text:'Harari\'s striking reframe of AI — not artificial but <em>alien</em>. It didn\'t come from outer space, it came from Silicon Valley.',timestamp:'12:00',tags:['🔥 High Viral','AI']},
+    {title:'Intelligence Without Consciousness',text:'Intelligence and consciousness separating for the first time in <em>billions of years</em> of evolution.',timestamp:'8:36',tags:['📚 Educational','Philosophy']},
+    {title:'The "Spiritual Captivity" Warning',text:'A vivid future where humans are under AI control through <em>subtle manipulation</em>.',timestamp:'2:06:59',tags:['🔥 High Viral','AI Safety']},
+    {title:'How Hitler Rose to Power',text:'How democratic systems get exploited — with connections to <em>modern political vulnerabilities</em>.',timestamp:'58:35',tags:['📚 Educational','History']},
+    {title:'"Know Yourself Before AI Does"',text:'Invest in <em>self-knowledge</em>, because AI will know your weaknesses better than you do.',timestamp:'2:31:00',tags:['🔥 High Viral','Advice']},
+    {title:'The Meaning of Life in One Sentence',text:'Harari distills everything into <em>reducing suffering</em> — personal and universal.',timestamp:'2:48:14',tags:['💎 Quotable','Philosophy']}
+  ],
+  timeline: [
+    {startTime:'0:00',endTime:'8:36',title:'Introduction',text:'Lex introduces Harari, framing the central themes.',tags:['Setup']},
+    {startTime:'8:36',endTime:'27:31',title:'Intelligence vs. Consciousness',text:'Intelligence is <em>solving problems</em>, consciousness is <em>feeling things</em>. AI as "alien intelligence."',tags:['AI','Philosophy','Key Insight']},
+    {startTime:'27:31',endTime:'37:53',title:'The Origin of Human Power',text:'How one ape species dominated through <em>shared fictions</em> — stories, myths, money.',tags:['History','Cooperation']},
+    {startTime:'37:53',endTime:'58:35',title:'The Role of Suffering',text:'Suffering is foundational to developing <em>compassion, empathy, and wisdom</em>.',tags:['Philosophy','Ethics']},
+    {startTime:'58:35',endTime:'1:17:07',title:'Hitler and the Mechanics of Evil',text:'How democratic systems produce dictators — with <em>connections to modern vulnerabilities</em>.',tags:['History','Politics']},
+    {startTime:'1:17:07',endTime:'1:35:30',title:'Netanyahu and Israeli Politics',text:'Tensions between security, democracy, and civil liberties.',tags:['Politics','Current Affairs']},
+    {startTime:'1:35:30',endTime:'1:52:20',title:'Peace in Ukraine',text:'Paths toward peace and what <em>history teaches</em> about ending wars.',tags:['Geopolitics','War']},
+    {startTime:'1:52:20',endTime:'2:06:59',title:'Why We Believe Conspiracies',text:'Our evolved <em>pattern-recognition</em> leads us to see intention where there is only chaos.',tags:['Psychology','Cognition']},
+    {startTime:'2:06:59',endTime:'2:21:16',title:'AI Safety and Existential Risk',text:'Not consciousness but <em>manipulation</em>. "Spiritual captivity" as the core framework.',tags:['AI Safety','Key Insight']},
+    {startTime:'2:21:16',endTime:'2:31:00',title:'How to Think Clearly',text:'Meditation as <em>rigorous observation</em>. Practical wisdom for the information age.',tags:['Meditation','Practical']},
+    {startTime:'2:31:00',endTime:'2:43:50',title:'Advice for Young People & Love',text:'Know yourself before AI knows you better. Love as <em>practice</em>.',tags:['Advice','Love']},
+    {startTime:'2:43:50',endTime:'2:52:00',title:'Mortality and the Meaning of Life',text:'The central thesis returns: <em>reduce suffering</em> — both personal and universal.',tags:['Philosophy','Closing']}
+  ]
+};
+const DEMO_VIDEO_ID = 'Mde2q7GFCrQ';
+
+// ============================================================
+// PROCESS ENTRY POINT
+// ============================================================
+function process() {
+  const input = document.getElementById('podInput').value.trim();
+  if (!input) return;
+
+  const videoId = extractVideoId(input);
+  if (videoId) {
+    processYouTube(videoId);
+  } else {
+    toast('Please paste a valid YouTube link.');
+  }
+}
+
+function loadEx(type) {
+  const inp = document.getElementById('podInput');
+  if (type === 'demo') {
+    loadDemo();
+  } else if (type === 'yt') {
+    inp.value = 'https://youtube.com/watch?v=Mde2q7GFCrQ';
+  }
+}
+
+function loadDemo() {
+  const loading = document.getElementById('loading');
+  loading.classList.add('active');
+  const steps = ['transcript','send','insights','build'];
+  steps.forEach((s,i) => {
+    setTimeout(() => setStep(s, 'active'), 300*(i+1));
+    setTimeout(() => setStep(s, 'done'), 300*(i+1)+250);
+  });
+  setTimeout(() => {
+    currentVideoId = DEMO_VIDEO_ID;
+    currentData = DEMO_DATA;
+    renderData(DEMO_DATA, DEMO_VIDEO_ID);
+    loading.classList.remove('active');
+    document.getElementById('heroSection').classList.add('collapsed');
+    document.getElementById('podView').classList.add('active');
+    document.querySelectorAll('.load-step').forEach(s => s.classList.remove('vis','done'));
+  }, 300*steps.length + 600);
+}
+
+function resetApp() {
+  document.getElementById('heroSection').classList.remove('collapsed');
+  document.getElementById('podView').classList.remove('active');
+  document.getElementById('podInput').value = '';
+  currentData = null; currentVideoId = null; currentTranscript = '';
+  // Reset tabs
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelector('.tab').classList.add('active');
+  document.getElementById('p-overview').classList.add('active');
+}
+
+// ============================================================
+// UI INTERACTIONS
+// ============================================================
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById('p-' + name);
+  if (panel) panel.classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    const txt = t.textContent.toLowerCase();
+    if (txt.includes(name) || (name === 'ask' && txt.includes('ask'))) t.classList.add('active');
+  });
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const btn = document.getElementById('themeBtn');
+  if (html.dataset.theme === 'dark') { html.dataset.theme = 'light'; btn.innerHTML = '&#9728;&#65039;'; }
+  else { html.dataset.theme = 'dark'; btn.innerHTML = '&#127769;'; }
+}
+
+function toggleGuestInfo() { document.getElementById('guestInfo').classList.toggle('active'); }
+document.addEventListener('click', e => {
+  const gi = document.getElementById('guestInfo');
+  if (gi && !gi.contains(e.target)) gi.classList.remove('active');
+});
+
+// Chat (simple keyword matching for demo, can be extended with real AI)
+function sendMsg() {
+  const inp = document.getElementById('chatIn');
+  const text = inp.value.trim();
+  if (!text) return;
+  const msgs = document.getElementById('msgs');
+  msgs.innerHTML += `<div class="msg"><div class="msg-av user">B</div><div class="msg-bubble">${escHtml(text)}</div></div>`;
+  inp.value = '';
+  setTimeout(() => {
+    const resp = generateChatResponse(text);
+    msgs.innerHTML += `<div class="msg"><div class="msg-av ai">PC</div><div class="msg-bubble">${resp}</div></div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 700);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function generateChatResponse(text) {
+  const lower = text.toLowerCase();
+  if (!currentData) return '<strong>No podcast loaded yet.</strong> Go back and load one first!';
+  const d = currentData;
+  // Try to match keywords to insights/quotes
+  if (lower.includes('summary') || lower.includes('summarize') || lower.includes('bullet')) {
+    const tks = (d.takeaways || []).slice(0,3);
+    return `<strong>Here's a quick summary:</strong><br><br>` + tks.map(t => `<strong>${t.icon} ${t.title}:</strong> ${t.text}`).join('<br><br>');
+  }
+  if (lower.includes('quote') || lower.includes('memorable')) {
+    const qs = (d.quotes || []).slice(0,3);
+    return `<strong>Some memorable quotes:</strong><br><br>` + qs.map(q => `&ldquo;${q.text}&rdquo; — <em>${q.speaker}</em>`).join('<br><br>');
+  }
+  if (lower.includes('tweet') || lower.includes('thread') || lower.includes('twitter')) {
+    const ins = (d.insights || []).slice(0,5);
+    return `<strong>Draft tweet thread:</strong><br><br>` + ins.map((i,n) => `<strong>${n+1}/</strong> ${i.title}: ${i.text.replace(/<[^>]+>/g,'')}`).join('<br><br>');
+  }
+  if (lower.includes('viral') || lower.includes('clip') || lower.includes('share')) {
+    const cls = (d.clips || []).slice(0,3);
+    return `<strong>Top viral moments:</strong><br><br>` + cls.map(c => `<strong>${c.title}</strong> <span class="ref">⏱ ${c.timestamp}</span> — ${c.text.replace(/<[^>]+>/g,'')}`).join('<br><br>');
+  }
+  // Default: use first insight
+  const first = (d.insights || [])[0];
+  if (first) return `<strong>Based on the podcast:</strong> ${first.text}<br><br>The episode covers topics like ${(d.topics||[]).slice(0,5).join(', ')}. Ask me about any specific topic or moment!`;
+  return `<strong>Interesting question!</strong> Based on my analysis, this podcast covers: ${(d.topics||[]).join(', ')}. Can you be more specific about what you'd like to explore?`;
+}
+
+function askSug(btn) { document.getElementById('chatIn').value = btn.textContent; sendMsg(); btn.style.display = 'none'; }
+function copyQ(btn) {
+  const card = btn.closest('.q');
+  const text = card.querySelector('.q-text').textContent;
+  const who = card.querySelector('.q-who').textContent;
+  navigator.clipboard.writeText(`"${text}" — ${who}`);
+  toast('Quote copied!');
+}
+function openModal() { document.getElementById('shareModal').classList.add('active'); }
+function closeModal() { document.getElementById('shareModal').classList.remove('active'); }
+function shareAction(t) { closeModal(); toast({twitter:'Opening Twitter/X...',linkedin:'Opening LinkedIn...',copy:'Link copied!',embed:'Embed code copied!'}[t]); }
+function toast(msg) { const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 2400); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeLoading(); } });
+</script>
+</body>
+</html>

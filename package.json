@@ -1,0 +1,15 @@
+{
+  "name": "podclaw",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static site — no build step'",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "youtube-transcript": "^1.2.1",
+    "@google/generative-ai": "^0.21.0"
+  }
+}
