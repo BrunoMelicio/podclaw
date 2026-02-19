@@ -1,6 +1,5 @@
 // /api/analyze.js
-// Sends a YouTube video directly to Gemini 2.5 Flash for analysis
-// Gemini processes the video natively — no transcript API needed
+// Receives a transcript and sends it to Gemini 2.5 Flash for structured analysis
 // Requires GEMINI_API_KEY environment variable
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -110,10 +109,10 @@ export default async function handler(req, res) {
     });
   }
 
-  const { videoId } = req.body;
+  const { videoId, transcript } = req.body;
 
-  if (!videoId) {
-    return res.status(400).json({ error: 'Missing "videoId" in request body.' });
+  if (!videoId || !transcript) {
+    return res.status(400).json({ error: 'Missing "videoId" or "transcript" in request body.' });
   }
 
   const youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
@@ -130,16 +129,10 @@ export default async function handler(req, res) {
       },
     });
 
-    // Pass the YouTube URL directly to Gemini — it processes the video natively
+    // Send the transcript text to Gemini for analysis
     const result = await model.generateContent([
       {
-        fileData: {
-          fileUri: youtubeUrl,
-          mimeType: 'video/mp4',
-        },
-      },
-      {
-        text: `${SYSTEM_PROMPT}\n\nAnalyze this YouTube podcast video and return the structured JSON. Remember: ONLY return valid JSON, nothing else.`,
+        text: `${SYSTEM_PROMPT}\n\nHere is the timestamped transcript of the YouTube podcast (video: ${youtubeUrl}):\n\n${transcript}\n\nAnalyze this podcast transcript and return the structured JSON. Remember: ONLY return valid JSON, nothing else.`,
       },
     ]);
 

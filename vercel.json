@@ -3,6 +3,9 @@
   "outputDirectory": ".",
   "framework": null,
   "functions": {
+    "api/transcript.js": {
+      "maxDuration": 120
+    },
     "api/analyze.js": {
       "maxDuration": 120
     }

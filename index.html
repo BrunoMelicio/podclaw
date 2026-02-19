@@ -348,8 +348,8 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
     <h2 id="loadTitle">Clawing through your podcast...</h2>
     <p class="load-sub" id="loadSub">Extracting the good stuff</p>
     <div class="load-steps" id="loadSteps">
-      <div class="load-step" id="step-video"><span class="dot">&#10003;</span> Sending video to Gemini AI</div>
-      <div class="load-step" id="step-analyze"><span class="dot">&#10003;</span> Watching &amp; analyzing podcast</div>
+      <div class="load-step" id="step-transcript"><span class="dot">&#10003;</span> Downloading &amp; transcribing audio</div>
+      <div class="load-step" id="step-analyze"><span class="dot">&#10003;</span> Analyzing with Gemini AI</div>
       <div class="load-step" id="step-insights"><span class="dot">&#10003;</span> Generating insights &amp; clips</div>
       <div class="load-step" id="step-build"><span class="dot">&#10003;</span> Building your view</div>
     </div>
@@ -573,18 +573,20 @@ async function processYouTube(videoId) {
   loading.classList.add('active');
 
   try {
-    // Step 1: Send video to Gemini
-    setStep('video', 'active');
+    // Step 1: Download audio & transcribe with Groq Whisper
+    setStep('transcript', 'active');
     currentVideoId = videoId;
-    await new Promise(r => setTimeout(r, 300));
-    setStep('video', 'done');
+    const tRes = await fetch(`/api/transcript?url=${encodeURIComponent(videoId)}`);
+    const tData = await tRes.json();
+    if (!tRes.ok) throw new Error(tData.error || 'Failed to transcribe video');
+    setStep('transcript', 'done');
 
-    // Step 2: Gemini analyzes the video directly (single API call)
+    // Step 2: Send transcript to Gemini for analysis
     setStep('analyze', 'active');
     const aRes = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ videoId })
+      body: JSON.stringify({ videoId, transcript: tData.transcript })
     });
     const aData = await aRes.json();
     if (!aRes.ok) throw new Error(aData.error || 'Failed to analyze video');
@@ -611,7 +613,7 @@ async function processYouTube(videoId) {
 
   } catch (err) {
     console.error('Pipeline error:', err);
-    setStep('video', document.getElementById('step-video').classList.contains('done') ? 'done' : 'error');
+    setStep('transcript', document.getElementById('step-transcript').classList.contains('done') ? 'done' : 'error');
     setStep('analyze', document.getElementById('step-analyze').classList.contains('done') ? 'done' : 'error');
     showLoadError(err.message);
   }
