@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Podclaw — Podcast Intelligence Platform</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23192231'/%3E%3Cstop offset='1' stop-color='%230f1722'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23bg)'/%3E%3Cg transform='translate(50,48)'%3E%3Cellipse cx='0' cy='2' rx='18' ry='20' fill='%23e8622a'/%3E%3Cellipse cx='0' cy='2' rx='18' ry='20' fill='%23ff6b2b'/%3E%3Cpath d='M-18 0c-5-1-9 4-9 10s4 11 9 10' stroke='%23ff6b2b' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M18 0c5-1 9 4 9 10s-4 11-9 10' stroke='%23ff6b2b' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M-14-16a8 8 0 0 1 8-8' stroke='%23ff8450' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Cpath d='M14-16a8 8 0 0 0-8-8' stroke='%23ff8450' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Crect x='-14' y='-6' width='7' height='5' rx='2' fill='%23192231'/%3E%3Crect x='7' y='-6' width='7' height='5' rx='2' fill='%23192231'/%3E%3Ccircle cx='-10' cy='-4' r='2' fill='%23fff'/%3E%3Ccircle cx='11' cy='-4' r='2' fill='%23fff'/%3E%3Cpath d='M-6 10q6 5 12 0' stroke='%23192231' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M-10 24l-6 14' stroke='%23ff6b2b' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M-4 26l-3 14' stroke='%23ff6b2b' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M10 24l6 14' stroke='%23ff6b2b' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M4 26l3 14' stroke='%23ff6b2b' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M-20-2l-8-12' stroke='%23ff6b2b' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='-30' cy='-16' r='3' fill='%23ff8450'/%3E%3Cpath d='M20-2l8-12' stroke='%23ff6b2b' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='30' cy='-16' r='3' fill='%23ff8450'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ========== THEME ========== */
@@ -87,8 +87,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-0);color:var(--text-0)
 .demo-guest{font-size:13px;color:var(--text-2);margin-bottom:10px;font-style:italic}
 .demo-meta{display:flex;gap:8px;flex-wrap:wrap}
 .demo-tag{padding:3px 9px;background:var(--bg-2);border-radius:100px;font-size:10px;color:var(--text-3);font-weight:500}
-.demo-thumb{height:100px;border-radius:12px 12px 0 0;margin:-20px -20px 16px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.demo-thumb .demo-show-art{font-size:28px;font-weight:700;color:rgba(255,255,255,0.9);font-family:'Playfair Display',serif;letter-spacing:-1px;text-shadow:0 2px 8px rgba(0,0,0,0.3)}
+.demo-thumb{width:100%;aspect-ratio:16/9;border-radius:12px 12px 0 0;margin:-20px -20px 16px;overflow:hidden;background:var(--bg-3);position:relative}
+.demo-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s,opacity .3s;opacity:0}
+.demo-thumb img.loaded{opacity:1}
+.demo-card:hover .demo-thumb img{transform:scale(1.05)}
 
 /* ========== LOADING ========== */
 .loading{display:none;position:fixed;inset:0;background:var(--overlay);backdrop-filter:blur(10px);z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:28px}
@@ -289,7 +291,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-0);color:var(--text-0)
   <!-- NAV -->
   <nav class="nav">
     <div class="container">
-      <a class="logo" onclick="resetApp()"><svg class="logo-icon" viewBox="0 0 100 100" width="32" height="32" style="vertical-align:middle;margin-right:6px;margin-top:-3px"><rect width="100" height="100" rx="20" fill="var(--bg-2)"/><g transform="translate(50,48)"><ellipse cx="0" cy="2" rx="18" ry="20" fill="var(--accent)"/><path d="M-18 0c-5-1-9 4-9 10s4 11 9 10" stroke="var(--accent)" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M18 0c5-1 9 4 9 10s-4 11-9 10" stroke="var(--accent)" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M-14-16a8 8 0 0 1 8-8" stroke="var(--accent-hover)" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M14-16a8 8 0 0 0-8-8" stroke="var(--accent-hover)" stroke-width="4" fill="none" stroke-linecap="round"/><rect x="-14" y="-6" width="7" height="5" rx="2" fill="var(--bg-0)"/><rect x="7" y="-6" width="7" height="5" rx="2" fill="var(--bg-0)"/><circle cx="-10" cy="-4" r="2" fill="var(--text-0)"/><circle cx="11" cy="-4" r="2" fill="var(--text-0)"/><path d="M-6 10q6 5 12 0" stroke="var(--bg-0)" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M-10 24l-6 14" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/><path d="M-4 26l-3 14" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/><path d="M10 24l6 14" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/><path d="M4 26l3 14" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/><path d="M-20-2l-8-12" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><circle cx="-30" cy="-16" r="3" fill="var(--accent-hover)"/><path d="M20-2l8-12" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><circle cx="30" cy="-16" r="3" fill="var(--accent-hover)"/></g></svg>Pod<span>claw</span></a>
+      <a class="logo" onclick="resetApp()"><img src="/icon-nav.png" alt="" style="width:32px;height:32px;vertical-align:middle;margin-right:6px;margin-top:-2px;border-radius:6px">Pod<span>claw</span></a>
       <div class="nav-right">
         <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">&#127769;</button>
         <button class="btn" onclick="resetApp()">+ New</button>
@@ -301,7 +303,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-0);color:var(--text-0)
   <section class="hero-section" id="heroSection">
     <div class="container">
       <div class="hero-badge">PODCAST INTELLIGENCE</div>
-      <h1>Never Stop <em>Listening.</em> Never Stop <em>Learning.</em></h1>
+      <h1>Stop Listening. Start <em>Learning.</em></h1>
       <p>Paste a link from Spotify, Apple Podcasts, or any RSS feed — get instant summaries, viral clips, key quotes, and interactive Q&A.</p>
       <div class="input-zone">
         <div class="input-wrap">
@@ -314,9 +316,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-0);color:var(--text-0)
         <div class="demos-label">Try a demo — powered by Spotify</div>
         <div class="demos-grid">
           <div class="demo-card" onclick="loadDemo('nicklane')">
-            <div class="demo-thumb" style="background:linear-gradient(135deg,#1a5c3a,#0d2f1e)">
-              <span class="demo-show-art">Lex Fridman</span>
-            </div>
+            <div class="demo-thumb"><img id="thumb-nicklane" alt="Lex Fridman Podcast" onload="this.classList.add('loaded')"></div>
             <div class="demo-ep">Lex Fridman Podcast · #318</div>
             <div class="demo-title">Origin of Life, Evolution, Aliens, Biology & Consciousness</div>
             <div class="demo-guest">with Nick Lane</div>
@@ -327,9 +327,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-0);color:var(--text-0)
             </div>
           </div>
           <div class="demo-card" onclick="loadDemo('greene')">
-            <div class="demo-thumb" style="background:linear-gradient(135deg,#2a1f5e,#140f30)">
-              <span class="demo-show-art">Huberman Lab</span>
-            </div>
+            <div class="demo-thumb"><img id="thumb-greene" alt="Huberman Lab" onload="this.classList.add('loaded')"></div>
             <div class="demo-ep">Huberman Lab · Guest Series</div>
             <div class="demo-title">A Process for Finding & Achieving Your Unique Purpose</div>
             <div class="demo-guest">with Robert Greene</div>
@@ -340,9 +338,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-0);color:var(--text-0)
             </div>
           </div>
           <div class="demo-card" onclick="loadDemo('musk')">
-            <div class="demo-thumb" style="background:linear-gradient(135deg,#5c1a1a,#2f0d0d)">
-              <span class="demo-show-art">Joe Rogan</span>
-            </div>
+            <div class="demo-thumb"><img id="thumb-musk" alt="Joe Rogan Experience" onload="this.classList.add('loaded')"></div>
             <div class="demo-ep">Joe Rogan Experience · #2404</div>
             <div class="demo-title">SpaceX, Tesla, AI, Government, Free Speech & the Future</div>
             <div class="demo-guest">with Elon Musk</div>
@@ -1164,6 +1160,22 @@ function openModal() { document.getElementById('shareModal').classList.add('acti
 function closeModal() { document.getElementById('shareModal').classList.remove('active'); }
 function shareAction(t) { closeModal(); showToast({twitter:'Opening Twitter/X...',linkedin:'Opening LinkedIn...',copy:'Link copied!',embed:'Embed code copied!'}[t]); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeLoading(); } });
+
+// Load demo thumbnails from Spotify via resolve API
+(function loadDemoThumbs() {
+  Object.entries(DEMOS).forEach(([key, demo]) => {
+    const img = document.getElementById('thumb-' + key);
+    if (!img || !demo.spotifyUrl) return;
+    fetch('/api/resolve', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: demo.spotifyUrl })
+    })
+    .then(r => r.json())
+    .then(data => { if (data.artwork) img.src = data.artwork; })
+    .catch(() => {});
+  });
+})();
 </script>
 </body>
 </html>
