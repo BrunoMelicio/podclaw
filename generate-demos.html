@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html><head><title>Podclaw — Generate Demo Data</title>
+<style>
+body{font-family:monospace;background:#111;color:#eee;padding:20px;max-width:900px;margin:0 auto}
+h1{color:#ff6b2b}
+.status{padding:10px;margin:8px 0;border-radius:8px;background:#1a1a2a}
+.status.done{border-left:4px solid #3de8a0}
+.status.error{border-left:4px solid #ff4d6a}
+.status.working{border-left:4px solid #ff6b2b}
+textarea{width:100%;height:300px;background:#0a0a14;color:#eee;border:1px solid #333;border-radius:8px;padding:10px;font-family:monospace;font-size:11px;margin:10px 0}
+button{background:#ff6b2b;color:#fff;border:none;padding:12px 24px;border-radius:8px;font-size:16px;cursor:pointer;font-weight:bold}
+button:hover{background:#ff8450}
+button:disabled{opacity:0.5;cursor:not-allowed}
+.warn{color:#ffc93c;font-size:13px;margin:10px 0}
+</style></head>
+<body>
+<h1>Generate Demo Data</h1>
+<p>This page calls your deployed Podclaw API to resolve and analyze the 3 demo podcasts.</p>
+<p class="warn">This will take several minutes per episode (Gemini needs to process the full audio). Be patient!</p>
+<button id="startBtn" onclick="startGeneration()">Start Generation</button>
+
+<div id="log"></div>
+
+<h2 style="margin-top:30px">Results — Copy each JSON block:</h2>
+<div id="results"></div>
+
+<script>
+const API_BASE = 'https://podclaw.vercel.app';
+
+const DEMOS = [
+  { key: 'nicklane', url: 'https://open.spotify.com/episode/18GOIf00XC3jB7FuVZ2SM2', label: 'Nick Lane (Lex Fridman #318)' },
+  { key: 'greene', url: 'https://open.spotify.com/episode/6E6kZoPEr0JlSjRM1msB3D', label: 'Robert Greene (Huberman Lab)' },
+  { key: 'musk', url: 'https://open.spotify.com/episode/6vBr2kDnmrUu17xdiRVbXR', label: 'Elon Musk (JRE #2404)' }
+];
+
+function log(msg, cls='working') {
+  document.getElementById('log').innerHTML += `<div class="status ${cls}">${msg}</div>`;
+}
+
+async function startGeneration() {
+  document.getElementById('startBtn').disabled = true;
+  const resultsDiv = document.getElementById('results');
+
+  for (const demo of DEMOS) {
+    log(`Resolving ${demo.label}...`);
+
+    try {
+      // Step 1: Resolve
+      const resolveRes = await fetch(`${API_BASE}/api/resolve`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: demo.url })
+      });
+      const resolveData = await resolveRes.json();
+
+      if (!resolveRes.ok) {
+        log(`FAILED to resolve ${demo.label}: ${resolveData.error}`, 'error');
+        continue;
+      }
+
+      log(`Resolved ${demo.label}: ${resolveData.title} — MP3 found!`, 'done');
+      log(`Sending ${demo.label} to Gemini (this takes 2-5 minutes)...`);
+
+      // Step 2: Analyze
+      const analyzeRes = await fetch(`${API_BASE}/api/analyze`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mp3Url: resolveData.mp3Url,
+          title: resolveData.title,
+          show: resolveData.show
+        })
+      });
+      const analyzeData = await analyzeRes.json();
+
+      if (!analyzeRes.ok) {
+        log(`FAILED to analyze ${demo.label}: ${analyzeData.error}`, 'error');
+        // Show error details
+        resultsDiv.innerHTML += `<h3 style="color:#ff4d6a">${demo.label} — ERROR</h3><textarea>${JSON.stringify(analyzeData, null, 2)}</textarea>`;
+        continue;
+      }
+
+      log(`${demo.label} analyzed successfully!`, 'done');
+
+      // Save result with resolve metadata
+      const fullResult = {
+        spotifyUrl: demo.url,
+        artwork: resolveData.artwork,
+        mp3Url: resolveData.mp3Url,
+        data: analyzeData
+      };
+
+      resultsDiv.innerHTML += `<h3>${demo.label} (${demo.key})</h3><textarea id="result-${demo.key}">${JSON.stringify(fullResult, null, 2)}</textarea>`;
+
+    } catch (err) {
+      log(`ERROR with ${demo.label}: ${err.message}`, 'error');
+    }
+  }
+
+  log('All done! Copy the JSON from each text box below.', 'done');
+}
+</script>
+</body></html>
