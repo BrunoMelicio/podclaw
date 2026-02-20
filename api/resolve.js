@@ -32,7 +32,7 @@ export default async function handler(req, res) {
         result = await resolveRSSFeed(input);
       } catch {
         return res.status(400).json({
-          error: 'Unrecognized link. Paste a Spotify, Apple Podcasts, or RSS podcast link.',
+          error: 'Unrecognized link. Paste a Spotify or Apple Podcasts link.',
         });
       }
     }
