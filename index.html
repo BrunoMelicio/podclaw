@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Podclaw — Podcast Intelligence Platform</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='32' cy='30' rx='14' ry='16' fill='%23ff6b2b'/%3E%3Cpath d='M18 22c-4 0-6 4-6 9s2 9 6 9' stroke='%23ff6b2b' stroke-width='3.5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M46 22c4 0 6 4 6 9s-2 9-6 9' stroke='%23ff6b2b' stroke-width='3.5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M12 19a6 6 0 0 1 6-6' stroke='%23ff8450' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Cpath d='M52 19a6 6 0 0 0-6-6' stroke='%23ff8450' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='26' cy='26' r='3' fill='%23fff'/%3E%3Ccircle cx='38' cy='26' r='3' fill='%23fff'/%3E%3Cpath d='M24 36q8 6 16 0' stroke='%23fff' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3Cpath d='M21 44l-5 10M26 46l-3 10M43 44l5 10M38 46l3 10' stroke='%23ff6b2b' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23192231'/%3E%3Cstop offset='1' stop-color='%230f1722'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23bg)'/%3E%3Cg transform='translate(50,48)'%3E%3Cellipse cx='0' cy='2' rx='18' ry='20' fill='%23e8622a'/%3E%3Cellipse cx='0' cy='2' rx='18' ry='20' fill='%23ff6b2b'/%3E%3Cpath d='M-18 0c-5-1-9 4-9 10s4 11 9 10' stroke='%23ff6b2b' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M18 0c5-1 9 4 9 10s-4 11-9 10' stroke='%23ff6b2b' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M-14-16a8 8 0 0 1 8-8' stroke='%23ff8450' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Cpath d='M14-16a8 8 0 0 0-8-8' stroke='%23ff8450' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Crect x='-14' y='-6' width='7' height='5' rx='2' fill='%23192231'/%3E%3Crect x='7' y='-6' width='7' height='5' rx='2' fill='%23192231'/%3E%3Ccircle cx='-10' cy='-4' r='2' fill='%23fff'/%3E%3Ccircle cx='11' cy='-4' r='2' fill='%23fff'/%3E%3Cpath d='M-6 10q6 5 12 0' stroke='%23192231' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M-10 24l-6 14' stroke='%23ff6b2b' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M-4 26l-3 14' stroke='%23ff6b2b' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M10 24l6 14' stroke='%23ff6b2b' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M4 26l3 14' stroke='%23ff6b2b' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M-20-2l-8-12' stroke='%23ff6b2b' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='-30' cy='-16' r='3' fill='%23ff8450'/%3E%3Cpath d='M20-2l8-12' stroke='%23ff6b2b' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='30' cy='-16' r='3' fill='%23ff8450'/%3E%3C/g%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ========== THEME ========== */
@@ -87,6 +87,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-0);color:var(--text-0)
 .demo-guest{font-size:13px;color:var(--text-2);margin-bottom:10px;font-style:italic}
 .demo-meta{display:flex;gap:8px;flex-wrap:wrap}
 .demo-tag{padding:3px 9px;background:var(--bg-2);border-radius:100px;font-size:10px;color:var(--text-3);font-weight:500}
+.demo-thumb{height:100px;border-radius:12px 12px 0 0;margin:-20px -20px 16px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.demo-thumb .demo-show-art{font-size:28px;font-weight:700;color:rgba(255,255,255,0.9);font-family:'Playfair Display',serif;letter-spacing:-1px;text-shadow:0 2px 8px rgba(0,0,0,0.3)}
 
 /* ========== LOADING ========== */
 .loading{display:none;position:fixed;inset:0;background:var(--overlay);backdrop-filter:blur(10px);z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:28px}
@@ -287,7 +289,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-0);color:var(--text-0)
   <!-- NAV -->
   <nav class="nav">
     <div class="container">
-      <a class="logo" onclick="resetApp()"><svg class="logo-icon" viewBox="0 0 64 64" width="28" height="28" style="vertical-align:middle;margin-right:4px;margin-top:-2px"><ellipse cx="32" cy="30" rx="14" ry="16" fill="var(--accent)"/><path d="M18 22c-4 0-6 4-6 9s2 9 6 9" stroke="var(--accent)" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M46 22c4 0 6 4 6 9s-2 9-6 9" stroke="var(--accent)" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M12 19a6 6 0 0 1 6-6" stroke="var(--accent-hover)" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M52 19a6 6 0 0 0-6-6" stroke="var(--accent-hover)" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="26" cy="26" r="3" fill="var(--bg-0)"/><circle cx="38" cy="26" r="3" fill="var(--bg-0)"/><path d="M24 36q8 6 16 0" stroke="var(--bg-0)" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M21 44l-5 10M26 46l-3 10M43 44l5 10M38 46l3 10" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg>Pod<span>claw</span></a>
+      <a class="logo" onclick="resetApp()"><svg class="logo-icon" viewBox="0 0 100 100" width="32" height="32" style="vertical-align:middle;margin-right:6px;margin-top:-3px"><rect width="100" height="100" rx="20" fill="var(--bg-2)"/><g transform="translate(50,48)"><ellipse cx="0" cy="2" rx="18" ry="20" fill="var(--accent)"/><path d="M-18 0c-5-1-9 4-9 10s4 11 9 10" stroke="var(--accent)" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M18 0c5-1 9 4 9 10s-4 11-9 10" stroke="var(--accent)" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M-14-16a8 8 0 0 1 8-8" stroke="var(--accent-hover)" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M14-16a8 8 0 0 0-8-8" stroke="var(--accent-hover)" stroke-width="4" fill="none" stroke-linecap="round"/><rect x="-14" y="-6" width="7" height="5" rx="2" fill="var(--bg-0)"/><rect x="7" y="-6" width="7" height="5" rx="2" fill="var(--bg-0)"/><circle cx="-10" cy="-4" r="2" fill="var(--text-0)"/><circle cx="11" cy="-4" r="2" fill="var(--text-0)"/><path d="M-6 10q6 5 12 0" stroke="var(--bg-0)" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M-10 24l-6 14" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/><path d="M-4 26l-3 14" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/><path d="M10 24l6 14" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/><path d="M4 26l3 14" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/><path d="M-20-2l-8-12" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><circle cx="-30" cy="-16" r="3" fill="var(--accent-hover)"/><path d="M20-2l8-12" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><circle cx="30" cy="-16" r="3" fill="var(--accent-hover)"/></g></svg>Pod<span>claw</span></a>
       <div class="nav-right">
         <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">&#127769;</button>
         <button class="btn" onclick="resetApp()">+ New</button>
@@ -299,7 +301,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-0);color:var(--text-0)
   <section class="hero-section" id="heroSection">
     <div class="container">
       <div class="hero-badge">PODCAST INTELLIGENCE</div>
-      <h1>Start <em>Learning</em> From Every Podcast</h1>
+      <h1>Never Stop <em>Listening.</em> Never Stop <em>Learning.</em></h1>
       <p>Paste a link from Spotify, Apple Podcasts, or any RSS feed — get instant summaries, viral clips, key quotes, and interactive Q&A.</p>
       <div class="input-zone">
         <div class="input-wrap">
@@ -312,7 +314,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-0);color:var(--text-0)
         <div class="demos-label">Try a demo — powered by Spotify</div>
         <div class="demos-grid">
           <div class="demo-card" onclick="loadDemo('nicklane')">
-            <div class="demo-ep">Lex Fridman Podcast</div>
+            <div class="demo-thumb" style="background:linear-gradient(135deg,#1a5c3a,#0d2f1e)">
+              <span class="demo-show-art">Lex Fridman</span>
+            </div>
+            <div class="demo-ep">Lex Fridman Podcast · #318</div>
             <div class="demo-title">Origin of Life, Evolution, Aliens, Biology & Consciousness</div>
             <div class="demo-guest">with Nick Lane</div>
             <div class="demo-meta">
@@ -322,17 +327,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-0);color:var(--text-0)
             </div>
           </div>
           <div class="demo-card" onclick="loadDemo('greene')">
-            <div class="demo-ep">Huberman Lab</div>
+            <div class="demo-thumb" style="background:linear-gradient(135deg,#2a1f5e,#140f30)">
+              <span class="demo-show-art">Huberman Lab</span>
+            </div>
+            <div class="demo-ep">Huberman Lab · Guest Series</div>
             <div class="demo-title">A Process for Finding & Achieving Your Unique Purpose</div>
             <div class="demo-guest">with Robert Greene</div>
             <div class="demo-meta">
-              <span class="demo-tag">2h 36m</span>
+              <span class="demo-tag">3h 9m</span>
               <span class="demo-tag">Purpose</span>
               <span class="demo-tag">Mastery</span>
             </div>
           </div>
           <div class="demo-card" onclick="loadDemo('musk')">
-            <div class="demo-ep">Joe Rogan Experience</div>
+            <div class="demo-thumb" style="background:linear-gradient(135deg,#5c1a1a,#2f0d0d)">
+              <span class="demo-show-art">Joe Rogan</span>
+            </div>
+            <div class="demo-ep">Joe Rogan Experience · #2404</div>
             <div class="demo-title">SpaceX, Tesla, AI, Government, Free Speech & the Future</div>
             <div class="demo-guest">with Elon Musk</div>
             <div class="demo-meta">
@@ -744,25 +755,32 @@ const DEMOS = {
         {time:'5:45',name:'Origin of life'},
         {time:'19:31',name:'Panspermia'},
         {time:'25:05',name:'What is life?'},
-        {time:'42:00',name:'Hydrothermal vents & energy'},
-        {time:'1:05:00',name:'Proton gradients & membranes'},
-        {time:'1:28:00',name:'From chemistry to cells'},
-        {time:'1:52:00',name:'Bacteria vs. archaea'},
-        {time:'2:10:00',name:'The eukaryotic revolution'},
-        {time:'2:35:00',name:'Photosynthesis & oxygen'},
-        {time:'2:58:00',name:'Sex & evolution'},
-        {time:'3:15:00',name:'Alien life'},
-        {time:'3:30:00',name:'Consciousness'},
-        {time:'3:42:00',name:'Meaning & wonder'}
+        {time:'38:20',name:'Photosynthesis'},
+        {time:'41:55',name:'Prokaryotic vs eukaryotic cells'},
+        {time:'51:56',name:'Sex'},
+        {time:'59:39',name:'DNA'},
+        {time:'1:06:51',name:'Violence'},
+        {time:'1:17:25',name:'Human evolution'},
+        {time:'1:23:21',name:'Neanderthals'},
+        {time:'1:26:53',name:'Sensory inputs'},
+        {time:'1:37:43',name:'Consciousness'},
+        {time:'2:09:17',name:'AI and biology'},
+        {time:'2:38:36',name:'Evolution'},
+        {time:'2:59:07',name:'Fermi paradox'},
+        {time:'3:12:27',name:'Cities'},
+        {time:'3:20:14',name:'Depression'},
+        {time:'3:22:50',name:'Writing'},
+        {time:'3:30:49',name:'Advice for young people'},
+        {time:'3:37:57',name:'Earth'}
       ],
       insights: [
         {label:'\u{1F52C} Core Thesis',color:'accent',title:'Life is a chemical reaction that never stopped',text:'There was no single "spark." Life emerged from <em>continuous thermodynamic reactions</em> between CO\u2082 and H\u2082, driven by natural proton gradients at alkaline hydrothermal vents.',timestamp:'5:45'},
-        {label:'\u{26A1} Key Mechanism',color:'blue',title:'Proton gradients are the universal engine',text:'Every living cell on Earth uses proton gradients across membranes to generate energy. This mechanism is <em>older than DNA</em> and may be the most conserved feature of life.',timestamp:'1:05:00'},
-        {label:'\u{1F9EC} Evolutionary Milestone',color:'green',title:'Eukaryotes: the most important event in biology',text:'A single endosymbiotic event — an archaeon swallowing a bacterium — created the <em>mitochondria-powered eukaryotic cell</em>, enabling all complex life.',timestamp:'2:10:00'},
+        {label:'\u{26A1} Key Mechanism',color:'blue',title:'Proton gradients are the universal engine',text:'Every living cell on Earth uses proton gradients across membranes to generate energy. This mechanism is <em>older than DNA</em> and may be the most conserved feature of life.',timestamp:'59:39'},
+        {label:'\u{1F9EC} Evolutionary Milestone',color:'green',title:'Eukaryotes: the most important event in biology',text:'A single endosymbiotic event — an archaeon swallowing a bacterium — created the <em>mitochondria-powered eukaryotic cell</em>, enabling all complex life.',timestamp:'41:55'},
         {label:'\u{1F6D1} Paradigm Challenge',color:'purple',title:'Panspermia doesn\'t solve the origin problem',text:'Even if life arrived from space, it still had to <em>originate somewhere</em> under similar chemical conditions. Panspermia just moves the question.',timestamp:'19:31'},
-        {label:'\u{2600}\u{FE0F} Breakthrough',color:'yellow',title:'Photosynthesis nearly destroyed life',text:'The Great Oxidation Event was a <em>catastrophe for anaerobic life</em>, but it enabled the explosion of complex organisms that breathe oxygen.',timestamp:'2:35:00'},
-        {label:'\u{1F47D} Speculation',color:'rose',title:'Aliens would share our biochemistry',text:'The laws of thermodynamics constrain biology universally. Alien life would likely use <em>similar metabolic chemistry</em>, not exotic alternatives.',timestamp:'3:15:00'},
-        {label:'\u{1F9E0} Frontier',color:'blue',title:'Consciousness may be electromagnetic',text:'Lane suggests consciousness could be tied to the <em>bioelectric fields</em> generated by living cells, not purely computational.',timestamp:'3:30:00'},
+        {label:'\u{2600}\u{FE0F} Breakthrough',color:'yellow',title:'Photosynthesis nearly destroyed life',text:'The Great Oxidation Event was a <em>catastrophe for anaerobic life</em>, but it enabled the explosion of complex organisms that breathe oxygen.',timestamp:'38:20'},
+        {label:'\u{1F47D} Speculation',color:'rose',title:'Aliens would share our biochemistry',text:'The laws of thermodynamics constrain biology universally. Alien life would likely use <em>similar metabolic chemistry</em>, not exotic alternatives.',timestamp:'2:59:07'},
+        {label:'\u{1F9E0} Frontier',color:'blue',title:'Consciousness may be electromagnetic',text:'Lane suggests consciousness could be tied to the <em>bioelectric fields</em> generated by living cells, not purely computational.',timestamp:'1:37:43'},
         {label:'\u{1F4D6} Historical',color:'green',title:'RNA World is incomplete',text:'The popular RNA-first hypothesis misses the <em>energy problem</em>. You need a continuous energy source before self-replication matters.',timestamp:'25:05'}
       ],
       quotes: [
@@ -779,27 +797,34 @@ const DEMOS = {
       ],
       clips: [
         {title:'"Life Never Stopped Reacting"',text:'Lane\'s striking reframe — life isn\'t a thing that <em>started</em>, it\'s a chemical reaction that <em>found a groove and never stopped</em>.',timestamp:'5:45',tags:['\u{1F525} High Viral','Origin of Life']},
-        {title:'The Proton Gradient Fossil',text:'Every living cell uses the same energy mechanism — a <em>4-billion-year-old fossil</em> of how life began.',timestamp:'1:05:00',tags:['\u{1F4DA} Educational','Biochemistry']},
-        {title:'The One-Time Eukaryotic Miracle',text:'Complex life happened <em>exactly once</em> in the entire history of Earth. The implications are staggering.',timestamp:'2:10:00',tags:['\u{1F525} High Viral','Evolution']},
-        {title:'Oxygen: The Great Catastrophe',text:'Photosynthesis poisoned the planet with oxygen — <em>mass extinction that enabled everything</em> we see today.',timestamp:'2:35:00',tags:['\u{1F4DA} Educational','History']},
-        {title:'Aliens Use Proton Gradients Too',text:'A bold prediction: extraterrestrial life would share <em>our fundamental biochemistry</em>.',timestamp:'3:15:00',tags:['\u{1F525} High Viral','Aliens']},
-        {title:'"We Are Chemistry Aware of Itself"',text:'Lane\'s poetic summary of the human condition — <em>matter that learned to wonder</em>.',timestamp:'3:42:00',tags:['\u{1F48E} Quotable','Philosophy']}
+        {title:'The Proton Gradient Fossil',text:'Every living cell uses the same energy mechanism — a <em>4-billion-year-old fossil</em> of how life began.',timestamp:'59:39',tags:['\u{1F4DA} Educational','Biochemistry']},
+        {title:'The One-Time Eukaryotic Miracle',text:'Complex life happened <em>exactly once</em> in the entire history of Earth. The implications are staggering.',timestamp:'41:55',tags:['\u{1F525} High Viral','Evolution']},
+        {title:'Oxygen: The Great Catastrophe',text:'Photosynthesis poisoned the planet with oxygen — <em>mass extinction that enabled everything</em> we see today.',timestamp:'38:20',tags:['\u{1F4DA} Educational','History']},
+        {title:'Aliens Use Proton Gradients Too',text:'A bold prediction: extraterrestrial life would share <em>our fundamental biochemistry</em>.',timestamp:'2:59:07',tags:['\u{1F525} High Viral','Aliens']},
+        {title:'"We Are Chemistry Aware of Itself"',text:'Lane\'s poetic summary of the human condition — <em>matter that learned to wonder</em>.',timestamp:'3:37:57',tags:['\u{1F48E} Quotable','Philosophy']}
       ],
       timeline: [
         {startTime:'0:00',endTime:'5:45',title:'Introduction',text:'Lex introduces Nick Lane and frames the central question: <em>how did life begin?</em>',tags:['Setup']},
         {startTime:'5:45',endTime:'19:31',title:'The Origin of Life',text:'Lane explains the thermodynamic basis of life — <em>CO\u2082 + H\u2082 reactions</em> at hydrothermal vents.',tags:['Origin','Chemistry','Key Section']},
         {startTime:'19:31',endTime:'25:05',title:'Panspermia Debate',text:'Why the idea that life came from space <em>doesn\'t solve the fundamental problem</em>.',tags:['Panspermia','Debate']},
-        {startTime:'25:05',endTime:'42:00',title:'What Is Life?',text:'Defining life through <em>thermodynamics and energy flow</em> rather than DNA and replication.',tags:['Definition','Philosophy']},
-        {startTime:'42:00',endTime:'1:05:00',title:'Hydrothermal Vents & Energy',text:'The deep-sea environments where <em>natural proton gradients</em> could power the first biochemistry.',tags:['Vents','Energy','Key Section']},
-        {startTime:'1:05:00',endTime:'1:28:00',title:'Proton Gradients & Membranes',text:'How <em>chemiosmotic coupling</em> became the universal energy mechanism of all life.',tags:['Biochemistry','Membranes']},
-        {startTime:'1:28:00',endTime:'1:52:00',title:'From Chemistry to Cells',text:'The transition from <em>self-sustaining chemistry</em> to the first protocells.',tags:['Protocells','Transition']},
-        {startTime:'1:52:00',endTime:'2:10:00',title:'Bacteria vs. Archaea',text:'The deep split in the tree of life and what it tells us about <em>early evolution</em>.',tags:['Taxonomy','Evolution']},
-        {startTime:'2:10:00',endTime:'2:35:00',title:'The Eukaryotic Revolution',text:'The singular event when an archaeon engulfed a bacterium — <em>creating all complex life</em>.',tags:['Eukaryotes','Key Section']},
-        {startTime:'2:35:00',endTime:'2:58:00',title:'Photosynthesis & Oxygen',text:'The Great Oxidation Event — <em>mass extinction that enabled complex life</em>.',tags:['Oxygen','Photosynthesis']},
-        {startTime:'2:58:00',endTime:'3:15:00',title:'Sex & Evolution',text:'Why sexual reproduction evolved and <em>accelerated adaptation</em>.',tags:['Sex','Natural Selection']},
-        {startTime:'3:15:00',endTime:'3:30:00',title:'Alien Life',text:'Why extraterrestrial biochemistry might be <em>more familiar than we expect</em>.',tags:['Aliens','Astrobiology']},
-        {startTime:'3:30:00',endTime:'3:42:00',title:'Consciousness',text:'The hard problem and the possibility that awareness is tied to <em>bioelectric fields</em>.',tags:['Consciousness','Philosophy']},
-        {startTime:'3:42:00',endTime:'3:48:00',title:'Wonder & Meaning',text:'Lane reflects on the <em>beauty of understanding</em> our chemical origins.',tags:['Closing','Philosophy']}
+        {startTime:'25:05',endTime:'38:20',title:'What Is Life?',text:'Defining life through <em>thermodynamics and energy flow</em> rather than DNA and replication.',tags:['Definition','Philosophy']},
+        {startTime:'38:20',endTime:'41:55',title:'Photosynthesis',text:'How photosynthesis evolved and <em>transformed Earth\'s atmosphere</em> forever.',tags:['Photosynthesis','Key Section']},
+        {startTime:'41:55',endTime:'51:56',title:'Prokaryotic vs. Eukaryotic Cells',text:'The leap from simple to complex cells — <em>the most important event in the history of life</em>.',tags:['Eukaryotes','Evolution']},
+        {startTime:'51:56',endTime:'59:39',title:'Sex & Reproduction',text:'Why sexual reproduction evolved and <em>accelerated adaptation</em>.',tags:['Sex','Natural Selection']},
+        {startTime:'59:39',endTime:'1:06:51',title:'DNA',text:'The mechanics of genetic information, replication, and <em>the code of life</em>.',tags:['DNA','Genetics']},
+        {startTime:'1:06:51',endTime:'1:17:25',title:'Violence in Nature',text:'The role of competition, predation, and <em>violence in driving evolution</em>.',tags:['Violence','Evolution']},
+        {startTime:'1:17:25',endTime:'1:23:21',title:'Human Evolution',text:'How humans diverged from other primates and <em>what makes us unique</em>.',tags:['Humans','Evolution']},
+        {startTime:'1:23:21',endTime:'1:26:53',title:'Neanderthals',text:'Our closest relatives — what happened to them and <em>what we inherited</em>.',tags:['Neanderthals','History']},
+        {startTime:'1:26:53',endTime:'1:37:43',title:'Sensory Inputs',text:'How organisms evolved to <em>perceive and interact with</em> their environment.',tags:['Senses','Biology']},
+        {startTime:'1:37:43',endTime:'2:09:17',title:'Consciousness',text:'The hard problem and the possibility that awareness is tied to <em>bioelectric fields</em>.',tags:['Consciousness','Philosophy','Key Section']},
+        {startTime:'2:09:17',endTime:'2:38:36',title:'AI and Biology',text:'Parallels and differences between <em>artificial and biological intelligence</em>.',tags:['AI','Biology']},
+        {startTime:'2:38:36',endTime:'2:59:07',title:'Evolution',text:'Deep patterns of evolution and <em>what drives adaptation</em> over billions of years.',tags:['Evolution','Theory']},
+        {startTime:'2:59:07',endTime:'3:12:27',title:'Fermi Paradox & Alien Life',text:'Why extraterrestrial biochemistry might be <em>more familiar than we expect</em>.',tags:['Aliens','Astrobiology','Key Section']},
+        {startTime:'3:12:27',endTime:'3:20:14',title:'Cities & Civilization',text:'How human settlements mirror <em>biological organization</em>.',tags:['Cities','Civilization']},
+        {startTime:'3:20:14',endTime:'3:22:50',title:'Depression',text:'The biology of depression and <em>its evolutionary roots</em>.',tags:['Depression','Mental Health']},
+        {startTime:'3:22:50',endTime:'3:30:49',title:'Writing',text:'Lane on the craft of <em>communicating science</em> to the public.',tags:['Writing','Science Communication']},
+        {startTime:'3:30:49',endTime:'3:37:57',title:'Advice for Young People',text:'Lane\'s guidance for aspiring scientists and <em>curious minds</em>.',tags:['Advice','Career']},
+        {startTime:'3:37:57',endTime:'3:48:00',title:'Earth & Wonder',text:'Lane reflects on the <em>beauty of understanding</em> our place on this planet.',tags:['Closing','Philosophy']}
       ]
     }
   },
@@ -812,7 +837,7 @@ const DEMOS = {
         guest: 'Robert Greene',
         guestBio: 'Multiple <em>New York Times</em> bestselling author of <em>The 48 Laws of Power</em>, <em>Mastery</em>, <em>The Art of Seduction</em>, and <em>The Laws of Human Nature</em>. One of the most influential thinkers on strategy, power dynamics, and human psychology.',
         guestLinks: [{label:'Website',url:'https://powerseductionandwar.com/'},{label:'Wikipedia',url:'https://en.wikipedia.org/wiki/Robert_Greene_(American_author)'}],
-        show: 'Huberman Lab', episode: 'Guest Series', date: 'Dec 4, 2023', duration: '2h 36m'
+        show: 'Huberman Lab', episode: 'Guest Series', date: 'Dec 4, 2023', duration: '3h 9m'
       },
       summary: `<p>In this <em>profound conversation</em>, <span class="hl">Robert Greene</span> joins Andrew Huberman to explore the science and strategy of <span class="hl-blue">finding your life's purpose</span>. Greene draws from his book <em>Mastery</em> to argue that every person has a <span class="hl-green">"Life\'s Task"</span> — a unique calling rooted in childhood fascinations that, when pursued with discipline, leads to extraordinary achievement and deep fulfillment.</p><p>The discussion spans <span class="hl-purple">practical frameworks for self-discovery</span>: how to decode early inclinations, choose the right mentors, survive the apprenticeship phase, and develop <em>creative intuition</em> through years of deliberate practice. Greene shares how figures like <span class="hl">Einstein, Darwin, and Steve Jobs</span> turned childhood obsessions into world-changing careers — and how anyone can follow a similar path.</p><p>In a deeply personal turn, Greene opens up about his <span class="hl">recent stroke</span> and near-death experience, revealing how confronting mortality <em>radically sharpened</em> his appreciation for time, creativity, and human connection. The conversation also dives into <span class="hl-blue">power dynamics</span>, the crisis of <span class="hl-green">modern distraction and "avatarization"</span>, the lost art of <em>nonverbal communication</em>, and why mastering these domains is more urgent than ever in the age of AI and social media.</p>`,
       takeaways: [
@@ -825,17 +850,20 @@ const DEMOS = {
       topics: ['Life Purpose','Mastery','Power Dynamics','Mentorship','Apprenticeship','Creativity','Robert Greene','Stroke Recovery','Nonverbal Communication','Social Media','Avatarization','Self-Awareness','Childhood Passions','Deliberate Practice','Human Nature','Relationships'],
       chapters: [
         {time:'0:00',name:'Introduction'},
-        {time:'8:00',name:'The concept of Life\'s Task'},
-        {time:'22:00',name:'Childhood clues to purpose'},
-        {time:'38:00',name:'Choosing mentors wisely'},
-        {time:'52:00',name:'The apprenticeship phase'},
+        {time:'5:56',name:'Mastery & purpose'},
+        {time:'8:26',name:'Finding purpose & childhood'},
+        {time:'18:00',name:'Early interests & discovery'},
+        {time:'22:50',name:'Love, delight & emotional engagement'},
+        {time:'35:00',name:'Choosing mentors wisely'},
+        {time:'50:00',name:'The apprenticeship phase'},
         {time:'1:08:00',name:'Creative intuition & mastery'},
         {time:'1:24:00',name:'Greene\'s stroke & near-death experience'},
         {time:'1:42:00',name:'Power dynamics & relationships'},
-        {time:'1:55:00',name:'Nonverbal communication'},
-        {time:'2:08:00',name:'Social media & avatarization'},
-        {time:'2:20:00',name:'Finding purpose in the modern age'},
-        {time:'2:30:00',name:'Closing reflections'}
+        {time:'1:55:00',name:'Nonverbal communication & seduction'},
+        {time:'2:15:00',name:'Social media & avatarization'},
+        {time:'2:35:00',name:'Anxiety, creativity & finding purpose today'},
+        {time:'2:55:00',name:'Closing reflections'},
+        {time:'3:05:00',name:'Sponsors & newsletter'}
       ],
       insights: [
         {label:'\u{1F3AF} Framework',color:'accent',title:'Your Life\'s Task is hidden in childhood',text:'Before society imposed expectations, you were <em>naturally drawn to certain activities</em>. That pull is the signal. Greene calls it your "primal inclination."',timestamp:'8:00'},
@@ -868,18 +896,18 @@ const DEMOS = {
         {title:'"Humility Opens the Door"',text:'Why the apprenticeship phase is supposed to be <em>uncomfortable</em> — and why that\'s exactly the point.',timestamp:'52:00',tags:['\u{1F48E} Quotable','Advice']}
       ],
       timeline: [
-        {startTime:'0:00',endTime:'8:00',title:'Introduction',text:'Huberman introduces Robert Greene and frames the episode around <em>purpose and mastery</em>.',tags:['Setup']},
-        {startTime:'8:00',endTime:'22:00',title:'The Life\'s Task Framework',text:'Greene explains his core concept: everyone has a <em>unique calling</em> encoded in early inclinations.',tags:['Purpose','Framework','Key Section']},
-        {startTime:'22:00',endTime:'38:00',title:'Childhood Clues to Purpose',text:'How Einstein, Darwin, and Jobs turned <em>childhood obsessions</em> into revolutionary careers.',tags:['Examples','Childhood']},
-        {startTime:'38:00',endTime:'52:00',title:'Choosing Mentors',text:'The art of finding mentors who <em>genuinely develop you</em> vs. those who exploit apprentices.',tags:['Mentorship','Strategy']},
-        {startTime:'52:00',endTime:'1:08:00',title:'The Apprenticeship Phase',text:'Three stages — observation, skills, experimentation — and why <em>humility is essential</em>.',tags:['Apprenticeship','Mastery']},
+        {startTime:'0:00',endTime:'5:56',title:'Introduction',text:'Huberman introduces Robert Greene and frames the episode around <em>purpose and mastery</em>.',tags:['Setup']},
+        {startTime:'5:56',endTime:'18:00',title:'Mastery & Finding Purpose',text:'Greene explains his core concept from <em>Mastery</em>: everyone has a unique calling encoded in early inclinations.',tags:['Purpose','Framework','Key Section']},
+        {startTime:'18:00',endTime:'35:00',title:'Childhood Clues & Emotional Engagement',text:'How Einstein, Darwin, and Jobs turned <em>childhood obsessions</em> into revolutionary careers.',tags:['Examples','Childhood']},
+        {startTime:'35:00',endTime:'50:00',title:'Choosing Mentors',text:'The art of finding mentors who <em>genuinely develop you</em> vs. those who exploit apprentices.',tags:['Mentorship','Strategy']},
+        {startTime:'50:00',endTime:'1:08:00',title:'The Apprenticeship Phase',text:'Three stages — observation, skills, experimentation — and why <em>humility is essential</em>.',tags:['Apprenticeship','Mastery']},
         {startTime:'1:08:00',endTime:'1:24:00',title:'Creative Intuition & Mastery',text:'How deep practice produces <em>unconscious pattern recognition</em> that feels like genius.',tags:['Creativity','Mastery','Key Section']},
         {startTime:'1:24:00',endTime:'1:42:00',title:'Stroke & Near-Death Experience',text:'Greene\'s deeply personal story of his stroke and how <em>mortality awareness transforms priorities</em>.',tags:['Personal','Mortality','Key Section']},
         {startTime:'1:42:00',endTime:'1:55:00',title:'Power Dynamics & Relationships',text:'Understanding power as <em>reality perception</em>, not manipulation.',tags:['Power','Relationships']},
-        {startTime:'1:55:00',endTime:'2:08:00',title:'Nonverbal Communication',text:'The dying art of reading people and why <em>in-person skills matter more than ever</em>.',tags:['Communication','Social Skills']},
-        {startTime:'2:08:00',endTime:'2:20:00',title:'Avatarization & Social Media',text:'How we\'re <em>flattening our identities</em> online and losing connection to our true selves.',tags:['Social Media','Identity']},
-        {startTime:'2:20:00',endTime:'2:30:00',title:'Finding Purpose Today',text:'Practical advice for <em>navigating distraction</em> and reconnecting with your Life\'s Task.',tags:['Advice','Modern Life']},
-        {startTime:'2:30:00',endTime:'2:36:00',title:'Closing Reflections',text:'Greene and Huberman reflect on <em>urgency, gratitude, and the beauty of mastery</em>.',tags:['Closing','Philosophy']}
+        {startTime:'1:55:00',endTime:'2:15:00',title:'Nonverbal Communication & Seduction',text:'The dying art of reading people and why <em>in-person skills matter more than ever</em>.',tags:['Communication','Social Skills']},
+        {startTime:'2:15:00',endTime:'2:35:00',title:'Avatarization & Social Media',text:'How we\'re <em>flattening our identities</em> online and losing connection to our true selves.',tags:['Social Media','Identity']},
+        {startTime:'2:35:00',endTime:'2:55:00',title:'Anxiety, Creativity & Purpose Today',text:'Practical advice for <em>navigating distraction</em> and reconnecting with your Life\'s Task.',tags:['Advice','Modern Life']},
+        {startTime:'2:55:00',endTime:'3:09:00',title:'Closing Reflections',text:'Greene and Huberman reflect on <em>urgency, gratitude, and the beauty of mastery</em>.',tags:['Closing','Philosophy']}
       ]
     }
   },
@@ -905,31 +933,31 @@ const DEMOS = {
       topics: ['SpaceX','Starship','Tesla','Cybertruck','Roadster','Twitter/X','Free Speech','Government Waste','AI','xAI','Automation','Encryption','Immigration','National Debt','Simulation Theory','Neuralink','Homelessness','Politics'],
       chapters: [
         {time:'0:00',name:'Introduction'},
-        {time:'4:31',name:'OpenAI & Sam Altman'},
-        {time:'10:00',name:'Simulation theory'},
+        {time:'4:31',name:'Sam Altman & OpenAI whistleblower'},
+        {time:'10:42',name:'Epstein, simulation theory & comet'},
         {time:'15:32',name:'SpaceX Starship launch'},
         {time:'28:00',name:'Mars colonization'},
-        {time:'38:00',name:'Tesla Cybertruck & Roadster'},
-        {time:'50:00',name:'Twitter/X & free speech'},
-        {time:'1:02:56',name:'Encrypted messaging & security'},
-        {time:'1:15:00',name:'AI & the future of work'},
-        {time:'1:35:00',name:'Government fraud & waste'},
-        {time:'1:55:00',name:'California & homelessness'},
-        {time:'2:10:00',name:'Immigration & voter policies'},
-        {time:'2:30:00',name:'National debt & economics'},
-        {time:'2:50:00',name:'xAI & Grok'},
-        {time:'3:05:00',name:'Neuralink update'},
+        {time:'38:37',name:'Tesla Cybertruck & Roadster'},
+        {time:'43:41',name:'Twitter/X acquisition & free speech'},
+        {time:'49:00',name:'California & homelessness crisis'},
+        {time:'1:02:56',name:'Encrypted messaging & AI'},
+        {time:'1:20:00',name:'AI & the future of work'},
+        {time:'1:40:00',name:'Government fraud & Social Security'},
+        {time:'2:00:00',name:'Immigration & voter policies'},
+        {time:'2:20:00',name:'National debt & economics'},
+        {time:'2:40:00',name:'xAI, Grok & AI music'},
+        {time:'3:00:00',name:'Neuralink & brain-computer interfaces'},
         {time:'3:15:00',name:'The future of humanity'}
       ],
       insights: [
         {label:'\u{1F680} Milestone',color:'accent',title:'Starship completed a full orbital flight',text:'The most powerful rocket ever built <em>circled the entire globe</em> and landed in the ocean. Musk describes the engineering challenge as unprecedented.',timestamp:'15:32'},
-        {label:'\u{1F916} Prediction',color:'blue',title:'AI will make traditional work optional',text:'Musk envisions a near future where AI and robotics handle most labor, creating <em>universal high income</em> without traditional employment.',timestamp:'1:15:00'},
-        {label:'\u{1F4B8} Expos\u00E9',color:'green',title:'Zombie payments and phantom citizens',text:'Social Security databases contain impossible birthdates and payments to people who should be long dead — <em>billions in systemic fraud</em>.',timestamp:'1:35:00'},
-        {label:'\u{1F5E3}\u{FE0F} Philosophy',color:'purple',title:'Twitter was bought to fight a "mind virus"',text:'Musk describes his $44B acquisition as a <em>defensive move against ideological capture</em> of the public square.',timestamp:'50:00'},
-        {label:'\u{1F3CE}\u{FE0F} Product',color:'rose',title:'The new Roadster might actually fly',text:'Musk coyly suggests the second-gen Tesla Roadster will have <em>rocket thrusters for actual flight capability</em>.',timestamp:'38:00'},
+        {label:'\u{1F916} Prediction',color:'blue',title:'AI will make traditional work optional',text:'Musk envisions a near future where AI and robotics handle most labor, creating <em>universal high income</em> without traditional employment.',timestamp:'1:20:00'},
+        {label:'\u{1F4B8} Expos\u00E9',color:'green',title:'Zombie payments and phantom citizens',text:'Social Security databases contain impossible birthdates and payments to people who should be long dead — <em>billions in systemic fraud</em>.',timestamp:'1:40:00'},
+        {label:'\u{1F5E3}\u{FE0F} Philosophy',color:'purple',title:'Twitter was bought to fight a "mind virus"',text:'Musk describes his $44B acquisition as a <em>defensive move against ideological capture</em> of the public square.',timestamp:'43:41'},
+        {label:'\u{1F3CE}\u{FE0F} Product',color:'rose',title:'The new Roadster might actually fly',text:'Musk coyly suggests the second-gen Tesla Roadster will have <em>rocket thrusters for actual flight capability</em>.',timestamp:'38:37'},
         {label:'\u{1F512} Technical',color:'yellow',title:'No messaging app is truly secure',text:'Musk argues that <em>true encryption doesn\'t exist</em> in practice — eventually AI will replace messaging apps entirely.',timestamp:'1:02:56'},
         {label:'\u{1F30D} Vision',color:'blue',title:'Mars is the backup drive for civilization',text:'Musk reiterates his core thesis: humanity needs to become <em>multi-planetary</em> as insurance against extinction.',timestamp:'28:00'},
-        {label:'\u{1F9E0} Update',color:'accent',title:'Neuralink is reading minds',text:'Brain-computer interface updates — patients are <em>controlling computers with thought</em>, with more ambitious goals ahead.',timestamp:'3:05:00'}
+        {label:'\u{1F9E0} Update',color:'accent',title:'Neuralink is reading minds',text:'Brain-computer interface updates — patients are <em>controlling computers with thought</em>, with more ambitious goals ahead.',timestamp:'3:00:00'}
       ],
       quotes: [
         {text:'Starship circled the entire planet and landed itself. Think about that. The most powerful rocket in history, and it parks itself.',speaker:'Elon Musk'},
@@ -945,28 +973,28 @@ const DEMOS = {
       ],
       clips: [
         {title:'Starship Circled the Planet',text:'The most powerful rocket in history completed a <em>full orbital flight</em> — Musk describes the engineering triumph.',timestamp:'15:32',tags:['\u{1F525} High Viral','SpaceX']},
-        {title:'"I Bought Twitter to Fight a Mind Virus"',text:'Musk\'s provocative explanation for the <em>$44 billion acquisition</em> that stunned the world.',timestamp:'50:00',tags:['\u{1F525} High Viral','Twitter/X']},
-        {title:'The Roadster Will Fly',text:'Musk hints at <em>rocket-powered flight capability</em> in the next Tesla Roadster. Not a metaphor.',timestamp:'38:00',tags:['\u{1F525} High Viral','Tesla']},
-        {title:'Zombie Social Security Payments',text:'People born in the 1700s still receiving checks — <em>staggering government fraud</em> exposed.',timestamp:'1:35:00',tags:['\u{1F4A1} Insightful','Government']},
-        {title:'AI Makes Work Optional',text:'Musk\'s vision of a future where <em>nobody needs to work</em> — and why that\'s liberating, not terrifying.',timestamp:'1:15:00',tags:['\u{1F4A1} Insightful','AI']},
+        {title:'"I Bought Twitter to Fight a Mind Virus"',text:'Musk\'s provocative explanation for the <em>$44 billion acquisition</em> that stunned the world.',timestamp:'43:41',tags:['\u{1F525} High Viral','Twitter/X']},
+        {title:'The Roadster Will Fly',text:'Musk hints at <em>rocket-powered flight capability</em> in the next Tesla Roadster. Not a metaphor.',timestamp:'38:37',tags:['\u{1F525} High Viral','Tesla']},
+        {title:'Zombie Social Security Payments',text:'People born in the 1700s still receiving checks — <em>staggering government fraud</em> exposed.',timestamp:'1:40:00',tags:['\u{1F4A1} Insightful','Government']},
+        {title:'AI Makes Work Optional',text:'Musk\'s vision of a future where <em>nobody needs to work</em> — and why that\'s liberating, not terrifying.',timestamp:'1:20:00',tags:['\u{1F4A1} Insightful','AI']},
         {title:'"Mars Is the Backup Drive"',text:'Humanity\'s survival depends on <em>becoming multi-planetary</em> — Musk\'s core life mission in one sentence.',timestamp:'28:00',tags:['\u{1F48E} Quotable','Space']}
       ],
       timeline: [
         {startTime:'0:00',endTime:'4:31',title:'Introduction',text:'Rogan welcomes Musk back for another <em>wide-ranging conversation</em>.',tags:['Setup']},
-        {startTime:'4:31',endTime:'10:00',title:'OpenAI & Sam Altman',text:'Discussion about the Altman-Carlson interview and <em>controversies surrounding OpenAI</em>.',tags:['OpenAI','Drama']},
-        {startTime:'10:00',endTime:'15:32',title:'Simulation Theory & Big Questions',text:'Are we living in a simulation? <em>Epstein, Gates, and cosmic speculation</em>.',tags:['Philosophy','Simulation']},
-        {startTime:'15:32',endTime:'28:00',title:'SpaceX & Starship',text:'The orbital flight achievement — <em>the most powerful rocket ever built</em> circling the globe.',tags:['SpaceX','Starship','Key Section']},
-        {startTime:'28:00',endTime:'38:00',title:'Mars Colonization',text:'Why humanity must become <em>multi-planetary</em> and the timeline for Mars.',tags:['Mars','Vision']},
-        {startTime:'38:00',endTime:'50:00',title:'Tesla: Cybertruck & Roadster',text:'Cybertruck updates and the bombshell hint about a <em>flying Roadster</em>.',tags:['Tesla','Products','Key Section']},
-        {startTime:'50:00',endTime:'1:02:56',title:'Twitter/X & Free Speech',text:'Why Musk bought Twitter — the "mind virus" thesis and <em>ideological capture</em>.',tags:['Twitter/X','Free Speech','Key Section']},
-        {startTime:'1:02:56',endTime:'1:15:00',title:'Encrypted Messaging & Security',text:'Why <em>true encryption is an illusion</em> and AI will replace messaging apps.',tags:['Security','Technology']},
-        {startTime:'1:15:00',endTime:'1:35:00',title:'AI & Future of Work',text:'Universal high income, optional employment, and <em>AI\'s transformative potential</em>.',tags:['AI','Economics','Key Section']},
-        {startTime:'1:35:00',endTime:'1:55:00',title:'Government Fraud & Waste',text:'Zombie payments, impossible birthdates, and <em>systemic institutional failure</em>.',tags:['Government','Fraud']},
-        {startTime:'1:55:00',endTime:'2:10:00',title:'California & Homelessness',text:'$24 billion spent with <em>worsening outcomes</em> — Musk says it\'s really a drug crisis.',tags:['California','Policy']},
-        {startTime:'2:10:00',endTime:'2:30:00',title:'Immigration & Voter Policies',text:'Controversial takes on <em>strategic immigration and voter ID</em>.',tags:['Immigration','Politics']},
-        {startTime:'2:30:00',endTime:'2:50:00',title:'National Debt & Economics',text:'The fiscal crisis and why <em>AI and robotics may be the only solution</em>.',tags:['Economics','Debt']},
-        {startTime:'2:50:00',endTime:'3:05:00',title:'xAI & Grok',text:'Updates on xAI\'s progress and <em>Grok\'s capabilities</em>.',tags:['xAI','Grok']},
-        {startTime:'3:05:00',endTime:'3:15:00',title:'Neuralink',text:'Patients controlling computers with thought — <em>brain-computer interface progress</em>.',tags:['Neuralink','BCI']},
+        {startTime:'4:31',endTime:'10:42',title:'OpenAI & Sam Altman',text:'Discussion about the Altman-Carlson interview and <em>controversies surrounding OpenAI</em> and the Suchir Balaji case.',tags:['OpenAI','Drama']},
+        {startTime:'10:42',endTime:'15:32',title:'Simulation Theory & Big Questions',text:'Are we living in a simulation? <em>Epstein, Gates, and cosmic speculation</em> about comet 3I/ATLAS.',tags:['Philosophy','Simulation']},
+        {startTime:'15:32',endTime:'28:00',title:'SpaceX & Starship',text:'The orbital flight achievement — <em>the most powerful rocket ever built</em> circling the globe and landing in the ocean.',tags:['SpaceX','Starship','Key Section']},
+        {startTime:'28:00',endTime:'38:37',title:'Mars Colonization',text:'Why humanity must become <em>multi-planetary</em> and the timeline for Mars.',tags:['Mars','Vision']},
+        {startTime:'38:37',endTime:'43:41',title:'Tesla: Cybertruck & Roadster',text:'Cybertruck updates and the bombshell hint about a <em>flying Roadster</em>.',tags:['Tesla','Products','Key Section']},
+        {startTime:'43:41',endTime:'49:00',title:'Twitter/X & Free Speech',text:'Why Musk bought Twitter — fighting a <em>"nihilistic anti-civilizational mind virus"</em>.',tags:['Twitter/X','Free Speech','Key Section']},
+        {startTime:'49:00',endTime:'1:02:56',title:'California & Homelessness',text:'$24 billion spent with <em>worsening outcomes</em> — Musk says it\'s really a drug crisis.',tags:['California','Policy']},
+        {startTime:'1:02:56',endTime:'1:20:00',title:'Encrypted Messaging & AI',text:'Why <em>true encryption doesn\'t exist</em> and AI will replace messaging apps entirely.',tags:['Security','Technology']},
+        {startTime:'1:20:00',endTime:'1:40:00',title:'AI & Future of Work',text:'Universal high income, optional employment, and <em>AI\'s transformative potential</em>.',tags:['AI','Economics','Key Section']},
+        {startTime:'1:40:00',endTime:'2:00:00',title:'Government Fraud & Social Security',text:'Zombie payments, impossible birthdates, and <em>systemic institutional failure</em>.',tags:['Government','Fraud']},
+        {startTime:'2:00:00',endTime:'2:20:00',title:'Immigration & Voter Policies',text:'Controversial takes on <em>strategic immigration and voter ID</em>.',tags:['Immigration','Politics']},
+        {startTime:'2:20:00',endTime:'2:40:00',title:'National Debt & Economics',text:'The fiscal crisis and why <em>AI and robotics may be the only solution</em>.',tags:['Economics','Debt']},
+        {startTime:'2:40:00',endTime:'3:00:00',title:'xAI, Grok & AI Music',text:'Updates on xAI\'s progress, <em>Grok\'s capabilities</em>, and AI-generated music.',tags:['xAI','Grok']},
+        {startTime:'3:00:00',endTime:'3:15:00',title:'Neuralink',text:'Patients controlling computers with thought — <em>brain-computer interface progress</em>.',tags:['Neuralink','BCI']},
         {startTime:'3:15:00',endTime:'3:23:00',title:'The Future of Humanity',text:'Musk\'s optimistic vision for a <em>multi-planetary, AI-enhanced civilization</em>.',tags:['Future','Closing']}
       ]
     }
