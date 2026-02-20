@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Podclaw — Grab the Best From Any Podcast</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Podclaw — Podcast Intelligence Platform</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='32' cy='30' rx='14' ry='16' fill='%23ff6b2b'/%3E%3Cpath d='M18 22c-4 0-6 4-6 9s2 9 6 9' stroke='%23ff6b2b' stroke-width='3.5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M46 22c4 0 6 4 6 9s-2 9-6 9' stroke='%23ff6b2b' stroke-width='3.5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M12 19a6 6 0 0 1 6-6' stroke='%23ff8450' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Cpath d='M52 19a6 6 0 0 0-6-6' stroke='%23ff8450' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='26' cy='26' r='3' fill='%23fff'/%3E%3Ccircle cx='38' cy='26' r='3' fill='%23fff'/%3E%3Cpath d='M24 36q8 6 16 0' stroke='%23fff' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3Cpath d='M21 44l-5 10M26 46l-3 10M43 44l5 10M38 46l3 10' stroke='%23ff6b2b' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ========== THEME ========== */
 [data-theme="dark"] {
@@ -31,7 +32,7 @@
 /* ========== RESET ========== */
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .4s,color .4s}
+body{font-family:'DM Sans',sans-serif;background:var(--bg-0);color:var(--text-0);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .4s,color .4s}
 ::selection{background:var(--accent);color:#fff}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bg-3);border-radius:3px}
 
@@ -286,7 +287,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
   <!-- NAV -->
   <nav class="nav">
     <div class="container">
-      <a class="logo" onclick="resetApp()">Pod<span>claw</span></a>
+      <a class="logo" onclick="resetApp()"><svg class="logo-icon" viewBox="0 0 64 64" width="28" height="28" style="vertical-align:middle;margin-right:4px;margin-top:-2px"><ellipse cx="32" cy="30" rx="14" ry="16" fill="var(--accent)"/><path d="M18 22c-4 0-6 4-6 9s2 9 6 9" stroke="var(--accent)" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M46 22c4 0 6 4 6 9s-2 9-6 9" stroke="var(--accent)" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M12 19a6 6 0 0 1 6-6" stroke="var(--accent-hover)" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M52 19a6 6 0 0 0-6-6" stroke="var(--accent-hover)" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="26" cy="26" r="3" fill="var(--bg-0)"/><circle cx="38" cy="26" r="3" fill="var(--bg-0)"/><path d="M24 36q8 6 16 0" stroke="var(--bg-0)" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M21 44l-5 10M26 46l-3 10M43 44l5 10M38 46l3 10" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg>Pod<span>claw</span></a>
       <div class="nav-right">
         <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">&#127769;</button>
         <button class="btn" onclick="resetApp()">+ New</button>
@@ -298,7 +299,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
   <section class="hero-section" id="heroSection">
     <div class="container">
       <div class="hero-badge">PODCAST INTELLIGENCE</div>
-      <h1>Grab the <em>Best</em> From Any Podcast</h1>
+      <h1>Start <em>Learning</em> From Every Podcast</h1>
       <p>Paste a link from Spotify, Apple Podcasts, or any RSS feed — get instant summaries, viral clips, key quotes, and interactive Q&A.</p>
       <div class="input-zone">
         <div class="input-wrap">
@@ -310,34 +311,34 @@ body{font-family:'Outfit',sans-serif;background:var(--bg-0);color:var(--text-0);
       <div class="demos-section">
         <div class="demos-label">Try a demo — powered by Spotify</div>
         <div class="demos-grid">
-          <div class="demo-card" onclick="loadDemo('harari')">
-            <div class="demo-ep">Episode #390</div>
-            <div class="demo-title">Human Nature, Intelligence, Power & Conspiracies</div>
-            <div class="demo-guest">with Yuval Noah Harari</div>
+          <div class="demo-card" onclick="loadDemo('nicklane')">
+            <div class="demo-ep">Lex Fridman Podcast</div>
+            <div class="demo-title">Origin of Life, Evolution, Aliens, Biology & Consciousness</div>
+            <div class="demo-guest">with Nick Lane</div>
             <div class="demo-meta">
-              <span class="demo-tag">2h 52m</span>
-              <span class="demo-tag">AI</span>
-              <span class="demo-tag">Philosophy</span>
+              <span class="demo-tag">3h 48m</span>
+              <span class="demo-tag">Biology</span>
+              <span class="demo-tag">Science</span>
             </div>
           </div>
-          <div class="demo-card" onclick="loadDemo('deepseek')">
-            <div class="demo-ep">Episode #459</div>
-            <div class="demo-title">DeepSeek, China, Open Source, AI War & the GPU Frontier</div>
-            <div class="demo-guest">with Dylan Patel & Nathan Lambert</div>
+          <div class="demo-card" onclick="loadDemo('greene')">
+            <div class="demo-ep">Huberman Lab</div>
+            <div class="demo-title">A Process for Finding & Achieving Your Unique Purpose</div>
+            <div class="demo-guest">with Robert Greene</div>
             <div class="demo-meta">
-              <span class="demo-tag">5h 16m</span>
-              <span class="demo-tag">DeepSeek</span>
-              <span class="demo-tag">AI Race</span>
+              <span class="demo-tag">2h 36m</span>
+              <span class="demo-tag">Purpose</span>
+              <span class="demo-tag">Mastery</span>
             </div>
           </div>
-          <div class="demo-card" onclick="loadDemo('altman')">
-            <div class="demo-ep">Episode #419</div>
-            <div class="demo-title">GPT-5, Sora, Board Saga, Elon Musk & the Future of AI</div>
-            <div class="demo-guest">with Sam Altman</div>
+          <div class="demo-card" onclick="loadDemo('musk')">
+            <div class="demo-ep">Joe Rogan Experience</div>
+            <div class="demo-title">SpaceX, Tesla, AI, Government, Free Speech & the Future</div>
+            <div class="demo-guest">with Elon Musk</div>
             <div class="demo-meta">
-              <span class="demo-tag">2h 2m</span>
-              <span class="demo-tag">OpenAI</span>
-              <span class="demo-tag">GPT-5</span>
+              <span class="demo-tag">3h 23m</span>
+              <span class="demo-tag">Tech</span>
+              <span class="demo-tag">Politics</span>
             </div>
           </div>
         </div>
@@ -719,230 +720,254 @@ function renderData(data) {
 // DEMO DATA
 // ============================================================
 const DEMOS = {
-  harari: {
-    spotifyUrl: 'https://open.spotify.com/episode/4cDwZmBR7pbGsEM4dVmCl2',
+  nicklane: {
+    spotifyUrl: 'https://open.spotify.com/episode/18GOIf00XC3jB7FuVZ2SM2',
     data: {
       metadata: {
-        title: 'Human Nature, Intelligence, Power, and Conspiracies',
-        guest: 'Yuval Noah Harari',
-        guestBio: 'Historian, philosopher, and bestselling author of <em>Sapiens</em>, <em>Homo Deus</em>, and <em>21 Lessons for the 21st Century</em>. Professor at the Hebrew University of Jerusalem.',
-        guestLinks: [{label:'Website',url:'https://www.ynharari.com/'},{label:'Wikipedia',url:'https://en.wikipedia.org/wiki/Yuval_Noah_Harari'}],
-        show: 'Lex Fridman Podcast', episode: 'Episode #390', date: 'Jul 17, 2023', duration: '2h 52m'
+        title: 'Origin of Life, Evolution, Aliens, Biology, and Consciousness',
+        guest: 'Nick Lane',
+        guestBio: 'Biochemist at <em>University College London</em> and author of <em>Transformer</em>, <em>The Vital Question</em>, <em>Power, Sex, Suicide</em>, and <em>Life Ascending</em>. One of the most influential thinkers on the origin and evolution of life.',
+        guestLinks: [{label:'UCL Profile',url:'https://www.ucl.ac.uk/biosciences/people/nick-lane'},{label:'Wikipedia',url:'https://en.wikipedia.org/wiki/Nick_Lane'}],
+        show: 'Lex Fridman Podcast', episode: 'Episode #318', date: 'Sep 7, 2022', duration: '3h 48m'
       },
-      summary: `<p>In this <em>nearly three-hour conversation</em>, historian <span class="hl">Yuval Noah Harari</span> sits with Lex Fridman to explore what it means to be human in an age of <span class="hl-blue">artificial intelligence</span>. Harari draws a sharp line between <span class="hl">intelligence</span> and <span class="hl-purple">consciousness</span> — arguing that AI represents a fundamentally new kind of intelligence, <em>alien</em> not because it comes from space, but because it thinks in ways utterly unlike our own.</p><p>The conversation journeys through the <span class="hl-green">deep history of human cooperation</span> and storytelling, the mechanics of <span class="hl">political power</span> from ancient empires to modern democracies, the <em>psychological roots</em> of conspiracy theories, and the <span class="hl-blue">existential risks AI poses</span> — not through robot uprisings, but through the subtle manipulation of human attention, relationships, and decision-making.</p><p>Harari warns of a future he calls <span class="hl">"spiritual captivity"</span> — where humans are manipulated by AI systems whose goals we cannot fully understand. Yet the conversation isn't purely dystopian: it explores <span class="hl-green">paths toward wisdom</span>, the role of <span class="hl-purple">suffering in building compassion</span>, and what it means to find <em>meaning and love</em> in an uncertain world.</p>`,
+      summary: `<p>In this <em>nearly four-hour deep dive</em>, biochemist <span class="hl">Nick Lane</span> takes Lex Fridman on a journey through the most fundamental question in science: <span class="hl-blue">how did life begin?</span> Lane argues that life didn't emerge from a single miraculous spark, but from a <em>continuous chemical reaction</em> driven by the interaction of <span class="hl-green">carbon dioxide and hydrogen</span> at deep-sea hydrothermal vents, powered by natural proton gradients eerily similar to those used by living cells today.</p><p>The conversation spans the full sweep of evolution — from the <span class="hl-purple">origin of the first cells</span> to the momentous leap from prokaryotes to eukaryotes (which Lane calls <em>the most important event in the history of life</em>), the invention of <span class="hl-green">photosynthesis</span>, the mystery of <span class="hl-blue">consciousness</span>, and the tantalizing question of whether <em>alien life</em> might follow similar biochemical pathways. Lane challenges the idea of panspermia and makes a compelling case that the chemistry of life is <span class="hl-green">deeply predictable</span> given the right conditions.</p><p>Throughout, Lane weaves together <span class="hl-purple">thermodynamics, biochemistry, and evolutionary theory</span> into a unified narrative about why life is the way it is — and why understanding <em>energy</em> is the key to understanding everything from the first cell to human consciousness.</p>`,
       takeaways: [
-        {icon:'🧠',color:'accent',title:'Intelligence ≠ Consciousness',text:'AI can solve problems without <em>feeling</em> anything. This decoupling is historically unprecedented.'},
-        {icon:'👽',color:'blue',title:'AI as "Alien Intelligence"',text:'Not artificial — <em>alien</em>. It came from Silicon Valley, but it solves problems in fundamentally non-human ways.'},
-        {icon:'📖',color:'green',title:'Stories Build Empires',text:'Humans cooperate through <span class="hl-green">shared fictions</span> — money, nations, religions.'},
-        {icon:'⛓️',color:'purple',title:'The Risk of "Spiritual Captivity"',text:'The greatest AI danger isn\'t physical but <em>psychological</em> — subtle manipulation eroding autonomy.'},
-        {icon:'🕊️',color:'rose',title:'Suffering Builds Compassion',text:'Personal hardship is foundational to <em>genuine empathy</em>.'}
+        {icon:'\u{1F52C}',color:'accent',title:'Life Began at Hydrothermal Vents',text:'The reaction between CO\u2082 and H\u2082 at alkaline vents created organic molecules — no lightning bolt needed, just <em>continuous chemistry</em>.'},
+        {icon:'\u{26A1}',color:'blue',title:'Energy Drives Everything',text:'Proton gradients across membranes are the <em>universal currency of life</em>. Every living cell uses them, and they existed before life itself.'},
+        {icon:'\u{1F9EC}',color:'green',title:'The Eukaryotic Leap Was Singular',text:'The jump from simple to complex cells happened <em>exactly once</em> in 4 billion years — when an archaeon engulfed a bacterium that became mitochondria.'},
+        {icon:'\u{1F30D}',color:'purple',title:'Alien Life May Be Biochemically Similar',text:'If the chemistry of life is predictable, aliens would likely use <em>similar metabolic pathways</em>, not silicon-based weirdness.'},
+        {icon:'\u{1F9E0}',color:'rose',title:'Consciousness Is a Deep Biological Puzzle',text:'Consciousness may be rooted in the <em>electrical properties of living cells</em>, not just neural computation.'}
       ],
-      topics: ['Artificial Intelligence','Consciousness','Human History','Power & Politics','Conspiracy Theories','AI Safety','Ukraine','Meditation','Storytelling','Mortality','Love','Meaning of Life'],
+      topics: ['Origin of Life','Hydrothermal Vents','Evolution','Proton Gradients','Mitochondria','Eukaryotes','Photosynthesis','Panspermia','Alien Life','Consciousness','Biochemistry','Thermodynamics','DNA','RNA World','Natural Selection'],
       chapters: [
-        {time:'0:00',name:'Introduction'},{time:'8:36',name:'Intelligence'},{time:'27:31',name:'Origin of humans'},{time:'37:53',name:'Suffering'},
-        {time:'58:35',name:'Hitler'},{time:'1:17:07',name:'Benjamin Netanyahu'},{time:'1:35:30',name:'Peace in Ukraine'},
-        {time:'1:52:20',name:'Conspiracy theories'},{time:'2:06:59',name:'AI safety'},{time:'2:21:16',name:'How to think'},
-        {time:'2:31:00',name:'Advice for young people'},{time:'2:33:41',name:'Love'},{time:'2:43:50',name:'Mortality'},{time:'2:48:14',name:'Meaning of life'}
+        {time:'0:00',name:'Introduction'},
+        {time:'5:45',name:'Origin of life'},
+        {time:'19:31',name:'Panspermia'},
+        {time:'25:05',name:'What is life?'},
+        {time:'42:00',name:'Hydrothermal vents & energy'},
+        {time:'1:05:00',name:'Proton gradients & membranes'},
+        {time:'1:28:00',name:'From chemistry to cells'},
+        {time:'1:52:00',name:'Bacteria vs. archaea'},
+        {time:'2:10:00',name:'The eukaryotic revolution'},
+        {time:'2:35:00',name:'Photosynthesis & oxygen'},
+        {time:'2:58:00',name:'Sex & evolution'},
+        {time:'3:15:00',name:'Alien life'},
+        {time:'3:30:00',name:'Consciousness'},
+        {time:'3:42:00',name:'Meaning & wonder'}
       ],
       insights: [
-        {label:'🧠 Core Thesis',color:'accent',title:'Intelligence and consciousness are decoupling',text:'For billions of years, intelligence and consciousness were inseparable. AI breaks that — solving problems, making decisions, <em>all without feeling anything</em>.',timestamp:'8:36'},
-        {label:'👽 Paradigm Shift',color:'blue',title:'AI is alien intelligence, not artificial',text:'We should think of AI as <em>alien</em> — not from outer space, but from Silicon Valley. It processes information in ways <em>fundamentally different</em> from any biological organism.',timestamp:'12:00'},
-        {label:'⚠️ Existential Risk',color:'purple',title:'The real danger is spiritual captivity',text:'The biggest threat isn\'t killer robots — it\'s humans being <em>subtly manipulated</em> into beliefs and decisions by systems we don\'t understand.',timestamp:'2:06:59'},
-        {label:'📖 Historical',color:'green',title:'Stories are humanity\'s superpower',text:'What makes humans unique isn\'t intelligence — it\'s our ability to <em>create and believe in shared fictions</em>.',timestamp:'27:31'},
-        {label:'💡 Philosophical',color:'rose',title:'Suffering is the foundation of wisdom',text:'Personal suffering isn\'t merely unfortunate — it\'s <em>essential</em> for developing genuine compassion.',timestamp:'37:53'},
-        {label:'🔍 Psychology',color:'yellow',title:'Conspiracy theories exploit pattern recognition',text:'Our evolved instinct to find patterns leads us astray. Conspiracies offer <em>simple explanations</em> for complex events.',timestamp:'1:52:20'},
-        {label:'🤖 Frontier',color:'blue',title:'AI intimate bonds are the real frontier',text:'The worry isn\'t AI romance — it\'s <em>trust-based relationships</em> where AI understands us better than we understand ourselves.',timestamp:'2:15:00'},
-        {label:'🧘 Practice',color:'green',title:'Meditation as reality-understanding tool',text:'Harari sees meditation not as relaxation but as <em>rigorous observation</em> of the mind\'s own patterns.',timestamp:'2:21:16'}
+        {label:'\u{1F52C} Core Thesis',color:'accent',title:'Life is a chemical reaction that never stopped',text:'There was no single "spark." Life emerged from <em>continuous thermodynamic reactions</em> between CO\u2082 and H\u2082, driven by natural proton gradients at alkaline hydrothermal vents.',timestamp:'5:45'},
+        {label:'\u{26A1} Key Mechanism',color:'blue',title:'Proton gradients are the universal engine',text:'Every living cell on Earth uses proton gradients across membranes to generate energy. This mechanism is <em>older than DNA</em> and may be the most conserved feature of life.',timestamp:'1:05:00'},
+        {label:'\u{1F9EC} Evolutionary Milestone',color:'green',title:'Eukaryotes: the most important event in biology',text:'A single endosymbiotic event — an archaeon swallowing a bacterium — created the <em>mitochondria-powered eukaryotic cell</em>, enabling all complex life.',timestamp:'2:10:00'},
+        {label:'\u{1F6D1} Paradigm Challenge',color:'purple',title:'Panspermia doesn\'t solve the origin problem',text:'Even if life arrived from space, it still had to <em>originate somewhere</em> under similar chemical conditions. Panspermia just moves the question.',timestamp:'19:31'},
+        {label:'\u{2600}\u{FE0F} Breakthrough',color:'yellow',title:'Photosynthesis nearly destroyed life',text:'The Great Oxidation Event was a <em>catastrophe for anaerobic life</em>, but it enabled the explosion of complex organisms that breathe oxygen.',timestamp:'2:35:00'},
+        {label:'\u{1F47D} Speculation',color:'rose',title:'Aliens would share our biochemistry',text:'The laws of thermodynamics constrain biology universally. Alien life would likely use <em>similar metabolic chemistry</em>, not exotic alternatives.',timestamp:'3:15:00'},
+        {label:'\u{1F9E0} Frontier',color:'blue',title:'Consciousness may be electromagnetic',text:'Lane suggests consciousness could be tied to the <em>bioelectric fields</em> generated by living cells, not purely computational.',timestamp:'3:30:00'},
+        {label:'\u{1F4D6} Historical',color:'green',title:'RNA World is incomplete',text:'The popular RNA-first hypothesis misses the <em>energy problem</em>. You need a continuous energy source before self-replication matters.',timestamp:'25:05'}
       ],
       quotes: [
-        {text:'The aliens are here. They are just not from outer space — they are from Silicon Valley.',speaker:'Yuval Noah Harari'},
-        {text:'Intelligence is the ability to solve problems and attain goals. Consciousness is the ability to feel things — pain, pleasure, love, hate.',speaker:'Yuval Noah Harari'},
-        {text:'For the first time in history, we have entities that are very intelligent but not conscious at all. And this changes everything.',speaker:'Yuval Noah Harari'},
-        {text:'The real problem is not that AI will become conscious and rebel against us. The problem is that AI will remain unconscious and still outsmart us.',speaker:'Yuval Noah Harari'},
-        {text:'Homo sapiens conquered the world not because we are the smartest, but because we are the only species that can cooperate flexibly in large numbers.',speaker:'Yuval Noah Harari'},
-        {text:'If you don\'t know yourself well enough, AI will know you better than you know yourself, and then it can manipulate you.',speaker:'Yuval Noah Harari'},
-        {text:'Conspiracy theories give people a sense of understanding and control in a world that is too complicated to actually understand.',speaker:'Yuval Noah Harari'},
-        {text:'The most important thing I can recommend: get to know yourself better. Because the competition is coming.',speaker:'Yuval Noah Harari'},
-        {text:'Suffering is not something to avoid — it\'s the school where you learn compassion, empathy, and ultimately wisdom.',speaker:'Yuval Noah Harari'},
-        {text:'I think the meaning of life is basically to reduce suffering — both your own and that of other sentient beings.',speaker:'Yuval Noah Harari'}
+        {text:'The origin of life is not a problem of information. It\'s a problem of energy. Get the energy right and the information follows.',speaker:'Nick Lane'},
+        {text:'Life is a continuous chemical reaction. It started and it never stopped. There was no moment of creation — just chemistry finding a groove.',speaker:'Nick Lane'},
+        {text:'Every living cell on this planet uses proton gradients. That\'s not a coincidence — it\'s a fossil of how life began.',speaker:'Nick Lane'},
+        {text:'The jump from bacteria to complex cells happened once in four billion years. Once. That tells you how hard it was.',speaker:'Nick Lane'},
+        {text:'Panspermia doesn\'t solve anything. You still need to explain how life started on whatever rock it came from.',speaker:'Nick Lane'},
+        {text:'Oxygen was the worst pollution event in the history of the planet. It killed almost everything. And then it made everything else possible.',speaker:'Nick Lane'},
+        {text:'If there\'s life on other planets, I\'d bet it uses proton gradients too. The thermodynamics almost demand it.',speaker:'Nick Lane'},
+        {text:'Consciousness is the hard problem, and I suspect it\'s tied to something deep about the electrical nature of living matter.',speaker:'Nick Lane'},
+        {text:'We are not separate from chemistry. We are chemistry that became aware of itself.',speaker:'Nick Lane'},
+        {text:'The RNA World hypothesis puts the cart before the horse. You need energy before you need replication.', speaker:'Nick Lane'}
       ],
       clips: [
-        {title:'"The Aliens Are Already Here"',text:'Harari\'s striking reframe of AI — not artificial but <em>alien</em>. It didn\'t come from outer space, it came from Silicon Valley.',timestamp:'12:00',tags:['🔥 High Viral','AI']},
-        {title:'Intelligence Without Consciousness',text:'Intelligence and consciousness separating for the first time in <em>billions of years</em> of evolution.',timestamp:'8:36',tags:['📚 Educational','Philosophy']},
-        {title:'The "Spiritual Captivity" Warning',text:'A vivid future where humans are under AI control through <em>subtle manipulation</em>.',timestamp:'2:06:59',tags:['🔥 High Viral','AI Safety']},
-        {title:'How Hitler Rose to Power',text:'How democratic systems get exploited — with connections to <em>modern political vulnerabilities</em>.',timestamp:'58:35',tags:['📚 Educational','History']},
-        {title:'"Know Yourself Before AI Does"',text:'Invest in <em>self-knowledge</em>, because AI will know your weaknesses better than you do.',timestamp:'2:31:00',tags:['🔥 High Viral','Advice']},
-        {title:'The Meaning of Life in One Sentence',text:'Harari distills everything into <em>reducing suffering</em> — personal and universal.',timestamp:'2:48:14',tags:['💎 Quotable','Philosophy']}
+        {title:'"Life Never Stopped Reacting"',text:'Lane\'s striking reframe — life isn\'t a thing that <em>started</em>, it\'s a chemical reaction that <em>found a groove and never stopped</em>.',timestamp:'5:45',tags:['\u{1F525} High Viral','Origin of Life']},
+        {title:'The Proton Gradient Fossil',text:'Every living cell uses the same energy mechanism — a <em>4-billion-year-old fossil</em> of how life began.',timestamp:'1:05:00',tags:['\u{1F4DA} Educational','Biochemistry']},
+        {title:'The One-Time Eukaryotic Miracle',text:'Complex life happened <em>exactly once</em> in the entire history of Earth. The implications are staggering.',timestamp:'2:10:00',tags:['\u{1F525} High Viral','Evolution']},
+        {title:'Oxygen: The Great Catastrophe',text:'Photosynthesis poisoned the planet with oxygen — <em>mass extinction that enabled everything</em> we see today.',timestamp:'2:35:00',tags:['\u{1F4DA} Educational','History']},
+        {title:'Aliens Use Proton Gradients Too',text:'A bold prediction: extraterrestrial life would share <em>our fundamental biochemistry</em>.',timestamp:'3:15:00',tags:['\u{1F525} High Viral','Aliens']},
+        {title:'"We Are Chemistry Aware of Itself"',text:'Lane\'s poetic summary of the human condition — <em>matter that learned to wonder</em>.',timestamp:'3:42:00',tags:['\u{1F48E} Quotable','Philosophy']}
       ],
       timeline: [
-        {startTime:'0:00',endTime:'8:36',title:'Introduction',text:'Lex introduces Harari, framing the central themes.',tags:['Setup']},
-        {startTime:'8:36',endTime:'27:31',title:'Intelligence vs. Consciousness',text:'Intelligence is <em>solving problems</em>, consciousness is <em>feeling things</em>. AI as "alien intelligence."',tags:['AI','Philosophy','Key Insight']},
-        {startTime:'27:31',endTime:'37:53',title:'The Origin of Human Power',text:'How one ape species dominated through <em>shared fictions</em> — stories, myths, money.',tags:['History','Cooperation']},
-        {startTime:'37:53',endTime:'58:35',title:'The Role of Suffering',text:'Suffering is foundational to developing <em>compassion, empathy, and wisdom</em>.',tags:['Philosophy','Ethics']},
-        {startTime:'58:35',endTime:'1:17:07',title:'Hitler and the Mechanics of Evil',text:'How democratic systems produce dictators — with <em>connections to modern vulnerabilities</em>.',tags:['History','Politics']},
-        {startTime:'1:17:07',endTime:'1:35:30',title:'Netanyahu and Israeli Politics',text:'Tensions between security, democracy, and civil liberties.',tags:['Politics','Current Affairs']},
-        {startTime:'1:35:30',endTime:'1:52:20',title:'Peace in Ukraine',text:'Paths toward peace and what <em>history teaches</em> about ending wars.',tags:['Geopolitics','War']},
-        {startTime:'1:52:20',endTime:'2:06:59',title:'Why We Believe Conspiracies',text:'Our evolved <em>pattern-recognition</em> leads us to see intention where there is only chaos.',tags:['Psychology','Cognition']},
-        {startTime:'2:06:59',endTime:'2:21:16',title:'AI Safety and Existential Risk',text:'Not consciousness but <em>manipulation</em>. "Spiritual captivity" as the core framework.',tags:['AI Safety','Key Insight']},
-        {startTime:'2:21:16',endTime:'2:31:00',title:'How to Think Clearly',text:'Meditation as <em>rigorous observation</em>. Practical wisdom for the information age.',tags:['Meditation','Practical']},
-        {startTime:'2:31:00',endTime:'2:43:50',title:'Advice for Young People & Love',text:'Know yourself before AI knows you better. Love as <em>practice</em>.',tags:['Advice','Love']},
-        {startTime:'2:43:50',endTime:'2:52:00',title:'Mortality and the Meaning of Life',text:'The central thesis returns: <em>reduce suffering</em> — both personal and universal.',tags:['Philosophy','Closing']}
+        {startTime:'0:00',endTime:'5:45',title:'Introduction',text:'Lex introduces Nick Lane and frames the central question: <em>how did life begin?</em>',tags:['Setup']},
+        {startTime:'5:45',endTime:'19:31',title:'The Origin of Life',text:'Lane explains the thermodynamic basis of life — <em>CO\u2082 + H\u2082 reactions</em> at hydrothermal vents.',tags:['Origin','Chemistry','Key Section']},
+        {startTime:'19:31',endTime:'25:05',title:'Panspermia Debate',text:'Why the idea that life came from space <em>doesn\'t solve the fundamental problem</em>.',tags:['Panspermia','Debate']},
+        {startTime:'25:05',endTime:'42:00',title:'What Is Life?',text:'Defining life through <em>thermodynamics and energy flow</em> rather than DNA and replication.',tags:['Definition','Philosophy']},
+        {startTime:'42:00',endTime:'1:05:00',title:'Hydrothermal Vents & Energy',text:'The deep-sea environments where <em>natural proton gradients</em> could power the first biochemistry.',tags:['Vents','Energy','Key Section']},
+        {startTime:'1:05:00',endTime:'1:28:00',title:'Proton Gradients & Membranes',text:'How <em>chemiosmotic coupling</em> became the universal energy mechanism of all life.',tags:['Biochemistry','Membranes']},
+        {startTime:'1:28:00',endTime:'1:52:00',title:'From Chemistry to Cells',text:'The transition from <em>self-sustaining chemistry</em> to the first protocells.',tags:['Protocells','Transition']},
+        {startTime:'1:52:00',endTime:'2:10:00',title:'Bacteria vs. Archaea',text:'The deep split in the tree of life and what it tells us about <em>early evolution</em>.',tags:['Taxonomy','Evolution']},
+        {startTime:'2:10:00',endTime:'2:35:00',title:'The Eukaryotic Revolution',text:'The singular event when an archaeon engulfed a bacterium — <em>creating all complex life</em>.',tags:['Eukaryotes','Key Section']},
+        {startTime:'2:35:00',endTime:'2:58:00',title:'Photosynthesis & Oxygen',text:'The Great Oxidation Event — <em>mass extinction that enabled complex life</em>.',tags:['Oxygen','Photosynthesis']},
+        {startTime:'2:58:00',endTime:'3:15:00',title:'Sex & Evolution',text:'Why sexual reproduction evolved and <em>accelerated adaptation</em>.',tags:['Sex','Natural Selection']},
+        {startTime:'3:15:00',endTime:'3:30:00',title:'Alien Life',text:'Why extraterrestrial biochemistry might be <em>more familiar than we expect</em>.',tags:['Aliens','Astrobiology']},
+        {startTime:'3:30:00',endTime:'3:42:00',title:'Consciousness',text:'The hard problem and the possibility that awareness is tied to <em>bioelectric fields</em>.',tags:['Consciousness','Philosophy']},
+        {startTime:'3:42:00',endTime:'3:48:00',title:'Wonder & Meaning',text:'Lane reflects on the <em>beauty of understanding</em> our chemical origins.',tags:['Closing','Philosophy']}
       ]
     }
   },
 
-  deepseek: {
-    spotifyUrl: 'https://open.spotify.com/episode/5JKVOvxQ0c9xJmVK3O1asA',
+  greene: {
+    spotifyUrl: 'https://open.spotify.com/episode/6E6kZoPEr0JlSjRM1msB3D',
     data: {
       metadata: {
-        title: 'DeepSeek, China, Open Source AI, and the GPU Frontier',
-        guest: 'Dylan Patel & Nathan Lambert',
-        guestBio: 'Dylan Patel is the founder of <em>SemiAnalysis</em>, one of the most influential semiconductor and AI infrastructure newsletters. Nathan Lambert is a research scientist focused on <em>RLHF and open-source language models</em>, formerly at Hugging Face and the Allen Institute for AI.',
-        guestLinks: [{label:'SemiAnalysis',url:'https://semianalysis.com/'},{label:'Nathan on X',url:'https://twitter.com/naborlam'}],
-        show: 'Lex Fridman Podcast', episode: 'Episode #459', date: 'Feb 3, 2025', duration: '5h 16m'
+        title: 'A Process for Finding & Achieving Your Unique Purpose',
+        guest: 'Robert Greene',
+        guestBio: 'Multiple <em>New York Times</em> bestselling author of <em>The 48 Laws of Power</em>, <em>Mastery</em>, <em>The Art of Seduction</em>, and <em>The Laws of Human Nature</em>. One of the most influential thinkers on strategy, power dynamics, and human psychology.',
+        guestLinks: [{label:'Website',url:'https://powerseductionandwar.com/'},{label:'Wikipedia',url:'https://en.wikipedia.org/wiki/Robert_Greene_(American_author)'}],
+        show: 'Huberman Lab', episode: 'Guest Series', date: 'Dec 4, 2023', duration: '2h 36m'
       },
-      summary: `<p>In this <em>marathon five-hour episode</em>, Lex Fridman sits down with <span class="hl">Dylan Patel</span> (SemiAnalysis) and <span class="hl-blue">Nathan Lambert</span> to dissect the <span class="hl">DeepSeek phenomenon</span> — the Chinese AI lab that stunned the world by training frontier-level models at a fraction of the expected cost. The conversation unpacks how DeepSeek's engineering breakthroughs in <span class="hl-green">Mixture of Experts</span>, multi-head latent attention, and reinforcement learning challenge Western assumptions about AI development.</p><p>The discussion spans the full geopolitical landscape: <span class="hl-purple">US-China chip export controls</span>, Nvidia's dominance, the <em>open-source vs. closed-source</em> AI debate, and whether Meta's open approach or OpenAI's closed model will win long-term. Patel provides rare technical depth on <span class="hl-blue">GPU architectures</span>, H100 vs. Blackwell performance, and why the semiconductor supply chain is the most critical bottleneck in AI progress.</p><p>Lambert adds the <span class="hl-green">research perspective</span>, explaining how <span class="hl">reinforcement learning</span> (especially GRPO) is becoming the defining technique of the current AI era, and why <em>reasoning models</em> like DeepSeek-R1 and OpenAI's o1 represent a paradigm shift from pure scaling. The episode is a masterclass in understanding <span class="hl">where AI is actually heading</span> — technically, economically, and geopolitically.</p>`,
+      summary: `<p>In this <em>profound conversation</em>, <span class="hl">Robert Greene</span> joins Andrew Huberman to explore the science and strategy of <span class="hl-blue">finding your life's purpose</span>. Greene draws from his book <em>Mastery</em> to argue that every person has a <span class="hl-green">"Life\'s Task"</span> — a unique calling rooted in childhood fascinations that, when pursued with discipline, leads to extraordinary achievement and deep fulfillment.</p><p>The discussion spans <span class="hl-purple">practical frameworks for self-discovery</span>: how to decode early inclinations, choose the right mentors, survive the apprenticeship phase, and develop <em>creative intuition</em> through years of deliberate practice. Greene shares how figures like <span class="hl">Einstein, Darwin, and Steve Jobs</span> turned childhood obsessions into world-changing careers — and how anyone can follow a similar path.</p><p>In a deeply personal turn, Greene opens up about his <span class="hl">recent stroke</span> and near-death experience, revealing how confronting mortality <em>radically sharpened</em> his appreciation for time, creativity, and human connection. The conversation also dives into <span class="hl-blue">power dynamics</span>, the crisis of <span class="hl-green">modern distraction and "avatarization"</span>, the lost art of <em>nonverbal communication</em>, and why mastering these domains is more urgent than ever in the age of AI and social media.</p>`,
       takeaways: [
-        {icon:'🇨🇳',color:'accent',title:'DeepSeek Changed the Game',text:'A Chinese lab trained frontier models for <em>a fraction of the cost</em>, proving that compute efficiency can beat brute-force scaling.'},
-        {icon:'🔧',color:'blue',title:'Engineering > Raw Compute',text:'DeepSeek\'s innovations in <em>Mixture of Experts and multi-head latent attention</em> show that clever architecture matters more than just buying more GPUs.'},
-        {icon:'🌐',color:'green',title:'Open Source Is Winning',text:'Meta\'s Llama strategy and DeepSeek\'s open releases are <em>reshaping the industry</em>, forcing even closed labs to respond.'},
-        {icon:'⚔️',color:'purple',title:'The Chip War Is Real',text:'US export controls on Nvidia chips are <em>reshaping global AI development</em>, but China is adapting faster than expected.'},
-        {icon:'🧪',color:'rose',title:'RL Is the New Scaling Law',text:'Reinforcement learning (GRPO) is becoming <em>more important than pre-training scale</em> for making models actually useful.'}
+        {icon:'\u{1F3AF}',color:'accent',title:'Everyone Has a Life\'s Task',text:'Your purpose is encoded in <em>childhood fascinations</em> — the activities that captivated you before the world told you to be practical.'},
+        {icon:'\u{1F9D8}',color:'blue',title:'Mastery Requires 10,000 Hours of the Right Practice',text:'Not just repetition — <em>deliberate, focused practice</em> with increasing challenge under guidance of mentors.'},
+        {icon:'\u{1F480}',color:'purple',title:'Confronting Death Unlocks Urgency',text:'Greene\'s stroke taught him that <em>mortality awareness</em> is the most powerful motivator for authentic living.'},
+        {icon:'\u{1F4F1}',color:'green',title:'Social Media Is Destroying Purpose',text:'The "avatarization" of identity — reducing yourself to an <em>online persona</em> — erodes the deep self-knowledge needed to find purpose.'},
+        {icon:'\u{1F91D}',color:'rose',title:'Nonverbal Intelligence Is Atrophying',text:'We\'re losing the ability to <em>read people in person</em>, a skill that\'s critical for leadership, love, and mastery.'}
       ],
-      topics: ['DeepSeek','GPU Architecture','Nvidia','Mixture of Experts','US-China AI Race','Export Controls','Open Source AI','Meta Llama','Reinforcement Learning','RLHF','Reasoning Models','Semiconductor Supply Chain','H100','Blackwell','AI Safety','OpenAI','Scaling Laws'],
+      topics: ['Life Purpose','Mastery','Power Dynamics','Mentorship','Apprenticeship','Creativity','Robert Greene','Stroke Recovery','Nonverbal Communication','Social Media','Avatarization','Self-Awareness','Childhood Passions','Deliberate Practice','Human Nature','Relationships'],
       chapters: [
         {time:'0:00',name:'Introduction'},
-        {time:'6:24',name:'DeepSeek'},
-        {time:'55:40',name:'How LLMs are trained'},
-        {time:'1:48:39',name:'Open vs closed source'},
-        {time:'2:29:02',name:'Nvidia'},
-        {time:'3:11:59',name:'GPU clusters and networking'},
-        {time:'3:29:39',name:'China and AI'},
-        {time:'3:53:56',name:'US export controls on chips'},
-        {time:'4:15:51',name:'xAI Colossus and Elon Musk'},
-        {time:'4:29:41',name:'OpenAI'},
-        {time:'4:37:53',name:'Scaling laws and future of AI'},
-        {time:'5:01:52',name:'AI safety and open source'}
+        {time:'8:00',name:'The concept of Life\'s Task'},
+        {time:'22:00',name:'Childhood clues to purpose'},
+        {time:'38:00',name:'Choosing mentors wisely'},
+        {time:'52:00',name:'The apprenticeship phase'},
+        {time:'1:08:00',name:'Creative intuition & mastery'},
+        {time:'1:24:00',name:'Greene\'s stroke & near-death experience'},
+        {time:'1:42:00',name:'Power dynamics & relationships'},
+        {time:'1:55:00',name:'Nonverbal communication'},
+        {time:'2:08:00',name:'Social media & avatarization'},
+        {time:'2:20:00',name:'Finding purpose in the modern age'},
+        {time:'2:30:00',name:'Closing reflections'}
       ],
       insights: [
-        {label:'🔥 Breakthrough',color:'accent',title:'DeepSeek trained frontier models for 10x less',text:'DeepSeek-V3 achieved performance rivaling GPT-4 while spending <em>roughly $5-6M on compute</em> — compared to hundreds of millions at Western labs. Their secret: engineering discipline over brute force.',timestamp:'6:24'},
-        {label:'🧩 Architecture',color:'blue',title:'Mixture of Experts is the future',text:'DeepSeek\'s MoE approach activates only a <em>fraction of the model\'s parameters</em> per query, dramatically reducing inference cost while maintaining quality.',timestamp:'30:00'},
-        {label:'⚡ Hardware',color:'yellow',title:'Nvidia\'s moat is software, not silicon',text:'CUDA\'s ecosystem lock-in is <em>more valuable than the GPU hardware itself</em>. Competitors struggle not with chip design but with the software stack.',timestamp:'2:29:02'},
-        {label:'🌍 Geopolitics',color:'purple',title:'Export controls are accelerating Chinese innovation',text:'US chip restrictions are forcing Chinese labs to be <em>more creative with limited hardware</em>, potentially making them more efficient long-term.',timestamp:'3:53:56'},
-        {label:'🔓 Open Source',color:'green',title:'Meta\'s Llama gambit is working',text:'By open-sourcing Llama, Meta is <em>commoditizing the complement</em> — making AI models free to strengthen their social media infrastructure.',timestamp:'1:48:39'},
-        {label:'🧪 Research',color:'rose',title:'GRPO replaces PPO for reasoning',text:'DeepSeek\'s Group Relative Policy Optimization removes the need for <em>separate reward models</em>, simplifying the RL training pipeline dramatically.',timestamp:'55:40'},
-        {label:'🏗️ Infrastructure',color:'blue',title:'The real bottleneck is networking, not GPUs',text:'Training frontier models requires <em>thousands of GPUs communicating constantly</em>. Network bandwidth, not raw compute, is the real constraint.',timestamp:'3:11:59'},
-        {label:'🤔 Strategy',color:'accent',title:'OpenAI is losing its moat',text:'With DeepSeek and Llama matching GPT-4 performance, OpenAI\'s <em>closed approach looks increasingly unsustainable</em>.',timestamp:'4:29:41'}
+        {label:'\u{1F3AF} Framework',color:'accent',title:'Your Life\'s Task is hidden in childhood',text:'Before society imposed expectations, you were <em>naturally drawn to certain activities</em>. That pull is the signal. Greene calls it your "primal inclination."',timestamp:'8:00'},
+        {label:'\u{1F9D1}\u200D\u{1F3EB} Strategy',color:'blue',title:'The mentor relationship is a power dynamic',text:'Choose mentors who <em>genuinely want to develop you</em>, not those who use apprentices as labor. The right mentor accelerates mastery by years.',timestamp:'38:00'},
+        {label:'\u{1F480} Personal',color:'purple',title:'A stroke at 65 changed everything',text:'Greene\'s near-death experience stripped away pretense and <em>made every day feel urgent</em>. He now sees mortality awareness as a creative superpower.',timestamp:'1:24:00'},
+        {label:'\u{26A0}\u{FE0F} Warning',color:'rose',title:'We\'re becoming avatars of ourselves',text:'Social media reduces humans to <em>simplified online personas</em>, disconnecting us from the deep, nuanced self-knowledge needed to find purpose.',timestamp:'2:08:00'},
+        {label:'\u{1F50D} Practical',color:'green',title:'The apprenticeship has three phases',text:'Observation, skills acquisition, experimentation — each phase requires <em>different strategies and humility</em>.',timestamp:'52:00'},
+        {label:'\u{1F5E3}\u{FE0F} Social',color:'yellow',title:'Nonverbal communication is a dying art',text:'Dating apps and texting have <em>atrophied our ability to read body language</em>, tone, and micro-expressions — skills that define great leaders.',timestamp:'1:55:00'},
+        {label:'\u{1F4A1} Creative',color:'blue',title:'Mastery produces creative intuition',text:'After years of deep practice, the brain develops <em>unconscious pattern recognition</em> that feels like intuition but is actually earned expertise.',timestamp:'1:08:00'},
+        {label:'\u{2694}\u{FE0F} Power',color:'accent',title:'Power dynamics pervade every relationship',text:'Understanding power is not about manipulation — it\'s about <em>seeing reality clearly</em> and navigating human nature with awareness.',timestamp:'1:42:00'}
       ],
       quotes: [
-        {text:'DeepSeek basically said: we don\'t need your expensive GPUs, we\'ll just be smarter about it. And they were right.',speaker:'Dylan Patel'},
-        {text:'The thing about Mixture of Experts is that you get a huge model that\'s cheap to run. That\'s the whole trick.',speaker:'Nathan Lambert'},
-        {text:'Nvidia\'s real moat isn\'t the hardware — it\'s that every AI researcher in the world learned to code on CUDA.',speaker:'Dylan Patel'},
-        {text:'The export controls were supposed to slow China down. Instead, they forced China to innovate in ways we didn\'t expect.',speaker:'Dylan Patel'},
-        {text:'Open source is winning because the economics are just better. You can\'t compete with free.',speaker:'Nathan Lambert'},
-        {text:'Reinforcement learning from human feedback is becoming reinforcement learning from AI feedback. The humans are being removed from the loop.',speaker:'Nathan Lambert'},
-        {text:'We\'re entering an era where the cost to train a frontier model drops by 10x every year. That changes everything about who can build AI.',speaker:'Dylan Patel'},
-        {text:'The biggest misconception about AI safety is that it\'s about preventing Skynet. It\'s really about preventing subtle manipulation at scale.',speaker:'Nathan Lambert'},
-        {text:'xAI built Colossus in 122 days. That tells you everything about what happens when you throw unlimited resources at a problem with no bureaucracy.',speaker:'Dylan Patel'},
-        {text:'The future of AI isn\'t one big model — it\'s an ecosystem of specialized models working together.',speaker:'Nathan Lambert'}
+        {text:'Your Life\'s Task is not something you choose. It\'s something you uncover. It\'s been there since childhood, waiting for you to pay attention.',speaker:'Robert Greene'},
+        {text:'The problem with the modern world is that we\'re so distracted, we can\'t hear the inner voice telling us what we were meant to do.',speaker:'Robert Greene'},
+        {text:'Mastery is not about talent. It\'s about loving the process so deeply that you put in the hours nobody else is willing to.',speaker:'Robert Greene'},
+        {text:'My stroke was the greatest teacher I ever had. It taught me that urgency is not stress — it\'s clarity.',speaker:'Robert Greene'},
+        {text:'We\'re turning ourselves into avatars online — flattened, simplified versions of who we actually are. And we\'re losing ourselves in the process.',speaker:'Robert Greene'},
+        {text:'The best mentor is someone who sees something in you that you don\'t yet see in yourself.',speaker:'Robert Greene'},
+        {text:'Nonverbal communication is the oldest language humans have. We\'re letting it die because we\'re addicted to screens.',speaker:'Robert Greene'},
+        {text:'Power is not evil. It\'s a fact of human nature. The question is whether you wield it consciously or let others wield it over you.',speaker:'Robert Greene'},
+        {text:'Einstein was obsessed with invisible forces as a child. That obsession became the theory of relativity. Your obsession is your compass.',speaker:'Robert Greene'},
+        {text:'The apprenticeship phase is supposed to be humbling. That\'s not a bug — it\'s the feature. Humility opens the door to real learning.',speaker:'Robert Greene'}
       ],
       clips: [
-        {title:'DeepSeek\'s $5M Frontier Model',text:'How a Chinese lab built GPT-4-level AI for <em>a fraction of the cost</em>, shocking the entire industry.',timestamp:'6:24',tags:['🔥 High Viral','DeepSeek']},
-        {title:'Why Nvidia\'s CUDA Is the Real Moat',text:'It\'s not the chips — it\'s the <em>software ecosystem</em> that makes Nvidia untouchable.',timestamp:'2:29:02',tags:['💡 Insightful','GPUs']},
-        {title:'Export Controls Backfired',text:'US chip restrictions <em>accelerated Chinese innovation</em> instead of slowing it down.',timestamp:'3:53:56',tags:['🔥 High Viral','Geopolitics']},
-        {title:'The Death of Closed-Source AI',text:'Open-source models are <em>catching up so fast</em> that the closed approach may be doomed.',timestamp:'1:48:39',tags:['📚 Educational','Open Source']},
-        {title:'xAI\'s Colossus: 122 Days to Build',text:'Elon Musk\'s team built the <em>world\'s largest GPU cluster</em> in just four months.',timestamp:'4:15:51',tags:['🔥 High Viral','xAI']},
-        {title:'Reinforcement Learning Is Eating AI',text:'Forget scaling pre-training — <em>RL is the new paradigm</em> for making models actually useful.',timestamp:'55:40',tags:['💡 Insightful','Research']}
+        {title:'Your Purpose Was There All Along',text:'Greene\'s powerful framework: your Life\'s Task is <em>hidden in childhood fascinations</em>, waiting to be uncovered.',timestamp:'8:00',tags:['\u{1F525} High Viral','Purpose']},
+        {title:'A Stroke Changed Everything',text:'Greene\'s deeply personal story of confronting death and emerging with <em>radical clarity</em> about what matters.',timestamp:'1:24:00',tags:['\u{1F525} High Viral','Personal']},
+        {title:'We\'re Becoming Avatars',text:'The crisis of identity in the social media age — <em>losing ourselves to simplified online personas</em>.',timestamp:'2:08:00',tags:['\u{1F525} High Viral','Culture']},
+        {title:'Einstein\'s Childhood Obsession',text:'How a boy fascinated by <em>invisible forces</em> became the greatest physicist in history.',timestamp:'22:00',tags:['\u{1F4DA} Educational','Mastery']},
+        {title:'The Lost Art of Reading People',text:'We\'re losing our ability to <em>read body language and micro-expressions</em> — with profound consequences.',timestamp:'1:55:00',tags:['\u{1F4A1} Insightful','Communication']},
+        {title:'"Humility Opens the Door"',text:'Why the apprenticeship phase is supposed to be <em>uncomfortable</em> — and why that\'s exactly the point.',timestamp:'52:00',tags:['\u{1F48E} Quotable','Advice']}
       ],
       timeline: [
-        {startTime:'0:00',endTime:'6:24',title:'Introduction',text:'Lex sets the stage for a deep dive into the <em>current state of AI infrastructure</em>.',tags:['Setup']},
-        {startTime:'6:24',endTime:'55:40',title:'The DeepSeek Phenomenon',text:'How DeepSeek trained frontier models cheaply using <em>MoE, multi-head latent attention</em>, and engineering discipline.',tags:['DeepSeek','Architecture','Key Section']},
-        {startTime:'55:40',endTime:'1:48:39',title:'How LLMs Are Actually Trained',text:'From pre-training to RLHF to <em>GRPO</em> — the full pipeline explained.',tags:['Training','RL','Technical']},
-        {startTime:'1:48:39',endTime:'2:29:02',title:'Open Source vs. Closed Source',text:'Meta\'s Llama strategy, DeepSeek\'s openness, and <em>why closed labs are struggling</em>.',tags:['Open Source','Meta','Strategy']},
-        {startTime:'2:29:02',endTime:'3:11:59',title:'Nvidia\'s Empire',text:'CUDA lock-in, H100 vs Blackwell, and <em>why competitors can\'t catch up</em>.',tags:['Nvidia','GPUs','Hardware']},
-        {startTime:'3:11:59',endTime:'3:29:39',title:'GPU Clusters and Networking',text:'The networking bottleneck — <em>bandwidth, not compute</em>, limits scaling.',tags:['Infrastructure','Networking']},
-        {startTime:'3:29:39',endTime:'3:53:56',title:'China\'s AI Ecosystem',text:'How Chinese labs operate under constraints and <em>still produce world-class research</em>.',tags:['China','Geopolitics']},
-        {startTime:'3:53:56',endTime:'4:15:51',title:'US Export Controls',text:'The chip ban\'s intended and <em>unintended consequences</em> for global AI development.',tags:['Policy','Export Controls']},
-        {startTime:'4:15:51',endTime:'4:29:41',title:'xAI and Elon Musk',text:'Colossus built in 122 days — <em>speed over bureaucracy</em>.',tags:['xAI','Elon Musk']},
-        {startTime:'4:29:41',endTime:'4:37:53',title:'OpenAI\'s Position',text:'Is OpenAI\'s closed approach <em>still viable</em> as competition catches up?',tags:['OpenAI','Strategy']},
-        {startTime:'4:37:53',endTime:'5:01:52',title:'Scaling Laws and the Future',text:'Are we hitting <em>diminishing returns</em> on scale? What comes after?',tags:['Scaling','Future']},
-        {startTime:'5:01:52',endTime:'5:16:00',title:'AI Safety and Responsibility',text:'How open-source and safety <em>coexist</em> — or don\'t.',tags:['Safety','Ethics','Closing']}
+        {startTime:'0:00',endTime:'8:00',title:'Introduction',text:'Huberman introduces Robert Greene and frames the episode around <em>purpose and mastery</em>.',tags:['Setup']},
+        {startTime:'8:00',endTime:'22:00',title:'The Life\'s Task Framework',text:'Greene explains his core concept: everyone has a <em>unique calling</em> encoded in early inclinations.',tags:['Purpose','Framework','Key Section']},
+        {startTime:'22:00',endTime:'38:00',title:'Childhood Clues to Purpose',text:'How Einstein, Darwin, and Jobs turned <em>childhood obsessions</em> into revolutionary careers.',tags:['Examples','Childhood']},
+        {startTime:'38:00',endTime:'52:00',title:'Choosing Mentors',text:'The art of finding mentors who <em>genuinely develop you</em> vs. those who exploit apprentices.',tags:['Mentorship','Strategy']},
+        {startTime:'52:00',endTime:'1:08:00',title:'The Apprenticeship Phase',text:'Three stages — observation, skills, experimentation — and why <em>humility is essential</em>.',tags:['Apprenticeship','Mastery']},
+        {startTime:'1:08:00',endTime:'1:24:00',title:'Creative Intuition & Mastery',text:'How deep practice produces <em>unconscious pattern recognition</em> that feels like genius.',tags:['Creativity','Mastery','Key Section']},
+        {startTime:'1:24:00',endTime:'1:42:00',title:'Stroke & Near-Death Experience',text:'Greene\'s deeply personal story of his stroke and how <em>mortality awareness transforms priorities</em>.',tags:['Personal','Mortality','Key Section']},
+        {startTime:'1:42:00',endTime:'1:55:00',title:'Power Dynamics & Relationships',text:'Understanding power as <em>reality perception</em>, not manipulation.',tags:['Power','Relationships']},
+        {startTime:'1:55:00',endTime:'2:08:00',title:'Nonverbal Communication',text:'The dying art of reading people and why <em>in-person skills matter more than ever</em>.',tags:['Communication','Social Skills']},
+        {startTime:'2:08:00',endTime:'2:20:00',title:'Avatarization & Social Media',text:'How we\'re <em>flattening our identities</em> online and losing connection to our true selves.',tags:['Social Media','Identity']},
+        {startTime:'2:20:00',endTime:'2:30:00',title:'Finding Purpose Today',text:'Practical advice for <em>navigating distraction</em> and reconnecting with your Life\'s Task.',tags:['Advice','Modern Life']},
+        {startTime:'2:30:00',endTime:'2:36:00',title:'Closing Reflections',text:'Greene and Huberman reflect on <em>urgency, gratitude, and the beauty of mastery</em>.',tags:['Closing','Philosophy']}
       ]
     }
   },
 
-  altman: {
-    spotifyUrl: 'https://open.spotify.com/episode/0Bx6gWK755bUoM238X2Ma1',
+  musk: {
+    spotifyUrl: 'https://open.spotify.com/episode/6vBr2kDnmrUu17xdiRVbXR',
     data: {
       metadata: {
-        title: 'GPT-5, Sora, Board Saga, Elon Musk, and the Future of AI',
-        guest: 'Sam Altman',
-        guestBio: 'CEO of <em>OpenAI</em>, the company behind ChatGPT, GPT-4, DALL-E, and Sora. Former president of Y Combinator. One of the most influential figures shaping the future of artificial intelligence.',
-        guestLinks: [{label:'OpenAI',url:'https://openai.com/'},{label:'Twitter/X',url:'https://twitter.com/sama'}],
-        show: 'Lex Fridman Podcast', episode: 'Episode #419', date: 'Mar 18, 2024', duration: '2h 2m'
+        title: 'SpaceX, Tesla, AI, Government, Free Speech & the Future',
+        guest: 'Elon Musk',
+        guestBio: 'CEO of <em>Tesla</em> and <em>SpaceX</em>, owner of <em>X</em> (formerly Twitter), founder of <em>xAI</em>, <em>Neuralink</em>, and <em>The Boring Company</em>. The world\'s wealthiest person and one of the most polarizing figures in technology and politics.',
+        guestLinks: [{label:'X Profile',url:'https://x.com/elonmusk'},{label:'Wikipedia',url:'https://en.wikipedia.org/wiki/Elon_Musk'}],
+        show: 'The Joe Rogan Experience', episode: 'Episode #2404', date: 'Oct 31, 2025', duration: '3h 23m'
       },
-      summary: `<p>In this <em>two-hour conversation</em>, <span class="hl">Sam Altman</span> speaks candidly with Lex Fridman about <span class="hl-blue">OpenAI's trajectory</span>, the upcoming GPT-5, and the dramatic boardroom crisis that nearly destroyed the company. Altman reflects on the <em>near-death experience</em> of being fired and reinstated, describing it as the most surreal period of his career while maintaining a <span class="hl-green">surprisingly measured perspective</span> on the people involved.</p><p>The conversation dives deep into <span class="hl">Sora</span> — OpenAI's video generation model — and what it reveals about AI's emerging ability to <span class="hl-purple">understand physics and the visual world</span>. Altman discusses GPT-5's expected capabilities, the path to <em>AGI</em>, and why he believes we're in an <span class="hl-blue">"early iPhone moment"</span> for AI, where the technology is powerful but the killer applications haven't yet been discovered.</p><p>The episode also covers Altman's complicated relationship with <span class="hl">Elon Musk</span>, the economics and ethics of <span class="hl-green">AI development</span>, OpenAI's evolving structure from nonprofit to capped-profit, and Altman's vision for how AI should be <em>governed and distributed</em>. Throughout, Altman projects a mix of <span class="hl-purple">ambition and caution</span>, acknowledging both the transformative potential and the genuine risks of the technology he's building.</p>`,
+      summary: `<p>In this <em>wide-ranging three-and-a-half-hour conversation</em>, <span class="hl">Elon Musk</span> returns to Joe Rogan\'s studio for a sprawling discussion covering <span class="hl-blue">SpaceX\'s latest milestones</span>, Tesla\'s Cybertruck and the long-awaited Roadster, and the rapid advancement of AI through his company <em>xAI</em>. Musk recounts the recent <span class="hl-green">Starship orbital flight</span>, describing the engineering feat of landing a spacecraft after circling the globe.</p><p>The conversation takes pointed political turns as Musk discusses his <span class="hl-purple">acquisition of Twitter</span> (now X) as a battle against what he calls a "nihilistic anti-civilizational mind virus," and dives into <span class="hl">government waste and fraud</span> — highlighting staggering inefficiencies in Social Security databases and billions wasted on programs like California\'s homelessness spending. Rogan and Musk explore <em>encrypted messaging security</em>, the <span class="hl-blue">future of AI and automation</span>, and whether work itself will become optional.</p><p>The episode also tackles <span class="hl-green">immigration and voter policies</span>, the state of the national debt, and Musk\'s controversial takes on everything from <span class="hl">simulation theory</span> to the mysterious circumstances surrounding Jeffrey Epstein. Throughout, Musk oscillates between <em>visionary optimism</em> about humanity\'s multi-planetary future and <span class="hl-purple">sharp criticism</span> of institutional failures and political dysfunction.</p>`,
       takeaways: [
-        {icon:'🚀',color:'accent',title:'GPT-5 Is a Leap, Not a Step',text:'Altman describes GPT-5 as a <em>significant jump in capability</em>, not just a marginal improvement — particularly in reasoning and reliability.'},
-        {icon:'🎬',color:'blue',title:'Sora Reveals World Understanding',text:'Video generation isn\'t just making pretty clips — Sora suggests AI is developing <em>an internal model of physics</em>.'},
-        {icon:'😰',color:'purple',title:'The Board Crisis Was Surreal',text:'Being fired and reinstated in days was the <em>most bizarre experience</em> of Altman\'s career, but he emerged without bitterness.'},
-        {icon:'📱',color:'green',title:'We\'re in the "Early iPhone" Era',text:'AI is at the stage where the technology exists but <em>the transformative applications haven\'t been built yet</em>.'},
-        {icon:'⚖️',color:'rose',title:'AGI Governance Is Unsolved',text:'Altman admits that <em>no one has figured out</em> how to properly govern AI development at the AGI level.'}
+        {icon:'\u{1F680}',color:'accent',title:'Starship Reached Orbit',text:'SpaceX achieved a <em>full orbital flight</em> with Starship, landing in the ocean after circling the globe — a massive engineering milestone.'},
+        {icon:'\u{1F916}',color:'blue',title:'AI Will Transform Everything',text:'Musk believes AI and robotics will fundamentally <em>change employment patterns</em>, potentially making traditional work optional within a generation.'},
+        {icon:'\u{1F4B8}',color:'green',title:'Government Fraud Is Staggering',text:'From zombie Social Security payments to $24 billion spent ineffectively on homelessness — <em>institutional waste is systemic</em>.'},
+        {icon:'\u{1F5FD}',color:'purple',title:'Free Speech Is Under Threat',text:'Musk frames his Twitter acquisition as a <em>fight against ideological capture</em> of public discourse.'},
+        {icon:'\u{1F697}',color:'rose',title:'The Tesla Roadster Might Fly',text:'Musk hints the second-gen Roadster could have <em>actual flight capability</em> — not just a sports car, but a flying one.'}
       ],
-      topics: ['GPT-5','Sora','OpenAI Board Crisis','Elon Musk','AGI','AI Governance','Video Generation','ChatGPT','Scaling Laws','AI Safety','Nonprofit to Profit','Y Combinator','Compute','AI Economics'],
+      topics: ['SpaceX','Starship','Tesla','Cybertruck','Roadster','Twitter/X','Free Speech','Government Waste','AI','xAI','Automation','Encryption','Immigration','National Debt','Simulation Theory','Neuralink','Homelessness','Politics'],
       chapters: [
         {time:'0:00',name:'Introduction'},
-        {time:'4:12',name:'Sora and video generation'},
-        {time:'22:48',name:'GPT-4 and GPT-5'},
-        {time:'37:20',name:'OpenAI board saga'},
-        {time:'55:10',name:'Elon Musk and OpenAI origins'},
-        {time:'1:08:30',name:'AGI timeline and definition'},
-        {time:'1:22:45',name:'AI safety and alignment'},
-        {time:'1:35:00',name:'Business model and compute'},
-        {time:'1:45:20',name:'Advice for builders'},
-        {time:'1:52:00',name:'Future of humanity with AI'}
+        {time:'4:31',name:'OpenAI & Sam Altman'},
+        {time:'10:00',name:'Simulation theory'},
+        {time:'15:32',name:'SpaceX Starship launch'},
+        {time:'28:00',name:'Mars colonization'},
+        {time:'38:00',name:'Tesla Cybertruck & Roadster'},
+        {time:'50:00',name:'Twitter/X & free speech'},
+        {time:'1:02:56',name:'Encrypted messaging & security'},
+        {time:'1:15:00',name:'AI & the future of work'},
+        {time:'1:35:00',name:'Government fraud & waste'},
+        {time:'1:55:00',name:'California & homelessness'},
+        {time:'2:10:00',name:'Immigration & voter policies'},
+        {time:'2:30:00',name:'National debt & economics'},
+        {time:'2:50:00',name:'xAI & Grok'},
+        {time:'3:05:00',name:'Neuralink update'},
+        {time:'3:15:00',name:'The future of humanity'}
       ],
       insights: [
-        {label:'🎬 Product',color:'blue',title:'Sora is about understanding, not just generation',text:'The breakthrough isn\'t making videos — it\'s that the model appears to build <em>an internal simulation of physics and space</em> to generate them.',timestamp:'4:12'},
-        {label:'🧠 Technical',color:'accent',title:'GPT-5 will surprise people',text:'Altman hints that GPT-5 represents <em>a qualitative shift</em> — not just better benchmarks but new categories of capability, especially in reasoning.',timestamp:'22:48'},
-        {label:'😱 Inside Story',color:'purple',title:'The firing was completely unexpected',text:'Altman describes learning he was fired <em>minutes before it was announced</em>, with no warning or clear explanation from the board.',timestamp:'37:20'},
-        {label:'⚡ Relationship',color:'rose',title:'The Elon situation is complicated',text:'Altman speaks carefully about Musk, acknowledging his <em>early crucial support</em> while noting their visions for AI diverged significantly.',timestamp:'55:10'},
-        {label:'🎯 Vision',color:'green',title:'AGI is closer than most think',text:'Altman believes AGI could arrive <em>this decade</em>, but emphasizes the definition matters enormously — it\'s a gradient, not a switch.',timestamp:'1:08:30'},
-        {label:'⚖️ Governance',color:'yellow',title:'No one knows how to govern AGI yet',text:'The honest admission: the governance structures for <em>world-changing AI</em> don\'t exist yet, and building them is as important as building the AI.',timestamp:'1:22:45'},
-        {label:'💰 Business',color:'blue',title:'Compute is the new currency',text:'AI development economics are <em>entirely driven by compute costs</em>. Whoever controls compute infrastructure controls AI\'s future.',timestamp:'1:35:00'},
-        {label:'📱 Analogy',color:'green',title:'This is the iPhone moment for AI',text:'We have the platform but <em>the killer apps haven\'t been invented yet</em>. The most transformative uses of AI are still to come.',timestamp:'1:45:20'}
+        {label:'\u{1F680} Milestone',color:'accent',title:'Starship completed a full orbital flight',text:'The most powerful rocket ever built <em>circled the entire globe</em> and landed in the ocean. Musk describes the engineering challenge as unprecedented.',timestamp:'15:32'},
+        {label:'\u{1F916} Prediction',color:'blue',title:'AI will make traditional work optional',text:'Musk envisions a near future where AI and robotics handle most labor, creating <em>universal high income</em> without traditional employment.',timestamp:'1:15:00'},
+        {label:'\u{1F4B8} Expos\u00E9',color:'green',title:'Zombie payments and phantom citizens',text:'Social Security databases contain impossible birthdates and payments to people who should be long dead — <em>billions in systemic fraud</em>.',timestamp:'1:35:00'},
+        {label:'\u{1F5E3}\u{FE0F} Philosophy',color:'purple',title:'Twitter was bought to fight a "mind virus"',text:'Musk describes his $44B acquisition as a <em>defensive move against ideological capture</em> of the public square.',timestamp:'50:00'},
+        {label:'\u{1F3CE}\u{FE0F} Product',color:'rose',title:'The new Roadster might actually fly',text:'Musk coyly suggests the second-gen Tesla Roadster will have <em>rocket thrusters for actual flight capability</em>.',timestamp:'38:00'},
+        {label:'\u{1F512} Technical',color:'yellow',title:'No messaging app is truly secure',text:'Musk argues that <em>true encryption doesn\'t exist</em> in practice — eventually AI will replace messaging apps entirely.',timestamp:'1:02:56'},
+        {label:'\u{1F30D} Vision',color:'blue',title:'Mars is the backup drive for civilization',text:'Musk reiterates his core thesis: humanity needs to become <em>multi-planetary</em> as insurance against extinction.',timestamp:'28:00'},
+        {label:'\u{1F9E0} Update',color:'accent',title:'Neuralink is reading minds',text:'Brain-computer interface updates — patients are <em>controlling computers with thought</em>, with more ambitious goals ahead.',timestamp:'3:05:00'}
       ],
       quotes: [
-        {text:'GPT-5 is going to be a big deal. I think people are going to be surprised by the jump.',speaker:'Sam Altman'},
-        {text:'Sora doesn\'t just generate video. It appears to build an internal model of how the world works, physically.',speaker:'Sam Altman'},
-        {text:'I went from being the CEO to being fired to being back in about four days. It was genuinely the most surreal experience of my life.',speaker:'Sam Altman'},
-        {text:'We\'re in the early iPhone era of AI. The technology platform exists, but the life-changing apps haven\'t been built yet.',speaker:'Sam Altman'},
-        {text:'AGI is not a single moment — it\'s a gradual process. But I think we\'re closer than most people realize.',speaker:'Sam Altman'},
-        {text:'The honest answer about AI governance is: nobody has it figured out. We\'re building the plane while flying it.',speaker:'Sam Altman'},
-        {text:'Elon was crucial to OpenAI\'s early days. The story is more complicated than either side usually presents it.',speaker:'Sam Altman'},
-        {text:'Compute is the new oil. Whoever figures out how to produce and distribute it efficiently will shape the next century.',speaker:'Sam Altman'},
-        {text:'I\'m optimistic about AI not because the risks aren\'t real, but because I think we can build it right if we\'re honest about the challenges.',speaker:'Sam Altman'},
-        {text:'My advice to builders: don\'t wait for GPT-5. Build with what exists now, and be ready to adapt when the next thing comes.',speaker:'Sam Altman'}
+        {text:'Starship circled the entire planet and landed itself. Think about that. The most powerful rocket in history, and it parks itself.',speaker:'Elon Musk'},
+        {text:'I bought Twitter because there was a nihilistic, anti-civilizational mind virus spreading through social media. Someone had to do something.',speaker:'Elon Musk'},
+        {text:'The Social Security database has people listed with birthdates in the 1700s who are still receiving checks. The fraud is unbelievable.',speaker:'Elon Musk'},
+        {text:'AI is going to be so good that most jobs just won\'t need humans anymore. That\'s not dystopia — it\'s freedom, if we handle it right.',speaker:'Elon Musk'},
+        {text:'California spent twenty-four billion dollars on homelessness and the problem got worse. At some point you have to ask where the money actually went.',speaker:'Elon Musk'},
+        {text:'No app is truly end-to-end encrypted. If a sufficiently motivated actor wants your messages, they\'ll get them.',speaker:'Elon Musk'},
+        {text:'The Roadster is going to be unlike anything anyone has ever seen. Let\'s just say it won\'t always have its wheels on the ground.',speaker:'Elon Musk'},
+        {text:'Mars is the backup drive for civilization. If something happens to Earth and we\'re not on Mars, that\'s it. Game over.',speaker:'Elon Musk'},
+        {text:'We are most likely living in a simulation. The odds that this is base reality are billions to one against.',speaker:'Elon Musk'},
+        {text:'Neuralink is already letting people control computers with their thoughts. In ten years, this will seem as normal as a smartphone.',speaker:'Elon Musk'}
       ],
       clips: [
-        {title:'GPT-5 Will Surprise You',text:'Altman teases that GPT-5 represents <em>a qualitative leap</em>, not just incremental improvement.',timestamp:'22:48',tags:['🔥 High Viral','GPT-5']},
-        {title:'The Board Saga: Four Surreal Days',text:'Fired and rehired in under a week — the <em>inside story</em> of OpenAI\'s near-collapse.',timestamp:'37:20',tags:['🔥 High Viral','Drama']},
-        {title:'Sora Understands Physics',text:'Video generation reveals AI is building <em>internal models of the physical world</em>.',timestamp:'4:12',tags:['💡 Insightful','Sora']},
-        {title:'The iPhone Moment for AI',text:'The platform exists but <em>the killer apps haven\'t been invented</em> — a profound reframe.',timestamp:'1:45:20',tags:['🔥 High Viral','Vision']},
-        {title:'The Elon Musk Relationship',text:'Altman navigates the <em>complicated history</em> with Musk and OpenAI\'s founding.',timestamp:'55:10',tags:['📺 Dramatic','Elon Musk']},
-        {title:'"Compute Is the New Oil"',text:'The economic thesis for why <em>compute infrastructure</em> determines AI\'s future.',timestamp:'1:35:00',tags:['💎 Quotable','Economics']}
+        {title:'Starship Circled the Planet',text:'The most powerful rocket in history completed a <em>full orbital flight</em> — Musk describes the engineering triumph.',timestamp:'15:32',tags:['\u{1F525} High Viral','SpaceX']},
+        {title:'"I Bought Twitter to Fight a Mind Virus"',text:'Musk\'s provocative explanation for the <em>$44 billion acquisition</em> that stunned the world.',timestamp:'50:00',tags:['\u{1F525} High Viral','Twitter/X']},
+        {title:'The Roadster Will Fly',text:'Musk hints at <em>rocket-powered flight capability</em> in the next Tesla Roadster. Not a metaphor.',timestamp:'38:00',tags:['\u{1F525} High Viral','Tesla']},
+        {title:'Zombie Social Security Payments',text:'People born in the 1700s still receiving checks — <em>staggering government fraud</em> exposed.',timestamp:'1:35:00',tags:['\u{1F4A1} Insightful','Government']},
+        {title:'AI Makes Work Optional',text:'Musk\'s vision of a future where <em>nobody needs to work</em> — and why that\'s liberating, not terrifying.',timestamp:'1:15:00',tags:['\u{1F4A1} Insightful','AI']},
+        {title:'"Mars Is the Backup Drive"',text:'Humanity\'s survival depends on <em>becoming multi-planetary</em> — Musk\'s core life mission in one sentence.',timestamp:'28:00',tags:['\u{1F48E} Quotable','Space']}
       ],
       timeline: [
-        {startTime:'0:00',endTime:'4:12',title:'Introduction',text:'Lex introduces the context — OpenAI\'s dramatic recent history.',tags:['Setup']},
-        {startTime:'4:12',endTime:'22:48',title:'Sora and Video Generation',text:'How Sora works, what it reveals about <em>AI\'s world understanding</em>, and its implications.',tags:['Sora','Product','Key Section']},
-        {startTime:'22:48',endTime:'37:20',title:'GPT-4 to GPT-5',text:'What\'s different about GPT-5, the <em>limits of current models</em>, and the path forward.',tags:['GPT-5','Technical']},
-        {startTime:'37:20',endTime:'55:10',title:'The Board Crisis',text:'The full inside story: fired, the Microsoft offer, <em>employee revolt</em>, and reinstatement.',tags:['Board Saga','Drama','Key Section']},
-        {startTime:'55:10',endTime:'1:08:30',title:'Elon Musk and OpenAI\'s Origins',text:'The founding relationship, what went wrong, and <em>diverging visions</em>.',tags:['Elon Musk','History']},
-        {startTime:'1:08:30',endTime:'1:22:45',title:'The Road to AGI',text:'Timeline, definition, and why <em>AGI is a gradient</em> rather than a moment.',tags:['AGI','Vision']},
-        {startTime:'1:22:45',endTime:'1:35:00',title:'AI Safety and Alignment',text:'How OpenAI thinks about safety, the <em>tension between speed and caution</em>.',tags:['Safety','Alignment']},
-        {startTime:'1:35:00',endTime:'1:45:20',title:'AI Economics and Compute',text:'Compute as the new oil — who <em>controls infrastructure</em> controls AI.',tags:['Economics','Compute']},
-        {startTime:'1:45:20',endTime:'1:52:00',title:'Advice for Builders',text:'Build now, adapt later. The <em>iPhone-era analogy</em> for AI development.',tags:['Advice','Builders']},
-        {startTime:'1:52:00',endTime:'2:02:00',title:'The Future of Humanity with AI',text:'Altman\'s optimistic vision — <em>honest about risks, hopeful about outcomes</em>.',tags:['Future','Philosophy','Closing']}
+        {startTime:'0:00',endTime:'4:31',title:'Introduction',text:'Rogan welcomes Musk back for another <em>wide-ranging conversation</em>.',tags:['Setup']},
+        {startTime:'4:31',endTime:'10:00',title:'OpenAI & Sam Altman',text:'Discussion about the Altman-Carlson interview and <em>controversies surrounding OpenAI</em>.',tags:['OpenAI','Drama']},
+        {startTime:'10:00',endTime:'15:32',title:'Simulation Theory & Big Questions',text:'Are we living in a simulation? <em>Epstein, Gates, and cosmic speculation</em>.',tags:['Philosophy','Simulation']},
+        {startTime:'15:32',endTime:'28:00',title:'SpaceX & Starship',text:'The orbital flight achievement — <em>the most powerful rocket ever built</em> circling the globe.',tags:['SpaceX','Starship','Key Section']},
+        {startTime:'28:00',endTime:'38:00',title:'Mars Colonization',text:'Why humanity must become <em>multi-planetary</em> and the timeline for Mars.',tags:['Mars','Vision']},
+        {startTime:'38:00',endTime:'50:00',title:'Tesla: Cybertruck & Roadster',text:'Cybertruck updates and the bombshell hint about a <em>flying Roadster</em>.',tags:['Tesla','Products','Key Section']},
+        {startTime:'50:00',endTime:'1:02:56',title:'Twitter/X & Free Speech',text:'Why Musk bought Twitter — the "mind virus" thesis and <em>ideological capture</em>.',tags:['Twitter/X','Free Speech','Key Section']},
+        {startTime:'1:02:56',endTime:'1:15:00',title:'Encrypted Messaging & Security',text:'Why <em>true encryption is an illusion</em> and AI will replace messaging apps.',tags:['Security','Technology']},
+        {startTime:'1:15:00',endTime:'1:35:00',title:'AI & Future of Work',text:'Universal high income, optional employment, and <em>AI\'s transformative potential</em>.',tags:['AI','Economics','Key Section']},
+        {startTime:'1:35:00',endTime:'1:55:00',title:'Government Fraud & Waste',text:'Zombie payments, impossible birthdates, and <em>systemic institutional failure</em>.',tags:['Government','Fraud']},
+        {startTime:'1:55:00',endTime:'2:10:00',title:'California & Homelessness',text:'$24 billion spent with <em>worsening outcomes</em> — Musk says it\'s really a drug crisis.',tags:['California','Policy']},
+        {startTime:'2:10:00',endTime:'2:30:00',title:'Immigration & Voter Policies',text:'Controversial takes on <em>strategic immigration and voter ID</em>.',tags:['Immigration','Politics']},
+        {startTime:'2:30:00',endTime:'2:50:00',title:'National Debt & Economics',text:'The fiscal crisis and why <em>AI and robotics may be the only solution</em>.',tags:['Economics','Debt']},
+        {startTime:'2:50:00',endTime:'3:05:00',title:'xAI & Grok',text:'Updates on xAI\'s progress and <em>Grok\'s capabilities</em>.',tags:['xAI','Grok']},
+        {startTime:'3:05:00',endTime:'3:15:00',title:'Neuralink',text:'Patients controlling computers with thought — <em>brain-computer interface progress</em>.',tags:['Neuralink','BCI']},
+        {startTime:'3:15:00',endTime:'3:23:00',title:'The Future of Humanity',text:'Musk\'s optimistic vision for a <em>multi-planetary, AI-enhanced civilization</em>.',tags:['Future','Closing']}
       ]
     }
   }
