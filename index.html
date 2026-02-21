@@ -316,7 +316,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-0);color:var(--text-0)
         <div class="demos-label">Try a demo — powered by Spotify</div>
         <div class="demos-grid">
           <div class="demo-card" onclick="loadDemo('nicklane')">
-            <div class="demo-thumb"><img id="thumb-nicklane" alt="Lex Fridman Podcast" onload="this.classList.add('loaded')"></div>
+            <div class="demo-thumb"><img id="thumb-nicklane" alt="Lex Fridman Podcast" loading="lazy" onload="this.classList.add('loaded')"></div>
             <div class="demo-ep">Lex Fridman Podcast · #318</div>
             <div class="demo-title">Origin of Life, Evolution, Aliens, Biology & Consciousness</div>
             <div class="demo-guest">with Nick Lane</div>
@@ -327,7 +327,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-0);color:var(--text-0)
             </div>
           </div>
           <div class="demo-card" onclick="loadDemo('greene')">
-            <div class="demo-thumb"><img id="thumb-greene" alt="Huberman Lab" onload="this.classList.add('loaded')"></div>
+            <div class="demo-thumb"><img id="thumb-greene" alt="Huberman Lab" loading="lazy" onload="this.classList.add('loaded')"></div>
             <div class="demo-ep">Huberman Lab · Guest Series</div>
             <div class="demo-title">A Process for Finding & Achieving Your Unique Purpose</div>
             <div class="demo-guest">with Robert Greene</div>
@@ -338,7 +338,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-0);color:var(--text-0)
             </div>
           </div>
           <div class="demo-card" onclick="loadDemo('musk')">
-            <div class="demo-thumb"><img id="thumb-musk" alt="Joe Rogan Experience" onload="this.classList.add('loaded')"></div>
+            <div class="demo-thumb"><img id="thumb-musk" alt="Joe Rogan Experience" loading="lazy" onload="this.classList.add('loaded')"></div>
             <div class="demo-ep">Joe Rogan Experience · #2404</div>
             <div class="demo-title">SpaceX, Tesla, AI, Government, Free Speech & the Future</div>
             <div class="demo-guest">with Elon Musk</div>
@@ -474,6 +474,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-0);color:var(--text-0)
 function loadAudio(mp3Url, artwork, showName, epTitle) {
   const audio = document.getElementById('podAudio');
   const wrap = document.getElementById('playerWrap');
+  audio.onerror = function() {
+    console.error('Audio failed to load:', mp3Url);
+    wrap.style.display = 'none';
+    showToast('Audio could not be loaded — timestamps may not work');
+  };
   audio.src = mp3Url;
   wrap.style.display = '';
   document.getElementById('podArt').src = artwork || '';
@@ -484,11 +489,14 @@ function loadAudio(mp3Url, artwork, showName, epTitle) {
 
 function seekTo(input) {
   const seconds = typeof input === 'number' ? input : timeStrToSeconds(String(input));
+  if (isNaN(seconds) || seconds < 0) return;
   const audio = document.getElementById('podAudio');
-  if (audio && audio.src) {
+  if (audio && audio.src && audio.src !== window.location.href) {
     audio.currentTime = seconds;
     if (audio.paused) audio.play();
     audio.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else {
+    showToast('Load the audio first to seek to timestamps');
   }
 }
 
@@ -551,7 +559,9 @@ function closeLoading() {
 // ============================================================
 async function processPodcast(podcastUrl) {
   const loading = document.getElementById('loading');
+  const goBtn = document.querySelector('.input-go');
   loading.classList.add('active');
+  if (goBtn) { goBtn.disabled = true; goBtn.style.opacity = '0.5'; }
 
   try {
     // Step 1: Resolve podcast link
@@ -561,8 +571,12 @@ async function processPodcast(podcastUrl) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ url: podcastUrl })
     });
+    if (!rRes.ok) {
+      let errMsg = 'Failed to resolve podcast link';
+      try { const e = await rRes.json(); errMsg = e.error || errMsg; } catch(_){}
+      throw new Error(errMsg);
+    }
     const rData = await rRes.json();
-    if (!rRes.ok) throw new Error(rData.error || 'Failed to resolve podcast link');
     setStep('resolve', 'done');
 
     // Step 2: Send audio to Gemini
@@ -572,11 +586,12 @@ async function processPodcast(podcastUrl) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ mp3Url: rData.mp3Url, title: rData.title, show: rData.show })
     });
-    const aData = await aRes.json();
     if (!aRes.ok) {
-      const details = aData.errorDetails ? ` | ${JSON.stringify(aData.errorDetails)}` : '';
-      throw new Error((aData.error || 'Failed to analyze podcast') + details);
+      let errMsg = 'Failed to analyze podcast';
+      try { const e = await aRes.json(); errMsg = e.error || errMsg; } catch(_){}
+      throw new Error(errMsg);
     }
+    const aData = await aRes.json();
     setStep('analyze', 'done');
 
     // Step 3: Process insights
@@ -604,6 +619,8 @@ async function processPodcast(podcastUrl) {
     setStep('resolve', document.getElementById('step-resolve')?.classList.contains('done') ? 'done' : 'error');
     setStep('analyze', document.getElementById('step-analyze')?.classList.contains('done') ? 'done' : 'error');
     showLoadError(err.message);
+  } finally {
+    if (goBtn) { goBtn.disabled = false; goBtn.style.opacity = ''; }
   }
 }
 
@@ -737,90 +754,86 @@ const DEMOS = {
         guestLinks: [{label:'UCL Profile',url:'https://www.ucl.ac.uk/biosciences/people/nick-lane'},{label:'Wikipedia',url:'https://en.wikipedia.org/wiki/Nick_Lane'}],
         show: 'Lex Fridman Podcast', episode: 'Episode #318', date: 'Sep 7, 2022', duration: '3h 48m'
       },
-      summary: `<p>In this <em>nearly four-hour deep dive</em>, biochemist <span class="hl">Nick Lane</span> takes Lex Fridman on a journey through the most fundamental question in science: <span class="hl-blue">how did life begin?</span> Lane argues that life didn't emerge from a single miraculous spark, but from a <em>continuous chemical reaction</em> driven by the interaction of <span class="hl-green">carbon dioxide and hydrogen</span> at deep-sea hydrothermal vents, powered by natural proton gradients eerily similar to those used by living cells today.</p><p>The conversation spans the full sweep of evolution — from the <span class="hl-purple">origin of the first cells</span> to the momentous leap from prokaryotes to eukaryotes (which Lane calls <em>the most important event in the history of life</em>), the invention of <span class="hl-green">photosynthesis</span>, the mystery of <span class="hl-blue">consciousness</span>, and the tantalizing question of whether <em>alien life</em> might follow similar biochemical pathways. Lane challenges the idea of panspermia and makes a compelling case that the chemistry of life is <span class="hl-green">deeply predictable</span> given the right conditions.</p><p>Throughout, Lane weaves together <span class="hl-purple">thermodynamics, biochemistry, and evolutionary theory</span> into a unified narrative about why life is the way it is — and why understanding <em>energy</em> is the key to understanding everything from the first cell to human consciousness.</p>`,
+      summary: `<p>In this insightful conversation, <span class="hl">Lex Fridman</span> and biochemist <span class="hl">Nick Lane</span> delve into the profound question of <span class="hl-blue">how life originated on Earth</span>. Lane emphasizes that despite scientific advancements, current understanding remains largely based on well-reasoned opinions, highlighting the vast unknowns. He introduces his perspective as a biologist, focusing on the <em>fundamental processes and components of life</em>, such as its cellular structure, carbon basis, and reliance on <span class="hl-green">electrical charges across membranes</span>.</p><p>Lane\'s central hypothesis points to <span class="hl-purple">hydrothermal vents</span> on the early Earth as the cradle of life. These vents provided the necessary chemical context, specifically generating <em>hydrogen gas</em> and <em>electrical charges</em> on cell-like pores, which are crucial for life\'s core chemical act: <span class="hl-green">hydrogenating carbon dioxide</span>. He clarifies that the \'spark\' of life wasn\'t a singular event but a <em>continuous chemical reaction</em>, sustained by the energy released from the interaction of CO\u2082 and hydrogen. Crucially, Lane explains that the <span class="hl">absence of oxygen</span> was vital for life\'s initial emergence.</p><p>The discussion then shifts to the fascinating evidence supporting a <span class="hl-blue">single common ancestor</span> for all life. Lane highlights the deep divergence between <em>Bacteria</em> and <em>Archaea</em>, two primary domains of life that, despite superficial similarities, exhibit fundamental biochemical differences, particularly in their membranes and DNA replication mechanisms. This divergence strongly suggests a <span class="hl-purple">single origin event</span> followed by rapid early evolution.</p>`,
       takeaways: [
-        {icon:'\u{1F52C}',color:'accent',title:'Life Began at Hydrothermal Vents',text:'The reaction between CO\u2082 and H\u2082 at alkaline vents created organic molecules — no lightning bolt needed, just <em>continuous chemistry</em>.'},
-        {icon:'\u{26A1}',color:'blue',title:'Energy Drives Everything',text:'Proton gradients across membranes are the <em>universal currency of life</em>. Every living cell uses them, and they existed before life itself.'},
-        {icon:'\u{1F9EC}',color:'green',title:'The Eukaryotic Leap Was Singular',text:'The jump from simple to complex cells happened <em>exactly once</em> in 4 billion years — when an archaeon engulfed a bacterium that became mitochondria.'},
-        {icon:'\u{1F30D}',color:'purple',title:'Alien Life May Be Biochemically Similar',text:'If the chemistry of life is predictable, aliens would likely use <em>similar metabolic pathways</em>, not silicon-based weirdness.'},
-        {icon:'\u{1F9E0}',color:'rose',title:'Consciousness Is a Deep Biological Puzzle',text:'Consciousness may be rooted in the <em>electrical properties of living cells</em>, not just neural computation.'}
+        {icon:'\u{1F914}',color:'accent',title:'Life\'s Origin: A Realm of Scientific Opinion',text:'Despite significant research, the question of life\'s origin remains largely in the realm of <em>well-grounded scientific opinions</em> rather than definitive answers, due to the immense complexity and missing pieces.'},
+        {icon:'\u{1F30B}',color:'blue',title:'Hydrothermal Vents as Life\'s Cradle',text:'Nick Lane proposes that hydrothermal vents on early Earth provided the <em>ideal chemical and energetic environment</em>, supplying hydrogen gas and electrical charges necessary for the initial formation of life.'},
+        {icon:'\u{1F6AB}',color:'purple',title:'Oxygen: The Inhibitor of New Life',text:'The <em>absence</em> of oxygen was critical for life\'s origin; its presence would have caused hydrogen to react with oxygen instead of carbon dioxide, preventing abiogenesis.'},
+        {icon:'\u{269B}\u{FE0F}',color:'green',title:'Hydrogenating CO\u2082: Life\'s Core Chemical Act',text:'The fundamental chemical process driving early life was the <em>hydrogenation of carbon dioxide</em>, transforming inorganic carbon into organic molecules using hydrogen from vents.'},
+        {icon:'\u{1F9EC}',color:'rose',title:'Single Origin from Deep Divergence',text:'The profound biochemical differences between Bacteria and Archaea, despite sharing a common ancestor, suggest that <em>life arose only once</em>, followed by significant evolutionary divergence.'}
       ],
-      topics: ['Origin of Life','Hydrothermal Vents','Evolution','Proton Gradients','Mitochondria','Eukaryotes','Photosynthesis','Panspermia','Alien Life','Consciousness','Biochemistry','Thermodynamics','DNA','RNA World','Natural Selection'],
+      topics: ['Origin of Life','Hydrothermal Vents','Abiogenesis','Biochemistry','Carbon Dioxide','Hydrogen','Oxygen','Bacteria','Archaea','Membranes','DNA Replication','Thermodynamics','Chemical Reactions','Electrical Charges','Evolution','Common Ancestor'],
       chapters: [
-        {time:'0:00',name:'Introduction'},
-        {time:'5:45',name:'Origin of life'},
-        {time:'19:31',name:'Panspermia'},
-        {time:'25:05',name:'What is life?'},
-        {time:'38:20',name:'Photosynthesis'},
-        {time:'41:55',name:'Prokaryotic vs eukaryotic cells'},
-        {time:'51:56',name:'Sex'},
-        {time:'59:39',name:'DNA'},
-        {time:'1:06:51',name:'Violence'},
-        {time:'1:17:25',name:'Human evolution'},
-        {time:'1:23:21',name:'Neanderthals'},
-        {time:'1:26:53',name:'Sensory inputs'},
-        {time:'1:37:43',name:'Consciousness'},
-        {time:'2:09:17',name:'AI and biology'},
-        {time:'2:38:36',name:'Evolution'},
-        {time:'2:59:07',name:'Fermi paradox'},
-        {time:'3:12:27',name:'Cities'},
-        {time:'3:20:14',name:'Depression'},
-        {time:'3:22:50',name:'Writing'},
-        {time:'3:30:49',name:'Advice for young people'},
-        {time:'3:37:57',name:'Earth'}
+        {time:'0:00',name:'Introduction to Nick Lane and His Work'},
+        {time:'0:52',name:'Sponsor Messages'},
+        {time:'5:45',name:'The Most Mysterious Question: How Did Life Originate?'},
+        {time:'6:21',name:'The Biologist\'s Point of View on Life\'s Origin'},
+        {time:'6:42',name:'Hydrothermal Vents: The Environment for Early Life'},
+        {time:'8:36',name:'The Chemical \'Potion\' and Oxygen\'s Role'},
+        {time:'8:56',name:'Life\'s Core Chemical Process: Hydrogenating CO\u2082'},
+        {time:'9:59',name:'The \'Spark\' of Life: Continuous Chemical Reaction'},
+        {time:'10:33',name:'Energy Source: CO\u2082 and Hydrogen Reactions'},
+        {time:'11:25',name:'Could Life Originate Multiple Times?'},
+        {time:'12:27',name:'What Constitutes \'Life\'? Genes in Growing Systems'},
+        {time:'12:47',name:'The Single Origin Hypothesis'},
+        {time:'13:48',name:'The Deep Split: Bacteria vs. Archaea'},
+        {time:'14:09',name:'Key Differences in Membranes and DNA Replication'},
+        {time:'15:05',name:'Explaining the Divergence and Single Origin'},
+        {time:'16:02',name:'Life as a Single Cell: The Unit of Selection'},
+        {time:'16:56',name:'The \'Two Cells Got Out\' Scenario'},
+        {time:'17:41',name:'Powering Up: How Early Life Left the Vent'}
       ],
       insights: [
-        {label:'\u{1F52C} Core Thesis',color:'accent',title:'Life is a chemical reaction that never stopped',text:'There was no single "spark." Life emerged from <em>continuous thermodynamic reactions</em> between CO\u2082 and H\u2082, driven by natural proton gradients at alkaline hydrothermal vents.',timestamp:'5:45'},
-        {label:'\u{26A1} Key Mechanism',color:'blue',title:'Proton gradients are the universal engine',text:'Every living cell on Earth uses proton gradients across membranes to generate energy. This mechanism is <em>older than DNA</em> and may be the most conserved feature of life.',timestamp:'59:39'},
-        {label:'\u{1F9EC} Evolutionary Milestone',color:'green',title:'Eukaryotes: the most important event in biology',text:'A single endosymbiotic event — an archaeon swallowing a bacterium — created the <em>mitochondria-powered eukaryotic cell</em>, enabling all complex life.',timestamp:'41:55'},
-        {label:'\u{1F6D1} Paradigm Challenge',color:'purple',title:'Panspermia doesn\'t solve the origin problem',text:'Even if life arrived from space, it still had to <em>originate somewhere</em> under similar chemical conditions. Panspermia just moves the question.',timestamp:'19:31'},
-        {label:'\u{2600}\u{FE0F} Breakthrough',color:'yellow',title:'Photosynthesis nearly destroyed life',text:'The Great Oxidation Event was a <em>catastrophe for anaerobic life</em>, but it enabled the explosion of complex organisms that breathe oxygen.',timestamp:'38:20'},
-        {label:'\u{1F47D} Speculation',color:'rose',title:'Aliens would share our biochemistry',text:'The laws of thermodynamics constrain biology universally. Alien life would likely use <em>similar metabolic chemistry</em>, not exotic alternatives.',timestamp:'2:59:07'},
-        {label:'\u{1F9E0} Frontier',color:'blue',title:'Consciousness may be electromagnetic',text:'Lane suggests consciousness could be tied to the <em>bioelectric fields</em> generated by living cells, not purely computational.',timestamp:'1:37:43'},
-        {label:'\u{1F4D6} Historical',color:'green',title:'RNA World is incomplete',text:'The popular RNA-first hypothesis misses the <em>energy problem</em>. You need a continuous energy source before self-replication matters.',timestamp:'25:05'}
+        {label:'\u{26A1} Chemical Spark',color:'accent',title:'The \'Spark\' of Life is a Continuous Chemical Reaction',text:'Nick Lane clarifies that the origin of life wasn\'t a single, instantaneous \'spark\' in the Frankenstein sense, but rather a <em>continuous chemical reaction</em> driven by electrical charges.',timestamp:'10:00'},
+        {label:'\u{1F6AB} Oxygen Paradox',color:'blue',title:'Oxygen: Essential for Complex Life, but a Killer for New Life',text:'While oxygen is vital for the complex life we know today, its presence in the early atmosphere would have <em>prevented life from originating</em>. Hydrogen would preferentially react with oxygen.',timestamp:'8:52'},
+        {label:'\u{1F52C} Core Reaction',color:'green',title:'Life\'s Fundamental Chemical Act: Hydrogenating Carbon Dioxide',text:'At its core, life\'s primary chemical function is to <em>hydrogenate carbon dioxide</em>, converting inorganic carbon into organic molecules powered by hydrogen from vents.',timestamp:'9:21'},
+        {label:'\u{1F9EC} Deep Divergence',color:'purple',title:'The Deep Split of Life: Bacteria and Archaea\'s Fundamental Differences',text:'Despite their microscopic similarities, Bacteria and Archaea represent a <em>deep and fundamental split in life</em>, differing significantly in membrane structure and DNA replication.',timestamp:'13:48'},
+        {label:'\u{1F4A1} Energy Independence',color:'rose',title:'Leaving the Vent: The Challenge of Self-Powering Membranes',text:'A critical evolutionary step was developing the ability to <em>power its own membranes</em> after leaving the energy-rich hydrothermal vents.',timestamp:'17:41'},
+        {label:'\u{2696}\u{FE0F} Chemical Balance',color:'yellow',title:'Thermodynamics vs. Kinetics: Why Life Isn\'t Spontaneous',text:'While the reaction between hydrogen and CO\u2082 is thermodynamically favorable, <em>kinetic barriers</em> prevent it from happening spontaneously — that\'s where catalysts come in.',timestamp:'11:08'},
+        {label:'\u{1F331} Defining Life',color:'blue',title:'Life Defined by Information in Growing Systems',text:'Life emerges when genes or information are introduced into <em>systems that are already growing and reproducing</em>, such as protocells, allowing for natural selection.',timestamp:'12:27'},
+        {label:'\u{1F504} Divergence Paradox',color:'green',title:'The Paradox of Divergence Supporting a Single Origin',text:'The very fact that Bacteria and Archaea are so <em>fundamentally different yet share a common ancestor</em> strengthens the argument for a single origin of life.',timestamp:'13:54'}
       ],
       quotes: [
-        {text:'The origin of life is not a problem of information. It\'s a problem of energy. Get the energy right and the information follows.',speaker:'Nick Lane'},
-        {text:'Life is a continuous chemical reaction. It started and it never stopped. There was no moment of creation — just chemistry finding a groove.',speaker:'Nick Lane'},
-        {text:'Every living cell on this planet uses proton gradients. That\'s not a coincidence — it\'s a fossil of how life began.',speaker:'Nick Lane'},
-        {text:'The jump from bacteria to complex cells happened once in four billion years. Once. That tells you how hard it was.',speaker:'Nick Lane'},
-        {text:'Panspermia doesn\'t solve anything. You still need to explain how life started on whatever rock it came from.',speaker:'Nick Lane'},
-        {text:'Oxygen was the worst pollution event in the history of the planet. It killed almost everything. And then it made everything else possible.',speaker:'Nick Lane'},
-        {text:'If there\'s life on other planets, I\'d bet it uses proton gradients too. The thermodynamics almost demand it.',speaker:'Nick Lane'},
-        {text:'Consciousness is the hard problem, and I suspect it\'s tied to something deep about the electrical nature of living matter.',speaker:'Nick Lane'},
-        {text:'We are not separate from chemistry. We are chemistry that became aware of itself.',speaker:'Nick Lane'},
-        {text:'The RNA World hypothesis puts the cart before the horse. You need energy before you need replication.', speaker:'Nick Lane'}
+        {text:'Why is life the way it is?',speaker:'Lex Fridman'},
+        {text:'How did life originate on Earth?',speaker:'Lex Fridman'},
+        {text:'There\'s so much stuff to know... all we can ever do is get a kind of a small slice of it and it\'s the context which matters.',speaker:'Nick Lane'},
+        {text:'What does life do on Earth? What why is it this way? Why is it made of cells? Why is it made of carbon? Why is it powered by electrical charges on membranes?',speaker:'Nick Lane'},
+        {text:'It matters most at the origin of life to be not there.',speaker:'Nick Lane'},
+        {text:'Life is made of carbon basically, primarily, organic molecules with carbon-carbon bonds.',speaker:'Nick Lane'},
+        {text:'Life is hydrogenating carbon dioxide.',speaker:'Nick Lane'},
+        {text:'There isn\'t a spark. There is a continuous chemical reaction.',speaker:'Nick Lane'},
+        {text:'We are sustained by oxygen, by this continuous chemical reaction.',speaker:'Nick Lane'},
+        {text:'The source of energy at the origin of life is the reaction between carbon dioxide and hydrogen.',speaker:'Nick Lane'},
+        {text:'What should happen is you get cells coming out.',speaker:'Nick Lane'},
+        {text:'It\'s the unit of selection is a single cell.',speaker:'Nick Lane'},
+        {text:'Oxygen makes it impossible really for life to start.',speaker:'Nick Lane'}
       ],
       clips: [
-        {title:'"Life Never Stopped Reacting"',text:'Lane\'s striking reframe — life isn\'t a thing that <em>started</em>, it\'s a chemical reaction that <em>found a groove and never stopped</em>.',timestamp:'5:45',tags:['\u{1F525} High Viral','Origin of Life']},
-        {title:'The Proton Gradient Fossil',text:'Every living cell uses the same energy mechanism — a <em>4-billion-year-old fossil</em> of how life began.',timestamp:'59:39',tags:['\u{1F4DA} Educational','Biochemistry']},
-        {title:'The One-Time Eukaryotic Miracle',text:'Complex life happened <em>exactly once</em> in the entire history of Earth. The implications are staggering.',timestamp:'41:55',tags:['\u{1F525} High Viral','Evolution']},
-        {title:'Oxygen: The Great Catastrophe',text:'Photosynthesis poisoned the planet with oxygen — <em>mass extinction that enabled everything</em> we see today.',timestamp:'38:20',tags:['\u{1F4DA} Educational','History']},
-        {title:'Aliens Use Proton Gradients Too',text:'A bold prediction: extraterrestrial life would share <em>our fundamental biochemistry</em>.',timestamp:'2:59:07',tags:['\u{1F525} High Viral','Aliens']},
-        {title:'"We Are Chemistry Aware of Itself"',text:'Lane\'s poetic summary of the human condition — <em>matter that learned to wonder</em>.',timestamp:'3:37:57',tags:['\u{1F48E} Quotable','Philosophy']}
+        {title:'Oxygen: The Life Killer (for new life)',text:'Nick Lane explains the paradoxical role of oxygen: while essential for complex life, its presence would have <em>prevented life from ever originating</em> on Earth.',timestamp:'8:52',tags:['\u{1F525} High Viral','Origin of Life']},
+        {title:'The Real Spark of Life (not what you think)',text:'Forget Frankenstein! The \'spark\' of life isn\'t a single jolt, but a <em>continuous chemical reaction</em>. This challenges a common misconception about abiogenesis.',timestamp:'10:00',tags:['\u{1F92F} Mind-blowing','Origin of Life']},
+        {title:'Why Life is Made of Carbon',text:'Nick Lane breaks down life\'s fundamental chemistry: it\'s all about <em>hydrogenating carbon dioxide</em>. This simple explanation reveals the core process of all life.',timestamp:'9:21',tags:['\u{1F52C} Science Explained','Biochemistry']},
+        {title:'The Ocean\'s Deep Secret: Hydrothermal Vents',text:'Discover why hydrothermal vents are considered the most likely <em>birthplace of life on Earth</em>, providing the perfect chemical cocktail and energy source.',timestamp:'6:42',tags:['\u{1F30D} Earth Science','Origin of Life']},
+        {title:'The Chuck Norris Cell',text:'Lex Fridman\'s humorous analogy of a \'Chuck Norris cell\' that made it out of the vents and <em>took over the world</em> is a memorable way to imagine early life\'s success.',timestamp:'16:45',tags:['\u{1F602} Funny Moment','Evolution']}
       ],
       timeline: [
-        {startTime:'0:00',endTime:'5:45',title:'Introduction',text:'Lex introduces Nick Lane and frames the central question: <em>how did life begin?</em>',tags:['Setup']},
-        {startTime:'5:45',endTime:'19:31',title:'The Origin of Life',text:'Lane explains the thermodynamic basis of life — <em>CO\u2082 + H\u2082 reactions</em> at hydrothermal vents.',tags:['Origin','Chemistry','Key Section']},
-        {startTime:'19:31',endTime:'25:05',title:'Panspermia Debate',text:'Why the idea that life came from space <em>doesn\'t solve the fundamental problem</em>.',tags:['Panspermia','Debate']},
-        {startTime:'25:05',endTime:'38:20',title:'What Is Life?',text:'Defining life through <em>thermodynamics and energy flow</em> rather than DNA and replication.',tags:['Definition','Philosophy']},
-        {startTime:'38:20',endTime:'41:55',title:'Photosynthesis',text:'How photosynthesis evolved and <em>transformed Earth\'s atmosphere</em> forever.',tags:['Photosynthesis','Key Section']},
-        {startTime:'41:55',endTime:'51:56',title:'Prokaryotic vs. Eukaryotic Cells',text:'The leap from simple to complex cells — <em>the most important event in the history of life</em>.',tags:['Eukaryotes','Evolution']},
-        {startTime:'51:56',endTime:'59:39',title:'Sex & Reproduction',text:'Why sexual reproduction evolved and <em>accelerated adaptation</em>.',tags:['Sex','Natural Selection']},
-        {startTime:'59:39',endTime:'1:06:51',title:'DNA',text:'The mechanics of genetic information, replication, and <em>the code of life</em>.',tags:['DNA','Genetics']},
-        {startTime:'1:06:51',endTime:'1:17:25',title:'Violence in Nature',text:'The role of competition, predation, and <em>violence in driving evolution</em>.',tags:['Violence','Evolution']},
-        {startTime:'1:17:25',endTime:'1:23:21',title:'Human Evolution',text:'How humans diverged from other primates and <em>what makes us unique</em>.',tags:['Humans','Evolution']},
-        {startTime:'1:23:21',endTime:'1:26:53',title:'Neanderthals',text:'Our closest relatives — what happened to them and <em>what we inherited</em>.',tags:['Neanderthals','History']},
-        {startTime:'1:26:53',endTime:'1:37:43',title:'Sensory Inputs',text:'How organisms evolved to <em>perceive and interact with</em> their environment.',tags:['Senses','Biology']},
-        {startTime:'1:37:43',endTime:'2:09:17',title:'Consciousness',text:'The hard problem and the possibility that awareness is tied to <em>bioelectric fields</em>.',tags:['Consciousness','Philosophy','Key Section']},
-        {startTime:'2:09:17',endTime:'2:38:36',title:'AI and Biology',text:'Parallels and differences between <em>artificial and biological intelligence</em>.',tags:['AI','Biology']},
-        {startTime:'2:38:36',endTime:'2:59:07',title:'Evolution',text:'Deep patterns of evolution and <em>what drives adaptation</em> over billions of years.',tags:['Evolution','Theory']},
-        {startTime:'2:59:07',endTime:'3:12:27',title:'Fermi Paradox & Alien Life',text:'Why extraterrestrial biochemistry might be <em>more familiar than we expect</em>.',tags:['Aliens','Astrobiology','Key Section']},
-        {startTime:'3:12:27',endTime:'3:20:14',title:'Cities & Civilization',text:'How human settlements mirror <em>biological organization</em>.',tags:['Cities','Civilization']},
-        {startTime:'3:20:14',endTime:'3:22:50',title:'Depression',text:'The biology of depression and <em>its evolutionary roots</em>.',tags:['Depression','Mental Health']},
-        {startTime:'3:22:50',endTime:'3:30:49',title:'Writing',text:'Lane on the craft of <em>communicating science</em> to the public.',tags:['Writing','Science Communication']},
-        {startTime:'3:30:49',endTime:'3:37:57',title:'Advice for Young People',text:'Lane\'s guidance for aspiring scientists and <em>curious minds</em>.',tags:['Advice','Career']},
-        {startTime:'3:37:57',endTime:'3:48:00',title:'Earth & Wonder',text:'Lane reflects on the <em>beauty of understanding</em> our place on this planet.',tags:['Closing','Philosophy']}
+        {startTime:'0:00',endTime:'0:51',title:'Introduction to Nick Lane and His Work',text:'Lex Fridman introduces Nick Lane, a biochemist and author, highlighting his <em>contributions to biology, science, and life</em> through his books.',tags:['Introduction','Guest']},
+        {startTime:'0:52',endTime:'5:44',title:'Sponsor Messages',text:'Lex Fridman delivers sponsor messages for Backbone, Notion, BetterHelp, and Blinkist.',tags:['Sponsors']},
+        {startTime:'5:45',endTime:'6:20',title:'How Did Life Originate?',text:'Lex poses the fundamental question, and Nick Lane explains that current answers are mostly <em>passionate, science-grounded opinions</em> due to remaining unknowns.',tags:['Origin of Life','Philosophy','Key Section']},
+        {startTime:'6:21',endTime:'6:41',title:'The Biologist\'s Point of View',text:'Nick Lane presents his perspective, focusing on what life <em>does</em> and its core characteristics: cells, carbon, and <em>electrical charges on membranes</em>.',tags:['Biochemistry','Definition of Life']},
+        {startTime:'6:42',endTime:'8:35',title:'Hydrothermal Vents: The Environment for Early Life',text:'Hydrothermal vents provided <em>hydrogen gas and electrical charges</em> that match cellular requirements — the ideal environment for early life.',tags:['Early Earth','Geology','Key Section']},
+        {startTime:'8:36',endTime:'8:55',title:'The Chemical \'Potion\' and Oxygen\'s Role',text:'Nick Lane describes the chemical conditions for life\'s origin, emphasizing the critical role of <em>oxygen\'s absence</em>.',tags:['Oxygen','Chemical Reactions']},
+        {startTime:'8:56',endTime:'9:58',title:'Hydrogenating Carbon Dioxide',text:'Life is fundamentally about <em>hydrogenating carbon dioxide</em>, using hydrogen bubbling from the Earth in hydrothermal vents.',tags:['Biochemistry','Carbon Cycle','Key Section']},
+        {startTime:'9:59',endTime:'10:32',title:'The \'Spark\' of Life: Continuous Chemical Reaction',text:'The \'spark\' of life is not a single event but a <em>continuous chemical reaction</em> driven by electrical charges.',tags:['Abiogenesis','Energy']},
+        {startTime:'10:33',endTime:'11:24',title:'Energy Source: CO\u2082 and Hydrogen Reactions',text:'The energy source for early life is the <em>exergonic reaction</em> between carbon dioxide and hydrogen.',tags:['Thermodynamics','Energy']},
+        {startTime:'11:25',endTime:'12:26',title:'Could Life Originate Multiple Times?',text:'The possibility of multiple origins is discussed, with oxygen\'s current presence <em>making spontaneous new life impossible</em>.',tags:['Evolution','Hypothesis']},
+        {startTime:'12:27',endTime:'12:46',title:'What Constitutes \'Life\'?',text:'Life is defined as systems where <em>genes and information are introduced into growing protocells</em>, allowing for natural selection.',tags:['Definition of Life','Genetics']},
+        {startTime:'12:47',endTime:'13:47',title:'The Single Origin Hypothesis',text:'The argument for a <em>single origin of life</em>, considering the inherent difficulty and environmental constraints like oxygen.',tags:['Hypothesis','Evolution']},
+        {startTime:'13:48',endTime:'14:08',title:'The Deep Split: Bacteria vs. Archaea',text:'Nick Lane highlights the <em>deep split</em> between Bacteria and Archaea — fundamentally different biochemically despite sharing a common ancestor.',tags:['Microbiology','Key Section']},
+        {startTime:'14:09',endTime:'15:04',title:'Differences in Membranes and DNA Replication',text:'Detailed differences in <em>membranes and DNA replication</em> between Bacteria and Archaea reinforce the idea of a single origin.',tags:['Biochemistry','Genetics']},
+        {startTime:'15:05',endTime:'16:01',title:'Explaining the Divergence and Single Origin',text:'The unique divergence suggests a <em>single successful origin event</em> rather than multiple independent ones.',tags:['Evolutionary Theory','Common Ancestor']},
+        {startTime:'16:02',endTime:'16:55',title:'Life as a Single Cell: The Unit of Selection',text:'The fundamental life form is a single cell, which acts as <em>the unit of selection</em>, evolving over generations.',tags:['Cell Biology','Natural Selection']},
+        {startTime:'16:56',endTime:'17:40',title:'The \'Two Cells Got Out\' Scenario',text:'Nick Lane explores the idea that <em>two distinct cells emerged from the same vent</em>, leading to the two main domains of life.',tags:['Hypothesis','Early Evolution']},
+        {startTime:'17:41',endTime:'18:35',title:'Powering Up: How Early Life Left the Vent',text:'How early life forms developed the ability to <em>power their own membranes</em> after leaving the vents, leading to divergent pump mechanisms.',tags:['Cellular Energy','Evolutionary Adaptation']}
       ]
     }
   },
@@ -1113,10 +1126,13 @@ function sendMsg() {
   const msgs = document.getElementById('msgs');
   msgs.innerHTML += `<div class="msg"><div class="msg-av user">B</div><div class="msg-bubble">${escHtml(text)}</div></div>`;
   inp.value = '';
+  inp.disabled = true;
   setTimeout(() => {
     const resp = generateChatResponse(text);
     msgs.innerHTML += `<div class="msg"><div class="msg-av ai">PC</div><div class="msg-bubble">${resp}</div></div>`;
     msgs.scrollTop = msgs.scrollHeight;
+    inp.disabled = false;
+    inp.focus();
   }, 700);
   msgs.scrollTop = msgs.scrollHeight;
 }
@@ -1158,7 +1174,24 @@ function copyQ(btn) {
 }
 function openModal() { document.getElementById('shareModal').classList.add('active'); }
 function closeModal() { document.getElementById('shareModal').classList.remove('active'); }
-function shareAction(t) { closeModal(); showToast({twitter:'Opening Twitter/X...',linkedin:'Opening LinkedIn...',copy:'Link copied!',embed:'Embed code copied!'}[t]); }
+function shareAction(t) {
+  closeModal();
+  const title = currentData?.metadata?.title || 'Check out this podcast analysis';
+  const url = window.location.href;
+  if (t === 'twitter') {
+    window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`, '_blank');
+  } else if (t === 'linkedin') {
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+  } else if (t === 'copy') {
+    navigator.clipboard.writeText(url).then(() => showToast('Link copied!')).catch(() => showToast('Failed to copy'));
+    return;
+  } else if (t === 'embed') {
+    const code = `<iframe src="${url}" width="100%" height="600" frameborder="0"></iframe>`;
+    navigator.clipboard.writeText(code).then(() => showToast('Embed code copied!')).catch(() => showToast('Failed to copy'));
+    return;
+  }
+  showToast({twitter:'Opening Twitter/X...',linkedin:'Opening LinkedIn...'}[t] || 'Done!');
+}
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeLoading(); } });
 
 // Load demo thumbnails from Spotify via resolve API
