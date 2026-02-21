@@ -1,12 +1,12 @@
 # Podclaw
 
-**Never stop listening. Never stop learning.** Paste a podcast link from Spotify, Apple Podcasts, or any RSS feed — get instant summaries, viral clips, key quotes, and interactive Q&A with an audio player that seeks to any moment.
+**Stop Listening. Start Learning.** Paste a podcast link from Spotify or Apple Podcasts — get instant summaries, viral clips, key quotes, and interactive Q&A with an audio player that seeks to any moment.
 
 Live at **[podclaw.vercel.app](https://podclaw.vercel.app)**
 
 ## How it works
 
-1. Paste a podcast link (Spotify, Apple Podcasts, RSS, or direct MP3)
+1. Paste a podcast link (Spotify, Apple Podcasts, or direct MP3)
 2. Podclaw resolves the link to find the audio file
 3. The audio is sent to Gemini 2.5 Flash for structured analysis
 4. You get: embedded audio player, summary, insights, quotes, viral clips, timeline, and Ask AI chat
@@ -17,12 +17,14 @@ Live at **[podclaw.vercel.app](https://podclaw.vercel.app)**
 ## Features
 
 - **HTML5 Audio Player** — plays right in the page, seeks to timestamps on click
-- **Podcast Link Resolver** — supports Spotify, Apple Podcasts, RSS feeds, and direct MP3 URLs
-- **3 Pre-built Demos** — Nick Lane (Lex Fridman), Robert Greene (Huberman Lab), Elon Musk (Joe Rogan)
+- **Podcast Link Resolver** — supports Spotify, Apple Podcasts, and direct MP3 URLs
+- **3 Pre-built Demos** — Nick Lane (Lex Fridman #318), Robert Greene (Huberman Lab), Elon Musk (JRE #2404)
 - **Dark / Light Theme** — toggle with one click, dark by default
 - **Guest Info Tooltip** — hover/click the (i) icon next to the guest name
 - **6 Content Tabs** — Overview, Insights, Quotes, Viral Clips, Timeline, Ask AI
+- **Share** — Twitter/X, LinkedIn, copy link, embed code
 - **Mobile Responsive** — works on phones with touch-friendly UI
+- **Custom Lobster Icon** — branded favicon and nav logo
 
 ## Deploy to Vercel (Free)
 
@@ -63,8 +65,10 @@ Your site will be live at `your-project.vercel.app` in about 30 seconds.
 podclaw/
 ├── index.html          # Full frontend with audio player & 3 demo episodes
 ├── api/
-│   ├── resolve.js      # Resolves podcast links (Spotify, Apple, RSS) to MP3 URLs
+│   ├── resolve.js      # Resolves podcast links (Spotify, Apple Podcasts) to MP3 URLs
 │   └── analyze.js      # Sends audio to Gemini 2.5 Flash, returns structured insights
+├── favicon.png         # Lobster icon (favicon)
+├── icon-nav.png        # Lobster icon (nav bar)
 ├── package.json        # Dependencies (@google/generative-ai)
 ├── vercel.json         # Vercel deployment config
 ├── .env.example        # Template for environment variables
@@ -97,7 +101,6 @@ vercel dev              # Runs locally at http://localhost:3000
 |--------|-------------|
 | **Spotify** | Uses oEmbed API + iTunes search to find the RSS feed and MP3 |
 | **Apple Podcasts** | Uses iTunes Lookup API to get the RSS feed and episode MP3 |
-| **RSS Feeds** | Parses the feed directly to extract the `<enclosure>` MP3 URL |
 | **Direct MP3** | Uses the URL as-is |
 
 ## Limitations
